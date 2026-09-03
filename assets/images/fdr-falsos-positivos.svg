@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="A la izquierda, el histograma de valores p de veinte mil genes sin ninguna diferencia real: es plano, y la primera barra reune unos mil genes con p menor que cero punto cero cinco. A la derecha, los valores p ordenados frente a la recta i sobre m por q del procedimiento de Benjamini y Hochberg: se declaran los que quedan por debajo.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 24px; font-weight: 700; }
+    .sub { font-size: 16px; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .via { font-size: 15px; }
+    .num { font-size: 21px; font-weight: 700; }
+    .gde { font-size: 30px; font-weight: 700; }
+    .pie { font-size: 17px; }
+  ]]></style>
+
+<rect x="40" y="44" width="540" height="308" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="310" y="30" text-anchor="middle" fill="#00053F">20 000 genes, ninguna diferencia real</text>
+<rect x="80.0" y="180" width="19.2" height="110" rx="2" fill="#000977" stroke="none"/>
+<rect x="103.2" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="126.4" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="149.6" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="172.8" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="196.0" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="219.2" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="242.4" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="265.6" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="288.8" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="312.0" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="335.2" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="358.4" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="381.6" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="404.8" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="428.0" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="451.2" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="474.4" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="497.6" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<rect x="520.8" y="180" width="19.2" height="110" rx="2" fill="#C5C8CE" stroke="none"/>
+<path d="M 78.0 290.0 L 542.0 290.0" fill="none" stroke="#5A6373" stroke-width="1.6"/>
+<text class="t via" x="78" y="312" text-anchor="end" fill="#5A6373">0</text>
+<text class="t via" x="101" y="312" text-anchor="middle" fill="#5A6373">0.05</text>
+<text class="t via" x="542" y="312" text-anchor="end" fill="#5A6373">1</text>
+<text class="t via" x="310" y="336" text-anchor="middle" fill="#5A6373">valor de p</text>
+<path d="M 89.0 172.0 L 89.0 176.0" fill="none" stroke="#000977" stroke-width="2"/>
+<text class="t neg" x="104" y="122" fill="#000977">≈ 1 000 genes con p &lt; 0.05</text>
+<text class="t via" x="104" y="144" fill="#5A6373">y ninguno es una diferencia real</text>
+<text class="t via" x="104" y="166" fill="#5A6373">el histograma es plano: bajo la nula, cae un 5 % en cada barra</text>
+<rect x="602" y="44" width="538" height="308" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="871" y="30" text-anchor="middle" fill="#00053F">Qué hace el control de FDR</text>
+<path d="M 660.0 140.0 L 660.0 290.0" fill="none" stroke="#5A6373" stroke-width="1.6"/>
+<path d="M 660.0 290.0 L 1098.0 290.0" fill="none" stroke="#5A6373" stroke-width="1.6"/>
+<path d="M 660.0 290.0 L 1098.0 245.0" fill="none" stroke="#6E5E00" stroke-width="2.6"/>
+<text class="t neg" x="1010" y="278" text-anchor="middle" fill="#6E5E00">(i / m) · q</text>
+<circle cx="681.9" cy="289.1" r="5" fill="#000977" stroke="none"/>
+<circle cx="712.6" cy="287.3" r="5" fill="#000977" stroke="none"/>
+<circle cx="743.2" cy="285.1" r="5" fill="#000977" stroke="none"/>
+<circle cx="773.9" cy="281.8" r="5" fill="#000977" stroke="none"/>
+<circle cx="804.5" cy="276.5" r="5" fill="#000977" stroke="none"/>
+<circle cx="835.2" cy="267.5" r="5" fill="#ACB1B9" stroke="none"/>
+<circle cx="870.2" cy="257.8" r="5" fill="#ACB1B9" stroke="none"/>
+<circle cx="905.3" cy="245.8" r="5" fill="#ACB1B9" stroke="none"/>
+<circle cx="944.7" cy="230.8" r="5" fill="#ACB1B9" stroke="none"/>
+<circle cx="984.1" cy="213.5" r="5" fill="#ACB1B9" stroke="none"/>
+<circle cx="1023.5" cy="193.2" r="5" fill="#ACB1B9" stroke="none"/>
+<circle cx="1063.0" cy="170.0" r="5" fill="#ACB1B9" stroke="none"/>
+<circle cx="1093.6" cy="146.0" r="5" fill="#ACB1B9" stroke="none"/>
+<path d="M 819.9 140.0 L 819.9 298.0" fill="none" stroke="#00053F" stroke-width="2" stroke-dasharray="6 4"/>
+<text class="t via" x="810" y="142" text-anchor="end" fill="#00053F">se declaran</text>
+<text class="t via" x="830" y="142" fill="#5A6373">no se declaran</text>
+<text class="t via" x="650" y="130" text-anchor="end" fill="#5A6373">p</text>
+<text class="t via" x="879" y="312" text-anchor="middle" fill="#5A6373">genes ordenados por su valor de p</text>
+<text class="t lab" x="871" y="336" text-anchor="middle" fill="#141A4A">Se declara hasta el último gen que queda por debajo de la recta.</text>
+<rect x="40" y="376" width="1100" height="40" rx="8" fill="#F3EFDD" stroke="none"/><text class="t pie" x="590" y="402" text-anchor="middle" fill="#6E5E00">El control de FDR limita la proporción de falsos entre los declarados. No arregla una p calculada con la n equivocada.</text>
+</svg>

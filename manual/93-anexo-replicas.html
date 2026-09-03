@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Anexo: ¿réplica biológica o técnica? – Análisis de single-cell RNA-seq</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./99-referencias.html" rel="next">
+<link href="./92-anexo-rutas-de-importacion.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-95e7826f4813621490ae0bbac6a5e5e5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-10f5dae605ba7ed116c0e84354baeedf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./90-anexo-entornos.html">Anexos</a></li><li class="breadcrumb-item"><a href="./93-anexo-replicas.html">Anexo: ¿réplica biológica o técnica?</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Análisis de single-cell RNA-seq</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Presentación</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Antes de tocar los datos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-fundamentos-y-tecnologias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Fundamentos de single-cell. Tecnologías y plataformas</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-diseno-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Diseño experimental</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Del FASTQ a un objeto en el que se puede confiar</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-de-fastq-a-matriz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">De FASTQ a matriz</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-de-matriz-a-objeto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">De matriz a objeto listo. Rutas de importación y estructuras de datos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-control-de-calidad.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control de calidad: del experimento a los datos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Autonomía y cierre</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-practica-integradora.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Práctica integradora y arranque del proyecto</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Anexos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./90-anexo-entornos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: entornos de trabajo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./91-anexo-glosario.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: glosario</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./92-anexo-rutas-de-importacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: rutas de importación y estructuras de datos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./93-anexo-replicas.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Anexo: ¿réplica biológica o técnica?</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./99-referencias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">En este capítulo</h2>
+   
+  <ul>
+  <li><a href="#antes-de-buscar-tu-caso-en-la-lista" id="toc-antes-de-buscar-tu-caso-en-la-lista" class="nav-link active" data-scroll-target="#antes-de-buscar-tu-caso-en-la-lista">Antes de buscar tu caso en la lista</a></li>
+  <li><a href="#humanos-donantes-y-muestreo" id="toc-humanos-donantes-y-muestreo" class="nav-link" data-scroll-target="#humanos-donantes-y-muestreo">Humanos · donantes y muestreo</a></li>
+  <li><a href="#gemelos" id="toc-gemelos" class="nav-link" data-scroll-target="#gemelos">Gemelos</a></li>
+  <li><a href="#animales-de-laboratorio" id="toc-animales-de-laboratorio" class="nav-link" data-scroll-target="#animales-de-laboratorio">Animales de laboratorio</a></li>
+  <li><a href="#cultivo-celular-y-líneas" id="toc-cultivo-celular-y-líneas" class="nav-link" data-scroll-target="#cultivo-celular-y-líneas">Cultivo celular y líneas</a></li>
+  <li><a href="#organoides" id="toc-organoides" class="nav-link" data-scroll-target="#organoides">Organoides</a></li>
+  <li><a href="#microbiología" id="toc-microbiología" class="nav-link" data-scroll-target="#microbiología">Microbiología</a></li>
+  <li><a href="#plantas" id="toc-plantas" class="nav-link" data-scroll-target="#plantas">Plantas</a></li>
+  <li><a href="#muestreo-ambiental-y-de-campo" id="toc-muestreo-ambiental-y-de-campo" class="nav-link" data-scroll-target="#muestreo-ambiental-y-de-campo">Muestreo ambiental y de campo</a></li>
+  <li><a href="#la-capa-técnica-de-la-secuenciación" id="toc-la-capa-técnica-de-la-secuenciación" class="nav-link" data-scroll-target="#la-capa-técnica-de-la-secuenciación">La capa técnica de la secuenciación</a></li>
+  <li><a href="#específico-de-single-cell" id="toc-específico-de-single-cell" class="nav-link" data-scroll-target="#específico-de-single-cell">Específico de single-cell</a></li>
+  <li><a href="#los-cinco-errores-que-más-aparecen" id="toc-los-cinco-errores-que-más-aparecen" class="nav-link" data-scroll-target="#los-cinco-errores-que-más-aparecen">Los cinco errores que más aparecen</a></li>
+  <li><a href="#cuando-tu-caso-no-está-en-la-lista" id="toc-cuando-tu-caso-no-está-en-la-lista" class="nav-link" data-scroll-target="#cuando-tu-caso-no-está-en-la-lista">Cuando tu caso no está en la lista</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./90-anexo-entornos.html">Anexos</a></li><li class="breadcrumb-item"><a href="./93-anexo-replicas.html">Anexo: ¿réplica biológica o técnica?</a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span id="sec-replicas" class="quarto-section-identifier">Anexo: ¿réplica biológica o técnica?</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Catálogo de casos para consultar cuando el escenario no es obvio. Extiende la tabla de la sesión 02 con los sistemas que suelen aparecer en las preguntas: gemelos, cultivos bacterianos, líneas celulares, organoides, plantas y muestreo ambiental.</p>
+<p>Cada afirmación de este anexo lleva su fuente. Donde la evidencia está en disputa —y hay dos casos— se dice cuál es la disputa en vez de elegir un bando en silencio.</p>
+<p>Las definiciones son las de <span class="citation" data-cites="blainey2014replication">Blainey et&nbsp;al. (<a href="99-referencias.html#ref-blainey2014replication" role="doc-biblioref">2014</a>)</span>, las mismas de la clase:</p>
+<blockquote class="blockquote">
+<p><strong>Réplica biológica:</strong> unidad independiente que recibe la condición; entre réplicas varía el material biológico. <strong>Réplica técnica:</strong> medición repetida de la <em>misma</em> unidad; entre réplicas solo varía el procedimiento.</p>
+</blockquote>
+<p><span class="citation" data-cites="naegle2015criterios">Naegle et&nbsp;al. (<a href="99-referencias.html#ref-naegle2015criterios" role="doc-biblioref">2015</a>)</span> desarrollan el mismo criterio desde la pregunta que le da título a su artículo —<em>qué significa <code>n</code></em>— y advierten explícitamente contra asignar <code>n</code> = número de células.</p>
+<section id="antes-de-buscar-tu-caso-en-la-lista" class="level2">
+<h2 class="anchored" data-anchor-id="antes-de-buscar-tu-caso-en-la-lista">Antes de buscar tu caso en la lista</h2>
+<p>La pregunta no se contesta mirando la muestra. Se contesta mirando <strong>a qué población quieres generalizar</strong>. El mismo tubo puede ser réplica biológica para una pregunta y técnica para otra, y por eso las discusiones se atascan: dos personas responden preguntas distintas sin darse cuenta.</p>
+<p><strong>Las tres preguntas que lo resuelven:</strong></p>
+<ol type="1">
+<li><strong>¿Sobre qué quiero afirmar algo?</strong> Sobre las personas con esta enfermedad, sobre esta cepa bacteriana, sobre esta línea celular. Esa es tu población.</li>
+<li><strong>¿Cuál es la unidad más pequeña que se muestreó de forma independiente de esa población?</strong> Ese es tu <code>n</code>, y se llama <strong>unidad experimental</strong> <span class="citation" data-cites="lazic2018unidad festing2002guias">(<a href="99-referencias.html#ref-festing2002guias" role="doc-biblioref">Festing &amp; Altman, 2002</a>; <a href="99-referencias.html#ref-lazic2018unidad" role="doc-biblioref">Lazic et&nbsp;al., 2018</a>)</span>.</li>
+<li><strong>Si sustituyera una réplica por otra tomada igual, ¿cambiaría el individuo de la población?</strong> Si no cambia, es técnica.</li>
+</ol>
+<p><strong>La consecuencia práctica:</strong> las réplicas técnicas se promedian o se suman; no suman <code>n</code>. Contarlas como si lo hicieran es <strong>pseudorreplicación</strong> <span class="citation" data-cites="hurlbert1984pseudoreplicacion">(<a href="99-referencias.html#ref-hurlbert1984pseudoreplicacion" role="doc-biblioref">Hurlbert, 1984</a>)</span>. No es un problema exclusivo de la ecología ni del single-cell: <span class="citation" data-cites="aarts2014anidados">Aarts et&nbsp;al. (<a href="99-referencias.html#ref-aarts2014anidados" role="doc-biblioref">2014</a>)</span> auditaron revistas de alto perfil en neurociencia y encontraron que los datos anidados —muchas neuronas de un mismo animal— se analizan de rutina con métodos que asumen independencia, lo que infla el error de tipo I. La estructura es idéntica a la de muchas células de un mismo donante.</p>
+<p><strong>Tres respuestas posibles</strong>, y la tercera es la que más se usa:</p>
+<ul>
+<li><strong>Sí</strong> — réplica biológica plena.</li>
+<li><strong>No</strong> — técnica; mide el método, no la biología.</li>
+<li><strong>Sí, con reserva</strong> — es una unidad independiente, pero comparte algo que limita a qué población puedes generalizar. Casi todos los casos difíciles caen aquí.</li>
+</ul>
+<hr>
+</section>
+<section id="humanos-donantes-y-muestreo" class="level2">
+<h2 class="anchored" data-anchor-id="humanos-donantes-y-muestreo">Humanos · donantes y muestreo</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>El caso</th>
+<th>¿Réplica biológica?</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dos donantes distintos</td>
+<td><strong>sí</strong></td>
+<td>varía el individuo: genotipo, edad, exposición</td>
+</tr>
+<tr class="even">
+<td>Dos alícuotas de la misma extracción de sangre</td>
+<td>no</td>
+<td>nada biológico varía</td>
+</tr>
+<tr class="odd">
+<td>La misma sangre, dos carriles de 10x</td>
+<td>no</td>
+<td>mide el ruido del carril</td>
+</tr>
+<tr class="even">
+<td>El mismo donante, sangre en dos días</td>
+<td>no, para comparar donantes</td>
+<td>sigue siendo un individuo; es una medida repetida</td>
+</tr>
+<tr class="odd">
+<td>El mismo donante antes y después del tratamiento</td>
+<td>no son réplicas</td>
+<td>es un diseño pareado: el sujeto es su propio control</td>
+</tr>
+<tr class="even">
+<td>Dos biopsias de regiones distintas del mismo tumor</td>
+<td>no, al nivel del paciente</td>
+<td>capturan heterogeneidad intratumoral <span class="citation" data-cites="gerlinger2012heterogeneidad">(<a href="99-referencias.html#ref-gerlinger2012heterogeneidad" role="doc-biblioref"><span class="nocase">Gerlinger et&nbsp;al.</span>, 2012</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>Ojo derecho y ojo izquierdo de la misma persona</td>
+<td>no, al nivel de la persona</td>
+<td>pareadas dentro del individuo</td>
+</tr>
+<tr class="even">
+<td>Dos donantes de la misma familia</td>
+<td><strong>sí, con reserva</strong></td>
+<td>son individuos, pero comparten genética y ambiente</td>
+</tr>
+<tr class="odd">
+<td>Dos donantes de la misma cohorte hospitalaria</td>
+<td><strong>sí</strong></td>
+<td>con la reserva de a qué población generaliza esa cohorte</td>
+</tr>
+<tr class="even">
+<td>Placenta y sangre de cordón del mismo recién nacido</td>
+<td>no</td>
+<td>dos tejidos de un individuo: es una comparación, no una réplica</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sobre el tumor.</strong> <span class="citation" data-cites="gerlinger2012heterogeneidad"><span class="nocase">Gerlinger et&nbsp;al.</span> (<a href="99-referencias.html#ref-gerlinger2012heterogeneidad" role="doc-biblioref">2012</a>)</span> secuenciaron múltiples regiones del mismo carcinoma renal y encontraron que entre el <strong>63 % y el 69 %</strong> de las mutaciones somáticas no se detectaban en todas las regiones: una biopsia única captura en promedio poco más de la mitad. La región muestreada no es el tumor, y el tumor no es el paciente.</p>
+</section>
+<section id="gemelos" class="level2">
+<h2 class="anchored" data-anchor-id="gemelos">Gemelos</h2>
+<p>El caso que más discusión genera, y con razón: la respuesta cambia según la pregunta.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>El caso</th>
+<th>¿Réplica biológica?</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dos gemelos <strong>monocigóticos</strong>, pregunta sobre un tratamiento</td>
+<td><strong>sí, con reserva</strong></td>
+<td>son dos individuos con historias ambientales propias; el genotipo casi no varía</td>
+</tr>
+<tr class="even">
+<td>Dos gemelos monocigóticos, pregunta sobre <strong>efecto del genotipo</strong></td>
+<td><strong>casi técnica</strong></td>
+<td>el factor que te interesa es casi idéntico entre ambos: no hay contraste</td>
+</tr>
+<tr class="odd">
+<td>Dos gemelos <strong>dicigóticos</strong></td>
+<td><strong>sí</strong></td>
+<td>comparten la mitad del genoma, como cualquier par de hermanos</td>
+</tr>
+<tr class="even">
+<td>Diez pares de gemelos monocigóticos discordantes para una enfermedad</td>
+<td><strong>sí</strong>, y es un diseño potente</td>
+<td>el gemelo sano controla el genotipo; el <code>n</code> es el <strong>par</strong> <span class="citation" data-cites="castillo2014gemelos">(<a href="99-referencias.html#ref-castillo2014gemelos" role="doc-biblioref">Castillo-Fernandez et&nbsp;al., 2014</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>El mismo gemelo, muestreado dos veces</td>
+<td>no</td>
+<td>un individuo medido dos veces</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Por qué digo «casi» y no «idéntico».</strong> Los gemelos monocigóticos <strong>no son genéticamente idénticos</strong>. <span class="citation" data-cites="jonsson2021gemelos"><span class="nocase">Jónsson et&nbsp;al.</span> (<a href="99-referencias.html#ref-jonsson2021gemelos" role="doc-biblioref">2021</a>)</span> secuenciaron genomas completos de pares y sus familias y encontraron que difieren en promedio en unas <strong>5.2 mutaciones</strong> surgidas en el desarrollo temprano, y que alrededor del <strong>15 %</strong> de los pares tiene un número sustancial de mutaciones privativas de uno solo. <span class="citation" data-cites="bruder2008gemelos"><span class="nocase">Bruder et&nbsp;al.</span> (<a href="99-referencias.html#ref-bruder2008gemelos" role="doc-biblioref">2008</a>)</span> ya lo habían mostrado antes para variantes de número de copia. Es poco frente a los millones de diferencias entre dos personas cualesquiera —por eso «casi técnica»— pero no es cero.</p>
+<p><strong>La regla que ordena los cinco casos:</strong> un gemelo monocigótico es réplica biológica para todo aquello que <strong>no</strong> esté fijado por el genotipo, y réplica casi técnica para lo que sí. Son individuos, pero tu <code>n</code> genético sigue siendo prácticamente uno.</p>
+<p>En el diseño de gemelos discordantes, además, la unidad experimental es el <strong>par</strong>: analizarlo como veinte individuos independientes es pseudorreplicación <span class="citation" data-cites="castillo2014gemelos">(<a href="99-referencias.html#ref-castillo2014gemelos" role="doc-biblioref">Castillo-Fernandez et&nbsp;al., 2014</a>)</span>.</p>
+</section>
+<section id="animales-de-laboratorio" class="level2">
+<h2 class="anchored" data-anchor-id="animales-de-laboratorio">Animales de laboratorio</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>El caso</th>
+<th>¿Réplica biológica?</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dos ratones de la misma camada</td>
+<td><strong>sí</strong></td>
+<td>son individuos distintos</td>
+</tr>
+<tr class="even">
+<td>Dos ratones de camadas distintas</td>
+<td><strong>sí</strong></td>
+<td>y además capturan la variación entre camadas</td>
+</tr>
+<tr class="odd">
+<td>Diez ratones de una cepa isogénica</td>
+<td><strong>sí, con reserva</strong></td>
+<td>son individuos, pero el resultado no generaliza más allá de la cepa <span class="citation" data-cites="voelkl2020variacion">(<a href="99-referencias.html#ref-voelkl2020variacion" role="doc-biblioref"><span class="nocase">Voelkl et&nbsp;al.</span>, 2020</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Ratones de la misma jaula, tratamiento aplicado <strong>al agua de la jaula</strong></td>
+<td>no, al nivel del ratón</td>
+<td>la unidad tratada es la jaula <span class="citation" data-cites="festing2002guias">(<a href="99-referencias.html#ref-festing2002guias" role="doc-biblioref">Festing &amp; Altman, 2002</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>Crías de la misma madre tratada durante la gestación</td>
+<td>no, al nivel de la cría</td>
+<td>la unidad es la <strong>camada</strong> <span class="citation" data-cites="lazic2013camada">(<a href="99-referencias.html#ref-lazic2013camada" role="doc-biblioref">Lazic &amp; Essioux, 2013</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Ratones de jaulas distintas, tratamiento por inyección individual</td>
+<td><strong>sí</strong></td>
+<td>cada animal recibe la condición por separado</td>
+</tr>
+<tr class="odd">
+<td>El mismo ratón, sangre en dos tiempos</td>
+<td>no</td>
+<td>un individuo medido dos veces</td>
+</tr>
+<tr class="even">
+<td>Dos cortes del mismo cerebro</td>
+<td>no</td>
+<td>dos trozos de un individuo</td>
+</tr>
+<tr class="odd">
+<td>Dos ratones knockout de la misma línea fundadora</td>
+<td><strong>sí, con reserva</strong></td>
+<td>individuos, pero con un único evento de edición detrás</td>
+</tr>
+<tr class="even">
+<td>Dos peces cebra de la misma puesta</td>
+<td><strong>sí, con reserva</strong></td>
+<td>individuos, con fuerte efecto de puesta</td>
+</tr>
+</tbody>
+</table>
+<p><strong>El error caro.</strong> Si el tratamiento va en el agua, en el alimento o en la madre, la unidad experimental es la jaula o la camada, por más animales que tengan dentro. <span class="citation" data-cites="lazic2013camada">Lazic &amp; Essioux (<a href="99-referencias.html#ref-lazic2013camada" role="doc-biblioref">2013</a>)</span> revisaron estudios de un modelo animal muy usado y encontraron que <strong>solo el 9 %</strong> identificaba correctamente la camada como unidad. No es un tecnicismo: cambia el <code>n</code> en un orden de magnitud.</p>
+<p><strong>Sobre las cepas isogénicas.</strong> <span class="citation" data-cites="voelkl2020variacion"><span class="nocase">Voelkl et&nbsp;al.</span> (<a href="99-referencias.html#ref-voelkl2020variacion" role="doc-biblioref">2020</a>)</span> muestran que estandarizar el material biológico —una sola cepa, un solo sexo, una sola edad— reduce la variación dentro del experimento pero <strong>empeora</strong> la reproducibilidad entre laboratorios, porque el resultado queda amarrado a esas condiciones. La reserva no es cosmética.</p>
+</section>
+<section id="cultivo-celular-y-líneas" class="level2">
+<h2 class="anchored" data-anchor-id="cultivo-celular-y-líneas">Cultivo celular y líneas</h2>
+<p>Aquí la palabra «biológica» significa algo distinto que en humanos, y de ahí viene buena parte de la confusión.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>El caso</th>
+<th>¿Réplica biológica?</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dos alícuotas del mismo frasco, secuenciadas por separado</td>
+<td>no</td>
+<td>técnica pura</td>
+</tr>
+<tr class="even">
+<td>El mismo frasco repartido en dos pozos, tratados igual, cosechados el mismo día</td>
+<td>no</td>
+<td>son <em>réplicas de pozo</em>: comparten cultivo, pase y día</td>
+</tr>
+<tr class="odd">
+<td>Cultivos iniciados desde viales congelados distintos, en semanas distintas</td>
+<td><strong>sí, con reserva</strong></td>
+<td>son experimentos independientes de <strong>una sola</strong> línea celular <span class="citation" data-cites="lazic2018unidad">(<a href="99-referencias.html#ref-lazic2018unidad" role="doc-biblioref">Lazic et&nbsp;al., 2018</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Dos pases muy separados de la misma línea</td>
+<td><strong>sí, con reserva</strong></td>
+<td>el pase introduce deriva genética y transcripcional <span class="citation" data-cites="bendavid2018deriva">(<a href="99-referencias.html#ref-bendavid2018deriva" role="doc-biblioref"><span class="nocase">Ben-David et&nbsp;al.</span>, 2018</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>Dos líneas celulares de <strong>donantes distintos</strong></td>
+<td><strong>sí</strong></td>
+<td>ahí sí varía el material biológico entre individuos <span class="citation" data-cites="kilpinen2017ipsc">(<a href="99-referencias.html#ref-kilpinen2017ipsc" role="doc-biblioref"><span class="nocase">Kilpinen et&nbsp;al.</span>, 2017</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Dos clones de iPSC del <strong>mismo</strong> donante</td>
+<td><strong>sí, con reserva</strong></td>
+<td>independientes como clones, pero un solo genoma detrás</td>
+</tr>
+<tr class="odd">
+<td>Líneas linfoblastoides de donantes distintos</td>
+<td><strong>sí, con reserva</strong></td>
+<td>capturan variación humana, pero también estado metabólico y carga de EBV <span class="citation" data-cites="choy2008lcl">(<a href="99-referencias.html#ref-choy2008lcl" role="doc-biblioref"><span class="nocase">Choy et&nbsp;al.</span>, 2008</a>)</span></td>
+</tr>
+<tr class="even">
+<td>La misma línea cultivada en dos laboratorios</td>
+<td>no, si la pregunta es biológica</td>
+<td>el laboratorio explica buena parte de la varianza <span class="citation" data-cites="volpato2020ipsc">(<a href="99-referencias.html#ref-volpato2020ipsc" role="doc-biblioref">Volpato &amp; Webber, 2020</a>)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>La deriva por pase no es un detalle.</strong> <span class="citation" data-cites="bendavid2018deriva"><span class="nocase">Ben-David et&nbsp;al.</span> (<a href="99-referencias.html#ref-bendavid2018deriva" role="doc-biblioref">2018</a>)</span> compararon 27 cepas de «la misma» línea MCF7 frente a 321 compuestos: <strong>al menos el 75 %</strong> de los compuestos que inhibían fuertemente a unas cepas eran <strong>completamente inactivos</strong> en otras. «Línea celular X» no nombra una unidad experimental estable.</p>
+<p><strong>Cuánto pesa el laboratorio.</strong> <span class="citation" data-cites="volpato2020ipsc">Volpato &amp; Webber (<a href="99-referencias.html#ref-volpato2020ipsc" role="doc-biblioref">2020</a>)</span> compararon neuronas derivadas de <strong>las mismas</strong> líneas de iPSC, con <strong>el mismo</strong> protocolo, en cinco laboratorios: el laboratorio de origen explicó <strong>hasta el 60 %</strong> de la variación transcriptómica, y los dos contribuyentes principales fueron el número de pase y el uso de progenitores congelados.</p>
+<p><strong>Cuánto pesa el donante.</strong> <span class="citation" data-cites="kilpinen2017ipsc"><span class="nocase">Kilpinen et&nbsp;al.</span> (<a href="99-referencias.html#ref-kilpinen2017ipsc" role="doc-biblioref">2017</a>)</span> caracterizaron 711 líneas de iPSC de 301 donantes sanos: entre el <strong>5 % y el 46 %</strong> de la variación en fenotipos —capacidad de diferenciación, morfología— proviene de diferencias <strong>entre individuos</strong>. Es el argumento cuantitativo de por qué la línea de otro donante sí es réplica biológica y otro clon del mismo donante no lo es del todo.</p>
+<p><strong>Y cuántas hacen falta.</strong> <span class="citation" data-cites="brunner2023potencia"><span class="nocase">Brunner et&nbsp;al.</span> (<a href="99-referencias.html#ref-brunner2023potencia" role="doc-biblioref">2023</a>)</span> hicieron el análisis de potencia explícito para diseños con iPSC y concluyen que los estudios caso-control publicados están, en general, <strong>sub-potenciados</strong>. Si vas a diseñar uno, ese es el lugar por donde empezar.</p>
+<p><strong>La reserva que hay que decir en voz alta:</strong> tres cultivos independientes de una línea permiten afirmar algo sobre <strong>esa línea</strong>, no sobre el tejido del que salió ni sobre la especie. El <code>n</code> frente a la población de personas sigue siendo <strong>uno</strong> <span class="citation" data-cites="lazic2018unidad naegle2015criterios">(<a href="99-referencias.html#ref-lazic2018unidad" role="doc-biblioref">Lazic et&nbsp;al., 2018</a>; <a href="99-referencias.html#ref-naegle2015criterios" role="doc-biblioref">Naegle et&nbsp;al., 2015</a>)</span>.</p>
+</section>
+<section id="organoides" class="level2">
+<h2 class="anchored" data-anchor-id="organoides">Organoides</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>El caso</th>
+<th>¿Réplica biológica?</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dos organoides del mismo cultivo</td>
+<td><strong>sí, con reserva</strong></td>
+<td>la variación organoide a organoide es alta <span class="citation" data-cites="gehling2022organoides">(<a href="99-referencias.html#ref-gehling2022organoides" role="doc-biblioref"><span class="nocase">Gehling et&nbsp;al.</span>, 2022</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Dos lotes de diferenciación de la misma línea</td>
+<td><strong>sí, con reserva</strong></td>
+<td>pero el lote pesa <strong>menos</strong> de lo que suele suponerse</td>
+</tr>
+<tr class="odd">
+<td>Organoides de pases muy distintos</td>
+<td><strong>sí, con reserva</strong></td>
+<td>el pase domina la variación <span class="citation" data-cites="gehling2022organoides">(<a href="99-referencias.html#ref-gehling2022organoides" role="doc-biblioref"><span class="nocase">Gehling et&nbsp;al.</span>, 2022</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Organoides de líneas de donantes distintos</td>
+<td><strong>sí</strong></td>
+<td>varía el individuo</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>Aquí la intuición común está mal
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Es habitual afirmar que «el lote de diferenciación domina la variación». La evidencia disponible no lo respalda. <span class="citation" data-cites="gehling2022organoides"><span class="nocase">Gehling et&nbsp;al.</span> (<a href="99-referencias.html#ref-gehling2022organoides" role="doc-biblioref">2022</a>)</span> secuenciaron organoides individuales y encontraron que la variación <strong>entre lotes</strong> fue baja —incluso preparados por personas distintas— y que lo grande fue la variabilidad <strong>de un organoide a otro dentro del mismo cultivo</strong>, con un efecto profundo del <strong>número de pase</strong>: los organoides de pase 4 agrupaban estrechamente y los de pase 11 se dispersaban.</p>
+<p>Y la variabilidad tampoco es una ley de la naturaleza, sino una propiedad del protocolo. <span class="citation" data-cites="quadrato2017organoides"><span class="nocase">Quadrato et&nbsp;al.</span> (<a href="99-referencias.html#ref-quadrato2017organoides" role="doc-biblioref">2017</a>)</span> describieron variabilidad sustancial entre organoides cerebrales por autoorganización estocástica; <span class="citation" data-cites="velasco2019organoides"><span class="nocase">Velasco et&nbsp;al.</span> (<a href="99-referencias.html#ref-velasco2019organoides" role="doc-biblioref">2019</a>)</span>, con otro protocolo, encontraron que el <strong>95 %</strong> de sus organoides generaba un compendio de tipos celulares prácticamente indistinguible, con variabilidad comparable a la que hay entre cerebros humanos individuales.</p>
+<p><strong>Lo que se puede afirmar sin exagerar:</strong> el organoide individual no es una unidad experimental confiable por sí solo, hay que agregar varios, y el número de pase debe reportarse siempre.</p>
+</div>
+</div>
+</section>
+<section id="microbiología" class="level2">
+<h2 class="anchored" data-anchor-id="microbiología">Microbiología</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>El caso</th>
+<th>¿Réplica biológica?</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dos extracciones de DNA del mismo cultivo de la noche</td>
+<td>no</td>
+<td>técnica pura</td>
+</tr>
+<tr class="even">
+<td>Dos cultivos inoculados el mismo día desde el <strong>mismo</strong> preinóculo</td>
+<td>no</td>
+<td>comparten el punto de partida; son ramas del mismo cultivo</td>
+</tr>
+<tr class="odd">
+<td>Dos cultivos independientes desde el mismo criovial, en días distintos</td>
+<td><strong>sí, con reserva</strong></td>
+<td>es la convención del campo; captura variación de crecimiento, no genética</td>
+</tr>
+<tr class="even">
+<td>Dos colonias distintas de la misma placa, del mismo clon</td>
+<td><strong>sí, con reserva</strong></td>
+<td>eventos de crecimiento independientes de un genotipo único</td>
+</tr>
+<tr class="odd">
+<td>Dos aislados de la <strong>misma especie</strong> de pacientes distintos</td>
+<td><strong>sí</strong></td>
+<td>varía la cepa y su historia</td>
+</tr>
+<tr class="even">
+<td>El mismo cultivo muestreado en fase log y en estacionaria</td>
+<td>no son réplicas</td>
+<td>es una serie temporal: son condiciones distintas</td>
+</tr>
+<tr class="odd">
+<td>Dos muestras del mismo consorcio microbiano</td>
+<td>depende</td>
+<td>si el consorcio es la unidad, son técnicas; si se muestrearon consorcios distintos, biológicas</td>
+</tr>
+</tbody>
+</table>
+<p><strong>El punto que ordena toda esta tabla:</strong> en microbiología, «réplica biológica» significa por convención <strong>cultivo independiente</strong>, que es un listón más bajo que «individuo independiente» en estudios humanos. No es un abuso del término, pero cambia a qué se puede generalizar: tres cultivos de <em>E. coli</em> K-12 hablan de K-12, no de <em>E. coli</em>. Es la misma reserva que <span class="citation" data-cites="naegle2015criterios">Naegle et&nbsp;al. (<a href="99-referencias.html#ref-naegle2015criterios" role="doc-biblioref">2015</a>)</span> plantean para cualquier sistema con un solo genotipo detrás.</p>
+</section>
+<section id="plantas" class="level2">
+<h2 class="anchored" data-anchor-id="plantas">Plantas</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>El caso</th>
+<th>¿Réplica biológica?</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dos hojas de la misma planta</td>
+<td>no</td>
+<td>dos partes de un individuo</td>
+</tr>
+<tr class="even">
+<td>Dos plantas de la misma línea endogámica, misma charola</td>
+<td><strong>sí, con reserva</strong></td>
+<td>individuos casi clonales, con efecto de charola</td>
+</tr>
+<tr class="odd">
+<td>Dos plantas de la misma línea, cámaras de crecimiento distintas</td>
+<td><strong>sí, con reserva</strong></td>
+<td>y la cámara puede confundirse con el tratamiento <span class="citation" data-cites="leek2010lote">(<a href="99-referencias.html#ref-leek2010lote" role="doc-biblioref"><span class="nocase">Leek et&nbsp;al.</span>, 2010</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Dos plantas de accesiones distintas</td>
+<td><strong>sí</strong></td>
+<td>varía el genotipo</td>
+</tr>
+<tr class="odd">
+<td>Esquejes del mismo individuo</td>
+<td>no, genéticamente</td>
+<td>son clones: mide variación ambiental, no genética</td>
+</tr>
+<tr class="even">
+<td>Semillas del mismo lote sembradas por separado</td>
+<td><strong>sí, con reserva</strong></td>
+<td>independientes al germinar, emparentadas por origen</td>
+</tr>
+</tbody>
+</table>
+<p>La charola y la cámara son el equivalente vegetal de la jaula: si la condición se aplica al contenedor, el contenedor es la unidad <span class="citation" data-cites="festing2002guias">(<a href="99-referencias.html#ref-festing2002guias" role="doc-biblioref">Festing &amp; Altman, 2002</a>)</span>.</p>
+</section>
+<section id="muestreo-ambiental-y-de-campo" class="level2">
+<h2 class="anchored" data-anchor-id="muestreo-ambiental-y-de-campo">Muestreo ambiental y de campo</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>El caso</th>
+<th>¿Réplica biológica?</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dos submuestras del mismo núcleo de suelo</td>
+<td>no</td>
+<td>técnica</td>
+</tr>
+<tr class="even">
+<td>Dos núcleos de la misma parcela</td>
+<td>no, al nivel de parcela</td>
+<td>son submuestras de una unidad</td>
+</tr>
+<tr class="odd">
+<td>Núcleos de parcelas distintas con el mismo tratamiento</td>
+<td><strong>sí</strong></td>
+<td>la parcela es la unidad experimental</td>
+</tr>
+<tr class="even">
+<td>Dos muestras de agua del mismo punto y momento</td>
+<td>no</td>
+<td>técnica</td>
+</tr>
+<tr class="odd">
+<td>Muestras del mismo punto en meses distintos</td>
+<td>no son réplicas</td>
+<td>es una serie temporal</td>
+</tr>
+</tbody>
+</table>
+<p>Este es el terreno donde <span class="citation" data-cites="hurlbert1984pseudoreplicacion">Hurlbert (<a href="99-referencias.html#ref-hurlbert1984pseudoreplicacion" role="doc-biblioref">1984</a>)</span> acuñó el término, y el ejemplo canónico sigue siendo el mejor: medir diez veces dentro de un mismo estanque no da <code>n = 10</code> estanques.</p>
+</section>
+<section id="la-capa-técnica-de-la-secuenciación" class="level2">
+<h2 class="anchored" data-anchor-id="la-capa-técnica-de-la-secuenciación">La capa técnica de la secuenciación</h2>
+<p>Todo lo de esta tabla es técnico. Se incluye porque a veces se presenta como si sumara <code>n</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>El caso</th>
+<th>¿Réplica biológica?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>La misma biblioteca en dos carriles</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>El mismo RNA, dos preparaciones de biblioteca</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>La misma muestra con dos kits de extracción</td>
+<td>no, y además introduce una confusión</td>
+</tr>
+<tr class="even">
+<td>Resecuenciar para ganar profundidad</td>
+<td>no: da más lecturas, no más <code>n</code></td>
+</tr>
+<tr class="odd">
+<td>El mismo pozo GEM, dos corridas de secuenciación</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>Dos pozos GEM cargados de la <strong>misma</strong> suspensión</td>
+<td>no, pero miden el ruido entre pozos</td>
+</tr>
+<tr class="odd">
+<td>Dos muestras de donantes distintos multiplexadas en un carril</td>
+<td><strong>sí</strong>: la réplica son los donantes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Por qué la réplica técnica se usa poco en secuenciación.</strong> <span class="citation" data-cites="marioni2008tecnica">Marioni et&nbsp;al. (<a href="99-referencias.html#ref-marioni2008tecnica" role="doc-biblioref">2008</a>)</span> evaluaron la reproducibilidad técnica de RNA-seq y concluyeron que la variación técnica es lo bastante pequeña como para que, para muchos propósitos, <strong>baste secuenciar cada muestra una sola vez</strong>. El presupuesto rinde más en donantes que en repeticiones.</p>
+<p><strong>Por qué el multiplexado es buena idea.</strong> El <em>hashing</em> mezcla réplicas biológicas dentro de un mismo lote técnico, que es exactamente lo que conviene: elimina el lote como variable confundida sin tocar el <code>n</code> <span class="citation" data-cites="stoeckius2018cellhashing kang2018demuxlet">(<a href="99-referencias.html#ref-kang2018demuxlet" role="doc-biblioref"><span class="nocase">Kang et&nbsp;al.</span>, 2018</a>; <a href="99-referencias.html#ref-stoeckius2018cellhashing" role="doc-biblioref"><span class="nocase">Stoeckius et&nbsp;al.</span>, 2018</a>)</span>. El problema que resuelve está documentado desde <span class="citation" data-cites="leek2010lote"><span class="nocase">Leek et&nbsp;al.</span> (<a href="99-referencias.html#ref-leek2010lote" role="doc-biblioref">2010</a>)</span> —los efectos de lote hacen daño sobre todo cuando están <strong>correlacionados con la condición</strong>— y para single-cell en particular por <span class="citation" data-cites="hicks2018lote">Hicks et&nbsp;al. (<a href="99-referencias.html#ref-hicks2018lote" role="doc-biblioref">2018</a>)</span> y <span class="citation" data-cites="tung2017lote">Tung et&nbsp;al. (<a href="99-referencias.html#ref-tung2017lote" role="doc-biblioref">2017</a>)</span>.</p>
+</section>
+<section id="específico-de-single-cell" class="level2">
+<h2 class="anchored" data-anchor-id="específico-de-single-cell">Específico de single-cell</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>El caso</th>
+<th>¿Réplica biológica?</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Diez mil células de un donante</td>
+<td><strong>no</strong>: <code>n = 1</code></td>
+<td>las células comparten donante y lote; no son independientes</td>
+</tr>
+<tr class="even">
+<td>Células de dos clústeres del mismo donante</td>
+<td>no son réplicas</td>
+<td>son estados distintos dentro de un individuo</td>
+</tr>
+<tr class="odd">
+<td>Un donante secuenciado en dos pozos GEM</td>
+<td>no</td>
+<td>el donante sigue siendo uno</td>
+</tr>
+<tr class="even">
+<td>Cinco donantes, mil células cada uno</td>
+<td><strong>sí</strong>: <code>n = 5</code></td>
+<td>la unidad es el donante; las células se agregan</td>
+</tr>
+<tr class="odd">
+<td>Núcleos y células enteras de la misma muestra</td>
+<td>no</td>
+<td>dos protocolos sobre el mismo material</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Es la línea que sostiene la sesión 02:</strong> la réplica es el donante, no la célula. De ahí sale el pseudobulk — se agregan las células por donante y se hace la prueba con <code>n</code> = número de donantes <span class="citation" data-cites="crowell2020muscat squair2021falsediscoveries">(<a href="99-referencias.html#ref-crowell2020muscat" role="doc-biblioref">Crowell et&nbsp;al., 2020</a>; <a href="99-referencias.html#ref-squair2021falsediscoveries" role="doc-biblioref">Squair et&nbsp;al., 2021</a>)</span>.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Lo que está en disputa, y lo que no
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>No está en disputa</strong> que las células de un mismo individuo no son réplicas independientes: en eso coinciden todas las fuentes de esta sección.</p>
+<p><strong>Sí está en disputa</strong> cuál es el remedio. <span class="citation" data-cites="squair2021falsediscoveries">Squair et&nbsp;al. (<a href="99-referencias.html#ref-squair2021falsediscoveries" role="doc-biblioref">2021</a>)</span> y <span class="citation" data-cites="crowell2020muscat">Crowell et&nbsp;al. (<a href="99-referencias.html#ref-crowell2020muscat" role="doc-biblioref">2020</a>)</span> argumentan a favor del <strong>pseudobulk</strong>; <span class="citation" data-cites="zimmerman2021mixtos">Zimmerman et&nbsp;al. (<a href="99-referencias.html#ref-zimmerman2021mixtos" role="doc-biblioref">2021</a>)</span> proponen <strong>modelos mixtos</strong> con el individuo como efecto aleatorio; <span class="citation" data-cites="murphy2022pseudobulk">Murphy &amp; Skene (<a href="99-referencias.html#ref-murphy2022pseudobulk" role="doc-biblioref">2022</a>)</span> vuelven sobre la comparación con una métrica distinta y encuentran que los métodos de pseudobulk rinden mejor, con réplica de los autores originales.</p>
+<p>En este módulo se enseña pseudobulk, y conviene decir en clase que es una elección con literatura en contra, no un hecho cerrado.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="los-cinco-errores-que-más-aparecen" class="level2">
+<h2 class="anchored" data-anchor-id="los-cinco-errores-que-más-aparecen">Los cinco errores que más aparecen</h2>
+<ol type="1">
+<li><strong>Contar células como <code>n</code>.</strong> El más caro y el más frecuente. Produce valores p diminutos que no significan nada <span class="citation" data-cites="squair2021falsediscoveries">(<a href="99-referencias.html#ref-squair2021falsediscoveries" role="doc-biblioref">Squair et&nbsp;al., 2021</a>)</span>.</li>
+<li><strong>Confundir «independiente» con «distinto».</strong> Dos tubos distintos del mismo individuo son distintos y no son independientes <span class="citation" data-cites="aarts2014anidados">(<a href="99-referencias.html#ref-aarts2014anidados" role="doc-biblioref">Aarts et&nbsp;al., 2014</a>)</span>.</li>
+<li><strong>Olvidar dónde se aplicó el tratamiento.</strong> Si va en el agua de la jaula, en la madre o en el medio del frasco, la unidad es la jaula, la camada o el frasco <span class="citation" data-cites="lazic2013camada festing2002guias">(<a href="99-referencias.html#ref-festing2002guias" role="doc-biblioref">Festing &amp; Altman, 2002</a>; <a href="99-referencias.html#ref-lazic2013camada" role="doc-biblioref">Lazic &amp; Essioux, 2013</a>)</span>.</li>
+<li><strong>Llamar biológica a una réplica que comparte todo el genotipo sin decir la reserva.</strong> No está mal usarlas; está mal no declarar a qué población generalizan <span class="citation" data-cites="voelkl2020variacion">(<a href="99-referencias.html#ref-voelkl2020variacion" role="doc-biblioref"><span class="nocase">Voelkl et&nbsp;al.</span>, 2020</a>)</span>.</li>
+<li><strong>Creer que la réplica técnica no sirve.</strong> Sí sirve: mide el ruido del método <span class="citation" data-cites="blainey2014replication">(<a href="99-referencias.html#ref-blainey2014replication" role="doc-biblioref">Blainey et&nbsp;al., 2014</a>)</span>. Lo que no puede es sustituir a la biológica.</li>
+</ol>
+</section>
+<section id="cuando-tu-caso-no-está-en-la-lista" class="level2">
+<h2 class="anchored" data-anchor-id="cuando-tu-caso-no-está-en-la-lista">Cuando tu caso no está en la lista</h2>
+<p>Responde estas tres por escrito antes de discutirlo con nadie:</p>
+<ol type="1">
+<li>¿Sobre qué población quiero afirmar algo?</li>
+<li>¿Qué varía entre mis dos muestras, y qué se mantiene igual?</li>
+<li>Si el efecto que busco fuera cero, ¿qué diferencia esperaría ver entre ellas de todos modos?</li>
+</ol>
+<p>Si la respuesta a la segunda es «solo el procedimiento», es técnica. Si es «algo del material biológico», es biológica — y la tercera te dice de qué tamaño es la reserva que debes declarar.</p>
+
+
+<!-- -->
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-aarts2014anidados" class="csl-entry" role="listitem">
+Aarts, E., Verhage, M., Veenvliet, J. V., Dolan, C. V., &amp; Sluis, S. van der. (2014). A solution to dependency: using multilevel analysis to accommodate nested data. <em>Nature Neuroscience</em>, <em>17</em>(4), 491-496. <a href="https://doi.org/10.1038/nn.3648">https://doi.org/10.1038/nn.3648</a>
+</div>
+<div id="ref-bendavid2018deriva" class="csl-entry" role="listitem">
+<span class="nocase">Ben-David, U., Siranosian, B., Ha, G., et&nbsp;al.</span> (2018). Genetic and transcriptional evolution alters cancer cell line drug response. <em>Nature</em>, <em>560</em>(7718), 325-330. <a href="https://doi.org/10.1038/s41586-018-0409-3">https://doi.org/10.1038/s41586-018-0409-3</a>
+</div>
+<div id="ref-blainey2014replication" class="csl-entry" role="listitem">
+Blainey, P., Krzywinski, M., &amp; Altman, N. (2014). Replication. <em>Nature Methods</em>, <em>11</em>(9), 879-880. <a href="https://doi.org/10.1038/nmeth.3091">https://doi.org/10.1038/nmeth.3091</a>
+</div>
+<div id="ref-bruder2008gemelos" class="csl-entry" role="listitem">
+<span class="nocase">Bruder, C. E. G. et&nbsp;al.</span> (2008). Phenotypically concordant and discordant monozygotic twins display different <span>DNA</span> copy-number-variation profiles. <em>The American Journal of Human Genetics</em>, <em>82</em>(3), 763-771. <a href="https://doi.org/10.1016/j.ajhg.2007.12.011">https://doi.org/10.1016/j.ajhg.2007.12.011</a>
+</div>
+<div id="ref-brunner2023potencia" class="csl-entry" role="listitem">
+<span class="nocase">Brunner, J. W., Lammertse, H. C. A., Berkel, A. A. van, et&nbsp;al.</span> (2023). Power and optimal study design in <span>iPSC</span>-based brain disease modelling. <em>Molecular Psychiatry</em>, <em>28</em>(4), 1545-1556. <a href="https://doi.org/10.1038/s41380-022-01866-3">https://doi.org/10.1038/s41380-022-01866-3</a>
+</div>
+<div id="ref-castillo2014gemelos" class="csl-entry" role="listitem">
+Castillo-Fernandez, J. E., Spector, T. D., &amp; Bell, J. T. (2014). Epigenetics of discordant monozygotic twins: implications for disease. <em>Genome Medicine</em>, <em>6</em>(7), 60. <a href="https://doi.org/10.1186/s13073-014-0060-z">https://doi.org/10.1186/s13073-014-0060-z</a>
+</div>
+<div id="ref-choy2008lcl" class="csl-entry" role="listitem">
+<span class="nocase">Choy, E., Yelensky, R., Bonakdar, S., et&nbsp;al.</span> (2008). Genetic analysis of human traits in vitro: drug response and gene expression in lymphoblastoid cell lines. <em>PLoS Genetics</em>, <em>4</em>(11), e1000287. <a href="https://doi.org/10.1371/journal.pgen.1000287">https://doi.org/10.1371/journal.pgen.1000287</a>
+</div>
+<div id="ref-crowell2020muscat" class="csl-entry" role="listitem">
+Crowell, H. L., Soneson, C., Germain, P.-L., Calini, D., Collin, L., Raposo, C., Malhotra, D., &amp; Robinson, M. D. (2020). <span>muscat</span> detects subpopulation-specific state transitions from multi-sample multi-condition single-cell transcriptomics data. <em>Nature Communications</em>, <em>11</em>, 6077. <a href="https://doi.org/10.1038/s41467-020-19894-4">https://doi.org/10.1038/s41467-020-19894-4</a>
+</div>
+<div id="ref-festing2002guias" class="csl-entry" role="listitem">
+Festing, M. F. W., &amp; Altman, D. G. (2002). Guidelines for the design and statistical analysis of experiments using laboratory animals. <em>ILAR Journal</em>, <em>43</em>(4), 244-258. <a href="https://doi.org/10.1093/ilar.43.4.244">https://doi.org/10.1093/ilar.43.4.244</a>
+</div>
+<div id="ref-gehling2022organoides" class="csl-entry" role="listitem">
+<span class="nocase">Gehling, K., Parekh, S., et&nbsp;al.</span> (2022). <span>RNA</span>-sequencing of single cholangiocyte-derived organoids reveals high organoid-to-organoid variability. <em>Life Science Alliance</em>, <em>5</em>(12), e202101340. <a href="https://doi.org/10.26508/lsa.202101340">https://doi.org/10.26508/lsa.202101340</a>
+</div>
+<div id="ref-gerlinger2012heterogeneidad" class="csl-entry" role="listitem">
+<span class="nocase">Gerlinger, M., Rowan, A. J., Horswell, S., et&nbsp;al.</span> (2012). Intratumor heterogeneity and branched evolution revealed by multiregion sequencing. <em>The New England Journal of Medicine</em>, <em>366</em>(10), 883-892. <a href="https://doi.org/10.1056/NEJMoa1113205">https://doi.org/10.1056/NEJMoa1113205</a>
+</div>
+<div id="ref-hicks2018lote" class="csl-entry" role="listitem">
+Hicks, S. C., Townes, F. W., Teng, M., &amp; Irizarry, R. A. (2018). Missing data and technical variability in single-cell <span>RNA</span>-sequencing experiments. <em>Biostatistics</em>, <em>19</em>(4), 562-578. <a href="https://doi.org/10.1093/biostatistics/kxx053">https://doi.org/10.1093/biostatistics/kxx053</a>
+</div>
+<div id="ref-hurlbert1984pseudoreplicacion" class="csl-entry" role="listitem">
+Hurlbert, S. H. (1984). Pseudoreplication and the design of ecological field experiments. <em>Ecological Monographs</em>, <em>54</em>(2), 187-211. <a href="https://doi.org/10.2307/1942661">https://doi.org/10.2307/1942661</a>
+</div>
+<div id="ref-jonsson2021gemelos" class="csl-entry" role="listitem">
+<span class="nocase">Jónsson, H., Magnusdottir, E., Eggertsson, H. P., et&nbsp;al.</span> (2021). Differences between germline genomes of monozygotic twins. <em>Nature Genetics</em>, <em>53</em>(1), 27-34. <a href="https://doi.org/10.1038/s41588-020-00755-1">https://doi.org/10.1038/s41588-020-00755-1</a>
+</div>
+<div id="ref-kang2018demuxlet" class="csl-entry" role="listitem">
+<span class="nocase">Kang, H. M., Subramaniam, M., Targ, S., Nguyen, M., Maliskova, L., et&nbsp;al.</span> (2018). Multiplexed Droplet Single-Cell RNA-Sequencing Using Natural Genetic Variation. <em>Nature Biotechnology</em>, <em>36</em>(1), 89-94. <a href="https://doi.org/10.1038/nbt.4042">https://doi.org/10.1038/nbt.4042</a>
+</div>
+<div id="ref-kilpinen2017ipsc" class="csl-entry" role="listitem">
+<span class="nocase">Kilpinen, H., Goncalves, A., Leha, A., et&nbsp;al.</span> (2017). Common genetic variation drives molecular heterogeneity in human <span>iPSCs</span>. <em>Nature</em>, <em>546</em>(7658), 370-375. <a href="https://doi.org/10.1038/nature22403">https://doi.org/10.1038/nature22403</a>
+</div>
+<div id="ref-lazic2018unidad" class="csl-entry" role="listitem">
+Lazic, S. E., Clarke-Williams, C. J., &amp; Munafò, M. R. (2018). What exactly is <span><span>«N»</span></span> in cell culture and animal experiments? <em>PLOS Biology</em>, <em>16</em>(4), e2005282. <a href="https://doi.org/10.1371/journal.pbio.2005282">https://doi.org/10.1371/journal.pbio.2005282</a>
+</div>
+<div id="ref-lazic2013camada" class="csl-entry" role="listitem">
+Lazic, S. E., &amp; Essioux, L. (2013). Improving basic and translational science by accounting for litter-to-litter variation in animal models. <em>BMC Neuroscience</em>, <em>14</em>, 37. <a href="https://doi.org/10.1186/1471-2202-14-37">https://doi.org/10.1186/1471-2202-14-37</a>
+</div>
+<div id="ref-leek2010lote" class="csl-entry" role="listitem">
+<span class="nocase">Leek, J. T., Scharpf, R. B., Bravo, H. C., et&nbsp;al.</span> (2010). Tackling the widespread and critical impact of batch effects in high-throughput data. <em>Nature Reviews Genetics</em>, <em>11</em>(10), 733-739. <a href="https://doi.org/10.1038/nrg2825">https://doi.org/10.1038/nrg2825</a>
+</div>
+<div id="ref-marioni2008tecnica" class="csl-entry" role="listitem">
+Marioni, J. C., Mason, C. E., Mane, S. M., Stephens, M., &amp; Gilad, Y. (2008). <span>RNA</span>-seq: an assessment of technical reproducibility and comparison with gene expression arrays. <em>Genome Research</em>, <em>18</em>(9), 1509-1517. <a href="https://doi.org/10.1101/gr.079558.108">https://doi.org/10.1101/gr.079558.108</a>
+</div>
+<div id="ref-murphy2022pseudobulk" class="csl-entry" role="listitem">
+Murphy, A. E., &amp; Skene, N. G. (2022). A balanced measure shows superior performance of pseudobulk methods in single-cell <span>RNA</span>-sequencing analysis. <em>Nature Communications</em>, <em>13</em>, 7851. <a href="https://doi.org/10.1038/s41467-022-35519-4">https://doi.org/10.1038/s41467-022-35519-4</a>
+</div>
+<div id="ref-naegle2015criterios" class="csl-entry" role="listitem">
+Naegle, K., Gough, N. R., &amp; Yaffe, M. B. (2015). Criteria for biological reproducibility: what does <span>"n"</span> mean? <em>Science Signaling</em>, <em>8</em>(371), fs7. <a href="https://doi.org/10.1126/scisignal.aab1125">https://doi.org/10.1126/scisignal.aab1125</a>
+</div>
+<div id="ref-quadrato2017organoides" class="csl-entry" role="listitem">
+<span class="nocase">Quadrato, G., Nguyen, T., Macosko, E. Z., et&nbsp;al.</span> (2017). Cell diversity and network dynamics in photosensitive human brain organoids. <em>Nature</em>, <em>545</em>(7652), 48-53. <a href="https://doi.org/10.1038/nature22047">https://doi.org/10.1038/nature22047</a>
+</div>
+<div id="ref-squair2021falsediscoveries" class="csl-entry" role="listitem">
+Squair, J. W., Gautier, M., Kathe, C., Anderson, M. A., James, N. D., Hutson, T. H., Hudelle, R., Qaiser, T., Matson, K. J. E., Barraud, Q., Levine, A. J., La Manno, G., Skinnider, M. A., &amp; Courtine, G. (2021). Confronting false discoveries in single-cell differential expression. <em>Nature Communications</em>, <em>12</em>, 5692. <a href="https://doi.org/10.1038/s41467-021-25960-2">https://doi.org/10.1038/s41467-021-25960-2</a>
+</div>
+<div id="ref-stoeckius2018cellhashing" class="csl-entry" role="listitem">
+<span class="nocase">Stoeckius, M., Zheng, S., Houck-Loomis, B., Hao, S., Yeung, B. Z., et&nbsp;al.</span> (2018). Cell Hashing with Barcoded Antibodies Enables Multiplexing and Doublet Detection for Single Cell Genomics. <em>Genome Biology</em>, <em>19</em>(1), 224. <a href="https://doi.org/10.1186/s13059-018-1603-1">https://doi.org/10.1186/s13059-018-1603-1</a>
+</div>
+<div id="ref-tung2017lote" class="csl-entry" role="listitem">
+Tung, P.-Y., Blischak, J. D., Hsiao, C. J., Knowles, D. A., Burnett, J. E., Pritchard, J. K., &amp; Gilad, Y. (2017). Batch effects and the effective design of single-cell gene expression studies. <em>Scientific Reports</em>, <em>7</em>, 39921. <a href="https://doi.org/10.1038/srep39921">https://doi.org/10.1038/srep39921</a>
+</div>
+<div id="ref-velasco2019organoides" class="csl-entry" role="listitem">
+<span class="nocase">Velasco, S., Kedaigle, A. J., Simmons, S. K., et&nbsp;al.</span> (2019). Individual brain organoids reproducibly form cell diversity of the human cerebral cortex. <em>Nature</em>, <em>570</em>(7762), 523-527. <a href="https://doi.org/10.1038/s41586-019-1289-x">https://doi.org/10.1038/s41586-019-1289-x</a>
+</div>
+<div id="ref-voelkl2020variacion" class="csl-entry" role="listitem">
+<span class="nocase">Voelkl, B., Altman, N. S., Forsman, A., et&nbsp;al.</span> (2020). Reproducibility of animal research in light of biological variation. <em>Nature Reviews Neuroscience</em>, <em>21</em>(7), 384-393. <a href="https://doi.org/10.1038/s41583-020-0313-3">https://doi.org/10.1038/s41583-020-0313-3</a>
+</div>
+<div id="ref-volpato2020ipsc" class="csl-entry" role="listitem">
+Volpato, V., &amp; Webber, C. (2020). Addressing variability in <span>iPSC</span>-derived models of human disease: guidelines to promote reproducibility. <em>Disease Models &amp; Mechanisms</em>, <em>13</em>(1), dmm042317. <a href="https://doi.org/10.1242/dmm.042317">https://doi.org/10.1242/dmm.042317</a>
+</div>
+<div id="ref-zimmerman2021mixtos" class="csl-entry" role="listitem">
+Zimmerman, K. D., Espeland, M. A., &amp; Langefeld, C. D. (2021). A practical solution to pseudoreplication bias in single-cell studies. <em>Nature Communications</em>, <em>12</em>, 738. <a href="https://doi.org/10.1038/s41467-021-21038-1">https://doi.org/10.1038/s41467-021-21038-1</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./92-anexo-rutas-de-importacion.html" class="pagination-link" aria-label="Anexo: rutas de importación y estructuras de datos">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Anexo: rutas de importación y estructuras de datos</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./99-referencias.html" class="pagination-link" aria-label="Referencias">
+        <span class="nav-page-text">Referencias</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Anexo: ¿réplica biológica o técnica? {#sec-replicas .unnumbered}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Catálogo de casos para consultar cuando el escenario no es obvio. Extiende la</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>tabla de la sesión 02 con los sistemas que suelen aparecer en las preguntas:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>gemelos, cultivos bacterianos, líneas celulares, organoides, plantas y muestreo</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>ambiental.</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>Cada afirmación de este anexo lleva su fuente. Donde la evidencia está en disputa</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>—y hay dos casos— se dice cuál es la disputa en vez de elegir un bando en</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>silencio.</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Las definiciones son las de @blainey2014replication, las mismas de la clase:</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Réplica biológica:** unidad independiente que recibe la condición; entre</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; réplicas varía el material biológico.</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Réplica técnica:** medición repetida de la *misma* unidad; entre réplicas solo</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; varía el procedimiento.</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>@naegle2015criterios desarrollan el mismo criterio desde la pregunta que le da</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>título a su artículo —*qué significa `n`*— y advierten explícitamente contra</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>asignar <span class="in">`n`</span> = número de células.</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Antes de buscar tu caso en la lista</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>La pregunta no se contesta mirando la muestra. Se contesta mirando **a qué</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>población quieres generalizar**. El mismo tubo puede ser réplica biológica para</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>una pregunta y técnica para otra, y por eso las discusiones se atascan: dos</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>personas responden preguntas distintas sin darse cuenta.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>**Las tres preguntas que lo resuelven:**</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**¿Sobre qué quiero afirmar algo?** Sobre las personas con esta enfermedad,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>   sobre esta cepa bacteriana, sobre esta línea celular. Esa es tu población.</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**¿Cuál es la unidad más pequeña que se muestreó de forma independiente de esa</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>   población?** Ese es tu <span class="in">`n`</span>, y se llama **unidad experimental**</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>   <span class="co">[</span><span class="ot">@lazic2018unidad; @festing2002guias</span><span class="co">]</span>.</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Si sustituyera una réplica por otra tomada igual, ¿cambiaría el individuo de</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>   la población?** Si no cambia, es técnica.</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>**La consecuencia práctica:** las réplicas técnicas se promedian o se suman; no</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>suman <span class="in">`n`</span>. Contarlas como si lo hicieran es **pseudorreplicación**</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">@hurlbert1984pseudoreplicacion</span><span class="co">]</span>. No es un problema exclusivo de la ecología ni</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>del single-cell: @aarts2014anidados auditaron revistas de alto perfil en</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>neurociencia y encontraron que los datos anidados —muchas neuronas de un mismo</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>animal— se analizan de rutina con métodos que asumen independencia, lo que infla</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>el error de tipo I. La estructura es idéntica a la de muchas células de un mismo</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>donante.</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>**Tres respuestas posibles**, y la tercera es la que más se usa:</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Sí** — réplica biológica plena.</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No** — técnica; mide el método, no la biología.</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Sí, con reserva** — es una unidad independiente, pero comparte algo que limita</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  a qué población puedes generalizar. Casi todos los casos difíciles caen aquí.</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Humanos · donantes y muestreo</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El caso <span class="pp">|</span> ¿Réplica biológica? <span class="pp">|</span> Por qué <span class="pp">|</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos donantes distintos <span class="pp">|</span> **sí** <span class="pp">|</span> varía el individuo: genotipo, edad, exposición <span class="pp">|</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos alícuotas de la misma extracción de sangre <span class="pp">|</span> no <span class="pp">|</span> nada biológico varía <span class="pp">|</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> La misma sangre, dos carriles de 10x <span class="pp">|</span> no <span class="pp">|</span> mide el ruido del carril <span class="pp">|</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El mismo donante, sangre en dos días <span class="pp">|</span> no, para comparar donantes <span class="pp">|</span> sigue siendo un individuo; es una medida repetida <span class="pp">|</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El mismo donante antes y después del tratamiento <span class="pp">|</span> no son réplicas <span class="pp">|</span> es un diseño pareado: el sujeto es su propio control <span class="pp">|</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos biopsias de regiones distintas del mismo tumor <span class="pp">|</span> no, al nivel del paciente <span class="pp">|</span> capturan heterogeneidad intratumoral <span class="co">[</span><span class="ot">@gerlinger2012heterogeneidad</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Ojo derecho y ojo izquierdo de la misma persona <span class="pp">|</span> no, al nivel de la persona <span class="pp">|</span> pareadas dentro del individuo <span class="pp">|</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos donantes de la misma familia <span class="pp">|</span> **sí, con reserva** <span class="pp">|</span> son individuos, pero comparten genética y ambiente <span class="pp">|</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos donantes de la misma cohorte hospitalaria <span class="pp">|</span> **sí** <span class="pp">|</span> con la reserva de a qué población generaliza esa cohorte <span class="pp">|</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Placenta y sangre de cordón del mismo recién nacido <span class="pp">|</span> no <span class="pp">|</span> dos tejidos de un individuo: es una comparación, no una réplica <span class="pp">|</span></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>**Sobre el tumor.** @gerlinger2012heterogeneidad secuenciaron múltiples regiones</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>del mismo carcinoma renal y encontraron que entre el **63 % y el 69 %** de las</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>mutaciones somáticas no se detectaban en todas las regiones: una biopsia única</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>captura en promedio poco más de la mitad. La región muestreada no es el tumor, y</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>el tumor no es el paciente.</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="fu">## Gemelos</span></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>El caso que más discusión genera, y con razón: la respuesta cambia según la</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>pregunta.</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El caso <span class="pp">|</span> ¿Réplica biológica? <span class="pp">|</span> Por qué <span class="pp">|</span></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos gemelos **monocigóticos**, pregunta sobre un tratamiento | **sí, con reserva** <span class="pp">|</span> son dos individuos con historias ambientales propias; el genotipo casi no varía <span class="pp">|</span></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos gemelos monocigóticos, pregunta sobre **efecto del genotipo** | **casi técnica** <span class="pp">|</span> el factor que te interesa es casi idéntico entre ambos: no hay contraste <span class="pp">|</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos gemelos **dicigóticos** | **sí** <span class="pp">|</span> comparten la mitad del genoma, como cualquier par de hermanos <span class="pp">|</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Diez pares de gemelos monocigóticos discordantes para una enfermedad <span class="pp">|</span> **sí**, y es un diseño potente | el gemelo sano controla el genotipo; el `n` es el **par** <span class="co">[</span><span class="ot">@castillo2014gemelos</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El mismo gemelo, muestreado dos veces <span class="pp">|</span> no <span class="pp">|</span> un individuo medido dos veces <span class="pp">|</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>**Por qué digo «casi» y no «idéntico».** Los gemelos monocigóticos **no son</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>genéticamente idénticos**. @jonsson2021gemelos secuenciaron genomas completos de</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>pares y sus familias y encontraron que difieren en promedio en unas **5.2</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>mutaciones** surgidas en el desarrollo temprano, y que alrededor del **15 %** de</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>los pares tiene un número sustancial de mutaciones privativas de uno solo.</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>@bruder2008gemelos ya lo habían mostrado antes para variantes de número de copia.</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>Es poco frente a los millones de diferencias entre dos personas cualesquiera —por</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>eso «casi técnica»— pero no es cero.</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>**La regla que ordena los cinco casos:** un gemelo monocigótico es réplica</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>biológica para todo aquello que **no** esté fijado por el genotipo, y réplica casi</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>técnica para lo que sí. Son individuos, pero tu <span class="in">`n`</span> genético sigue siendo</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>prácticamente uno.</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>En el diseño de gemelos discordantes, además, la unidad experimental es el</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>**par**: analizarlo como veinte individuos independientes es pseudorreplicación</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">@castillo2014gemelos</span><span class="co">]</span>.</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## Animales de laboratorio</span></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El caso <span class="pp">|</span> ¿Réplica biológica? <span class="pp">|</span> Por qué <span class="pp">|</span></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos ratones de la misma camada <span class="pp">|</span> **sí** <span class="pp">|</span> son individuos distintos <span class="pp">|</span></span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos ratones de camadas distintas <span class="pp">|</span> **sí** <span class="pp">|</span> y además capturan la variación entre camadas <span class="pp">|</span></span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Diez ratones de una cepa isogénica <span class="pp">|</span> **sí, con reserva** <span class="pp">|</span> son individuos, pero el resultado no generaliza más allá de la cepa <span class="co">[</span><span class="ot">@voelkl2020variacion</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Ratones de la misma jaula, tratamiento aplicado **al agua de la jaula** <span class="pp">|</span> no, al nivel del ratón <span class="pp">|</span> la unidad tratada es la jaula <span class="co">[</span><span class="ot">@festing2002guias</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Crías de la misma madre tratada durante la gestación <span class="pp">|</span> no, al nivel de la cría <span class="pp">|</span> la unidad es la **camada** <span class="co">[</span><span class="ot">@lazic2013camada</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Ratones de jaulas distintas, tratamiento por inyección individual <span class="pp">|</span> **sí** <span class="pp">|</span> cada animal recibe la condición por separado <span class="pp">|</span></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El mismo ratón, sangre en dos tiempos <span class="pp">|</span> no <span class="pp">|</span> un individuo medido dos veces <span class="pp">|</span></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos cortes del mismo cerebro <span class="pp">|</span> no <span class="pp">|</span> dos trozos de un individuo <span class="pp">|</span></span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos ratones knockout de la misma línea fundadora <span class="pp">|</span> **sí, con reserva** <span class="pp">|</span> individuos, pero con un único evento de edición detrás <span class="pp">|</span></span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos peces cebra de la misma puesta <span class="pp">|</span> **sí, con reserva** <span class="pp">|</span> individuos, con fuerte efecto de puesta <span class="pp">|</span></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>**El error caro.** Si el tratamiento va en el agua, en el alimento o en la madre,</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>la unidad experimental es la jaula o la camada, por más animales que tengan</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>dentro. @lazic2013camada revisaron estudios de un modelo animal muy usado y</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>encontraron que **solo el 9 %** identificaba correctamente la camada como unidad.</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>No es un tecnicismo: cambia el <span class="in">`n`</span> en un orden de magnitud.</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>**Sobre las cepas isogénicas.** @voelkl2020variacion muestran que estandarizar el</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>material biológico —una sola cepa, un solo sexo, una sola edad— reduce la</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>variación dentro del experimento pero **empeora** la reproducibilidad entre</span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>laboratorios, porque el resultado queda amarrado a esas condiciones. La reserva no</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>es cosmética.</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cultivo celular y líneas</span></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>Aquí la palabra «biológica» significa algo distinto que en humanos, y de ahí viene</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>buena parte de la confusión.</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El caso <span class="pp">|</span> ¿Réplica biológica? <span class="pp">|</span> Por qué <span class="pp">|</span></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos alícuotas del mismo frasco, secuenciadas por separado <span class="pp">|</span> no <span class="pp">|</span> técnica pura <span class="pp">|</span></span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El mismo frasco repartido en dos pozos, tratados igual, cosechados el mismo día <span class="pp">|</span> no <span class="pp">|</span> son *réplicas de pozo*: comparten cultivo, pase y día <span class="pp">|</span></span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Cultivos iniciados desde viales congelados distintos, en semanas distintas <span class="pp">|</span> **sí, con reserva** | son experimentos independientes de **una sola** línea celular <span class="co">[</span><span class="ot">@lazic2018unidad</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos pases muy separados de la misma línea <span class="pp">|</span> **sí, con reserva** <span class="pp">|</span> el pase introduce deriva genética y transcripcional <span class="co">[</span><span class="ot">@bendavid2018deriva</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos líneas celulares de **donantes distintos** | **sí** <span class="pp">|</span> ahí sí varía el material biológico entre individuos <span class="co">[</span><span class="ot">@kilpinen2017ipsc</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos clones de iPSC del **mismo** donante | **sí, con reserva** <span class="pp">|</span> independientes como clones, pero un solo genoma detrás <span class="pp">|</span></span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Líneas linfoblastoides de donantes distintos <span class="pp">|</span> **sí, con reserva** <span class="pp">|</span> capturan variación humana, pero también estado metabólico y carga de EBV <span class="co">[</span><span class="ot">@choy2008lcl</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> La misma línea cultivada en dos laboratorios <span class="pp">|</span> no, si la pregunta es biológica <span class="pp">|</span> el laboratorio explica buena parte de la varianza <span class="co">[</span><span class="ot">@volpato2020ipsc</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>**La deriva por pase no es un detalle.** @bendavid2018deriva compararon 27 cepas</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>de «la misma» línea MCF7 frente a 321 compuestos: **al menos el 75 %** de los</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>compuestos que inhibían fuertemente a unas cepas eran **completamente inactivos**</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>en otras. «Línea celular X» no nombra una unidad experimental estable.</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>**Cuánto pesa el laboratorio.** @volpato2020ipsc compararon neuronas derivadas de</span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>**las mismas** líneas de iPSC, con **el mismo** protocolo, en cinco laboratorios:</span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>el laboratorio de origen explicó **hasta el 60 %** de la variación</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>transcriptómica, y los dos contribuyentes principales fueron el número de pase y</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>el uso de progenitores congelados.</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>**Cuánto pesa el donante.** @kilpinen2017ipsc caracterizaron 711 líneas de iPSC de</span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>301 donantes sanos: entre el **5 % y el 46 %** de la variación en fenotipos</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>—capacidad de diferenciación, morfología— proviene de diferencias **entre</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>individuos**. Es el argumento cuantitativo de por qué la línea de otro donante sí</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>es réplica biológica y otro clon del mismo donante no lo es del todo.</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>**Y cuántas hacen falta.** @brunner2023potencia hicieron el análisis de potencia</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>explícito para diseños con iPSC y concluyen que los estudios caso-control</span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>publicados están, en general, **sub-potenciados**. Si vas a diseñar uno, ese es el</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>lugar por donde empezar.</span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>**La reserva que hay que decir en voz alta:** tres cultivos independientes de una</span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>línea permiten afirmar algo sobre **esa línea**, no sobre el tejido del que salió</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>ni sobre la especie. El <span class="in">`n`</span> frente a la población de personas sigue siendo **uno**</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">@lazic2018unidad; @naegle2015criterios</span><span class="co">]</span>.</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a><span class="fu">## Organoides</span></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El caso <span class="pp">|</span> ¿Réplica biológica? <span class="pp">|</span> Por qué <span class="pp">|</span></span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos organoides del mismo cultivo <span class="pp">|</span> **sí, con reserva** <span class="pp">|</span> la variación organoide a organoide es alta <span class="co">[</span><span class="ot">@gehling2022organoides</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos lotes de diferenciación de la misma línea <span class="pp">|</span> **sí, con reserva** | pero el lote pesa **menos** de lo que suele suponerse <span class="pp">|</span></span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Organoides de pases muy distintos <span class="pp">|</span> **sí, con reserva** <span class="pp">|</span> el pase domina la variación <span class="co">[</span><span class="ot">@gehling2022organoides</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Organoides de líneas de donantes distintos <span class="pp">|</span> **sí** <span class="pp">|</span> varía el individuo <span class="pp">|</span></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a><span class="fu">## Aquí la intuición común está mal</span></span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>Es habitual afirmar que «el lote de diferenciación domina la variación». La</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>evidencia disponible no lo respalda. @gehling2022organoides secuenciaron</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>organoides individuales y encontraron que la variación **entre lotes** fue baja</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>—incluso preparados por personas distintas— y que lo grande fue la variabilidad</span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>**de un organoide a otro dentro del mismo cultivo**, con un efecto profundo del</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>**número de pase**: los organoides de pase 4 agrupaban estrechamente y los de</span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>pase 11 se dispersaban.</span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>Y la variabilidad tampoco es una ley de la naturaleza, sino una propiedad del</span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>protocolo. @quadrato2017organoides describieron variabilidad sustancial entre</span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>organoides cerebrales por autoorganización estocástica; @velasco2019organoides,</span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>con otro protocolo, encontraron que el **95 %** de sus organoides generaba un</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>compendio de tipos celulares prácticamente indistinguible, con variabilidad</span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>comparable a la que hay entre cerebros humanos individuales.</span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>**Lo que se puede afirmar sin exagerar:** el organoide individual no es una</span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>unidad experimental confiable por sí solo, hay que agregar varios, y el número de</span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>pase debe reportarse siempre.</span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a><span class="fu">## Microbiología</span></span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El caso <span class="pp">|</span> ¿Réplica biológica? <span class="pp">|</span> Por qué <span class="pp">|</span></span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos extracciones de DNA del mismo cultivo de la noche <span class="pp">|</span> no <span class="pp">|</span> técnica pura <span class="pp">|</span></span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos cultivos inoculados el mismo día desde el **mismo** preinóculo <span class="pp">|</span> no <span class="pp">|</span> comparten el punto de partida; son ramas del mismo cultivo <span class="pp">|</span></span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos cultivos independientes desde el mismo criovial, en días distintos <span class="pp">|</span> **sí, con reserva** <span class="pp">|</span> es la convención del campo; captura variación de crecimiento, no genética <span class="pp">|</span></span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos colonias distintas de la misma placa, del mismo clon <span class="pp">|</span> **sí, con reserva** <span class="pp">|</span> eventos de crecimiento independientes de un genotipo único <span class="pp">|</span></span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos aislados de la **misma especie** de pacientes distintos | **sí** <span class="pp">|</span> varía la cepa y su historia <span class="pp">|</span></span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El mismo cultivo muestreado en fase log y en estacionaria <span class="pp">|</span> no son réplicas <span class="pp">|</span> es una serie temporal: son condiciones distintas <span class="pp">|</span></span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos muestras del mismo consorcio microbiano <span class="pp">|</span> depende <span class="pp">|</span> si el consorcio es la unidad, son técnicas; si se muestrearon consorcios distintos, biológicas <span class="pp">|</span></span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>**El punto que ordena toda esta tabla:** en microbiología, «réplica biológica»</span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a>significa por convención **cultivo independiente**, que es un listón más bajo que</span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>«individuo independiente» en estudios humanos. No es un abuso del término, pero</span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>cambia a qué se puede generalizar: tres cultivos de *E. coli* K-12 hablan de K-12,</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>no de *E. coli*. Es la misma reserva que @naegle2015criterios plantean para</span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>cualquier sistema con un solo genotipo detrás.</span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a><span class="fu">## Plantas</span></span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El caso <span class="pp">|</span> ¿Réplica biológica? <span class="pp">|</span> Por qué <span class="pp">|</span></span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos hojas de la misma planta <span class="pp">|</span> no <span class="pp">|</span> dos partes de un individuo <span class="pp">|</span></span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos plantas de la misma línea endogámica, misma charola <span class="pp">|</span> **sí, con reserva** <span class="pp">|</span> individuos casi clonales, con efecto de charola <span class="pp">|</span></span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos plantas de la misma línea, cámaras de crecimiento distintas <span class="pp">|</span> **sí, con reserva** <span class="pp">|</span> y la cámara puede confundirse con el tratamiento <span class="co">[</span><span class="ot">@leek2010lote</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos plantas de accesiones distintas <span class="pp">|</span> **sí** <span class="pp">|</span> varía el genotipo <span class="pp">|</span></span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Esquejes del mismo individuo <span class="pp">|</span> no, genéticamente <span class="pp">|</span> son clones: mide variación ambiental, no genética <span class="pp">|</span></span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Semillas del mismo lote sembradas por separado <span class="pp">|</span> **sí, con reserva** <span class="pp">|</span> independientes al germinar, emparentadas por origen <span class="pp">|</span></span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>La charola y la cámara son el equivalente vegetal de la jaula: si la condición se</span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a>aplica al contenedor, el contenedor es la unidad <span class="co">[</span><span class="ot">@festing2002guias</span><span class="co">]</span>.</span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a><span class="fu">## Muestreo ambiental y de campo</span></span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El caso <span class="pp">|</span> ¿Réplica biológica? <span class="pp">|</span> Por qué <span class="pp">|</span></span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos submuestras del mismo núcleo de suelo <span class="pp">|</span> no <span class="pp">|</span> técnica <span class="pp">|</span></span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos núcleos de la misma parcela <span class="pp">|</span> no, al nivel de parcela <span class="pp">|</span> son submuestras de una unidad <span class="pp">|</span></span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Núcleos de parcelas distintas con el mismo tratamiento <span class="pp">|</span> **sí** <span class="pp">|</span> la parcela es la unidad experimental <span class="pp">|</span></span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos muestras de agua del mismo punto y momento <span class="pp">|</span> no <span class="pp">|</span> técnica <span class="pp">|</span></span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Muestras del mismo punto en meses distintos <span class="pp">|</span> no son réplicas <span class="pp">|</span> es una serie temporal <span class="pp">|</span></span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>Este es el terreno donde @hurlbert1984pseudoreplicacion acuñó el término, y el</span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>ejemplo canónico sigue siendo el mejor: medir diez veces dentro de un mismo</span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>estanque no da <span class="in">`n = 10`</span> estanques.</span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a><span class="fu">## La capa técnica de la secuenciación</span></span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>Todo lo de esta tabla es técnico. Se incluye porque a veces se presenta como si</span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>sumara <span class="in">`n`</span>.</span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El caso <span class="pp">|</span> ¿Réplica biológica? <span class="pp">|</span></span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> La misma biblioteca en dos carriles <span class="pp">|</span> no <span class="pp">|</span></span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El mismo RNA, dos preparaciones de biblioteca <span class="pp">|</span> no <span class="pp">|</span></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> La misma muestra con dos kits de extracción <span class="pp">|</span> no, y además introduce una confusión <span class="pp">|</span></span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Resecuenciar para ganar profundidad <span class="pp">|</span> no: da más lecturas, no más <span class="in">`n`</span> <span class="pp">|</span></span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El mismo pozo GEM, dos corridas de secuenciación <span class="pp">|</span> no <span class="pp">|</span></span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos pozos GEM cargados de la **misma** suspensión <span class="pp">|</span> no, pero miden el ruido entre pozos <span class="pp">|</span></span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Dos muestras de donantes distintos multiplexadas en un carril <span class="pp">|</span> **sí**: la réplica son los donantes <span class="pp">|</span></span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>**Por qué la réplica técnica se usa poco en secuenciación.**</span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>@marioni2008tecnica evaluaron la reproducibilidad técnica de RNA-seq y</span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>concluyeron que la variación técnica es lo bastante pequeña como para que, para</span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>muchos propósitos, **baste secuenciar cada muestra una sola vez**. El presupuesto</span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>rinde más en donantes que en repeticiones.</span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>**Por qué el multiplexado es buena idea.** El *hashing* mezcla réplicas biológicas</span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a>dentro de un mismo lote técnico, que es exactamente lo que conviene: elimina el</span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>lote como variable confundida sin tocar el <span class="in">`n`</span></span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">@stoeckius2018cellhashing; @kang2018demuxlet</span><span class="co">]</span>. El problema que resuelve está</span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>documentado desde @leek2010lote —los efectos de lote hacen daño sobre todo cuando</span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a>están **correlacionados con la condición**— y para single-cell en particular por</span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>@hicks2018lote y @tung2017lote.</span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a><span class="fu">## Específico de single-cell</span></span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El caso <span class="pp">|</span> ¿Réplica biológica? <span class="pp">|</span> Por qué <span class="pp">|</span></span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Diez mil células de un donante <span class="pp">|</span> **no**: <span class="in">`n = 1`</span> <span class="pp">|</span> las células comparten donante y lote; no son independientes <span class="pp">|</span></span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Células de dos clústeres del mismo donante <span class="pp">|</span> no son réplicas <span class="pp">|</span> son estados distintos dentro de un individuo <span class="pp">|</span></span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Un donante secuenciado en dos pozos GEM <span class="pp">|</span> no <span class="pp">|</span> el donante sigue siendo uno <span class="pp">|</span></span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Cinco donantes, mil células cada uno <span class="pp">|</span> **sí**: <span class="in">`n = 5`</span> <span class="pp">|</span> la unidad es el donante; las células se agregan <span class="pp">|</span></span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Núcleos y células enteras de la misma muestra <span class="pp">|</span> no <span class="pp">|</span> dos protocolos sobre el mismo material <span class="pp">|</span></span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a>**Es la línea que sostiene la sesión 02:** la réplica es el donante, no la célula.</span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a>De ahí sale el pseudobulk — se agregan las células por donante y se hace la prueba</span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a>con <span class="in">`n`</span> = número de donantes <span class="co">[</span><span class="ot">@crowell2020muscat; @squair2021falsediscoveries</span><span class="co">]</span>.</span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a><span class="fu">## Lo que está en disputa, y lo que no</span></span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a>**No está en disputa** que las células de un mismo individuo no son réplicas</span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>independientes: en eso coinciden todas las fuentes de esta sección.</span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>**Sí está en disputa** cuál es el remedio. @squair2021falsediscoveries y</span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>@crowell2020muscat argumentan a favor del **pseudobulk**;</span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>@zimmerman2021mixtos proponen **modelos mixtos** con el individuo como efecto</span>
+<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a>aleatorio; @murphy2022pseudobulk vuelven sobre la comparación con una métrica</span>
+<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a>distinta y encuentran que los métodos de pseudobulk rinden mejor, con réplica de</span>
+<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a>los autores originales.</span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a>En este módulo se enseña pseudobulk, y conviene decir en clase que es una</span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>elección con literatura en contra, no un hecho cerrado.</span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a><span class="fu">## Los cinco errores que más aparecen</span></span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Contar células como `n`.** El más caro y el más frecuente. Produce valores p</span>
+<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a>   diminutos que no significan nada <span class="co">[</span><span class="ot">@squair2021falsediscoveries</span><span class="co">]</span>.</span>
+<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Confundir «independiente» con «distinto».** Dos tubos distintos del mismo</span>
+<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a>   individuo son distintos y no son independientes <span class="co">[</span><span class="ot">@aarts2014anidados</span><span class="co">]</span>.</span>
+<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Olvidar dónde se aplicó el tratamiento.** Si va en el agua de la jaula, en la</span>
+<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a>   madre o en el medio del frasco, la unidad es la jaula, la camada o el frasco</span>
+<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>   <span class="co">[</span><span class="ot">@lazic2013camada; @festing2002guias</span><span class="co">]</span>.</span>
+<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Llamar biológica a una réplica que comparte todo el genotipo sin decir la</span>
+<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a>   reserva.** No está mal usarlas; está mal no declarar a qué población</span>
+<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a>   generalizan <span class="co">[</span><span class="ot">@voelkl2020variacion</span><span class="co">]</span>.</span>
+<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Creer que la réplica técnica no sirve.** Sí sirve: mide el ruido del método</span>
+<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a>   <span class="co">[</span><span class="ot">@blainey2014replication</span><span class="co">]</span>. Lo que no puede es sustituir a la biológica.</span>
+<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cuando tu caso no está en la lista</span></span>
+<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>Responde estas tres por escrito antes de discutirlo con nadie:</span>
+<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>¿Sobre qué población quiero afirmar algo?</span>
+<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>¿Qué varía entre mis dos muestras, y qué se mantiene igual?</span>
+<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Si el efecto que busco fuera cero, ¿qué diferencia esperaría ver entre ellas de</span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>   todos modos?</span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>Si la respuesta a la segunda es «solo el procedimiento», es técnica. Si es «algo</span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>del material biológico», es biológica — y la tercera te dice de qué tamaño es la</span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>reserva que debes declarar.</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Bioinformática y Estadística 3 · LCG-UNAM · LABBIC-INER · <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.es">CC BY-NC 4.0</a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Hecho con <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

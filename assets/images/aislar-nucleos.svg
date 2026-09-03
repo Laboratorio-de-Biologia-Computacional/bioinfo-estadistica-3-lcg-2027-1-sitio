@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Se aísla el núcleo con detergente suave, y desde ahí se abren dos caminos: la gota y la placa del indexado combinatorial">
+  <defs>
+    <marker id="fGris" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5A6373"/>
+    </marker>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .paso{ font-size:24px; font-weight:700; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+    </style>
+  </defs>
+
+  <!-- ══ 1 ══ -->
+  <text class="t paso" x="120" y="42" text-anchor="middle" fill="#141A4A">1 · célula</text>
+  <circle cx="120" cy="176" r="80" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="4"/>
+  <circle cx="120" cy="176" r="38" fill="#000977"/>
+  <g fill="#2E9AA6">
+    <circle cx="76" cy="134" r="6"/><circle cx="164" cy="138" r="6"/><circle cx="74" cy="216" r="6"/>
+    <circle cx="166" cy="218" r="6"/><circle cx="120" cy="238" r="6"/>
+  </g>
+
+  <line x1="216" y1="176" x2="258" y2="176" stroke="#5A6373" stroke-width="4" marker-end="url(#fGris)"/>
+
+  <!-- ══ 2 ══ -->
+  <text class="t paso" x="370" y="42" text-anchor="middle" fill="#6E5E00">2 · detergente suave</text>
+  <path d="M370,96 A80,80 0 1,1 368,256" fill="#E7E9F7" stroke="#937E00" stroke-width="4" stroke-dasharray="12 10"/>
+  <circle cx="370" cy="176" r="38" fill="#000977"/>
+  <g fill="#2E9AA6">
+    <circle cx="456" cy="136" r="6"/><circle cx="478" cy="176" r="6"/><circle cx="458" cy="216" r="6"/>
+  </g>
+  <text class="t cap" x="352" y="286" text-anchor="middle">la membrana cede,</text>
+  <text class="t cap" x="352" y="316" text-anchor="middle">la envoltura aguanta</text>
+
+  <line x1="510" y1="176" x2="552" y2="176" stroke="#5A6373" stroke-width="4" marker-end="url(#fGris)"/>
+
+  <!-- ══ 3 ══ -->
+  <text class="t paso" x="620" y="42" text-anchor="middle" fill="#000977">3 · núcleo aislado</text>
+  <circle cx="620" cy="176" r="52" fill="#000977"/>
+  <g fill="#2E9AA6">
+    <circle cx="600" cy="162" r="6"/><circle cx="636" cy="186" r="6"/><circle cx="614" cy="198" r="6"/>
+  </g>
+
+  <!-- ══ la bifurcación ══ -->
+  <path d="M684,158 C740,120 760,104 806,104" fill="none" stroke="#5A6373" stroke-width="4" marker-end="url(#fGris)"/>
+  <path d="M684,194 C740,232 760,248 806,248" fill="none" stroke="#5A6373" stroke-width="4" marker-end="url(#fGris)"/>
+
+  <circle cx="900" cy="104" r="46" fill="#ffffff" stroke="#937E00" stroke-width="4"/>
+  <circle cx="900" cy="104" r="20" fill="#000977"/>
+  <text class="t eti" x="962" y="98"  fill="#6E5E00">a una gota</text>
+  <text class="t cap" x="962" y="128">10x, como una célula más</text>
+
+  <rect x="856" y="212" width="88" height="72" rx="8" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="3"/>
+  <circle cx="878" cy="236" r="9" fill="#000977"/><circle cx="922" cy="236" r="9" fill="#000977"/>
+  <circle cx="878" cy="262" r="9" fill="#000977"/><circle cx="922" cy="262" r="9" fill="#000977"/>
+  <text class="t eti" x="962" y="242" fill="#2B3FA8">a la placa</text>
+  <text class="t cap" x="962" y="272">sci · indexado combinatorial</text>
+
+</svg>

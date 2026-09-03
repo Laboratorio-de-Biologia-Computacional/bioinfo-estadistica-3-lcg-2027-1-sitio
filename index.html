@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Single-cell RNA-seq · Bioinformática y Estadística 3 · LCG-UNAM · 2027-1</title>
+<style>
+  :root {
+    --unam-azul: #000977;
+    --unam-oro: #937E00;
+    --unam-azul-osc: #00053F;
+    --unam-azul-suave: #E7E9F7;
+    --unam-oro-suave: #F3EFDD;
+    --gris: #5A6373;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Inter", "Helvetica Neue", system-ui, sans-serif;
+    color: var(--unam-azul-osc);
+    background: #fff;
+    line-height: 1.55;
+  }
+  header { border-bottom: 6px solid var(--unam-oro); }
+  header .identidad {
+    display: block;
+    width: 100%;
+    max-width: 1200px;
+    height: auto;
+    margin: 0 auto;
+  }
+  header .datos {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 1.4rem;
+    color: var(--gris);
+    font-size: .92rem;
+  }
+  header .datos p { margin: .15rem 0; }
+  main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  h2 {
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--unam-azul);
+    border-bottom: 2px solid var(--unam-oro);
+    padding-bottom: .4rem;
+    margin: 2.5rem 0 1.2rem;
+  }
+  h2:first-of-type { margin-top: 0; }
+  .cards { display: grid; gap: .9rem; }
+  a.card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #DCE1EA;
+    border-left: 5px solid var(--unam-oro);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    transition: background .15s ease, transform .15s ease;
+  }
+  a.card:hover { background: var(--unam-azul-suave); transform: translateX(3px); }
+  .card .num {
+    font-size: .75rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--unam-oro);
+    font-weight: 700;
+  }
+  .card .tit { font-size: 1.05rem; font-weight: 600; margin: .15rem 0 .3rem; }
+  .card .meta { font-size: .85rem; color: var(--gris); }
+
+  /* ── Prácticas: una tarjeta por sesión, con sus rutas dentro ─────────────
+     Una sesión práctica se da en R y en Python: es UNA práctica con dos
+     caminos, no dos prácticas. La tarjeta es el contenedor y cada lenguaje es
+     un botón dentro.
+
+     NO se anidan enlaces dentro de enlaces —es HTML inválido— y además
+     31-gatear-indice.py empareja cada tarjeta con UN destino: una tarjeta con
+     dos enlaces dentro le rompería el emparejado. Por eso `.card-sesion` es un
+     div y los botones son los que llevan la clase `card`, que es lo que el
+     gateado sabe apagar.
+
+     Y en este comentario no se escriben atributos de enlace de ejemplo: el
+     gateado limpia comentarios HTML pero no el contenido de <style>, así que
+     un atributo escrito aquí sobrevive al índice generado y check-liberados.sh
+     lo denuncia como enlace muerto. Pasó el 27 de agosto de 2026. */
+  .card-sesion {
+    border: 1px solid #DCE1EA;
+    border-left: 5px solid var(--unam-oro);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+  }
+  .card-sesion .rutas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: .7rem;
+  }
+  /* Especificidad a proposito: el CSS que inyecta el gateado define
+     `div.card { display:block; ... }` y se anade al FINAL de esta hoja, así
+     que ganaria por orden. Tres clases anidadas lo superan por especificidad y
+     el boton apagado sigue pareciendo un boton, no una caja. */
+  .card-sesion .rutas .card.ruta,
+  .card-sesion .rutas .ruta {
+    display: inline-block;
+    width: auto;
+    border: 1px solid #DCE1EA;
+    border-left: 1px solid #DCE1EA;
+    border-radius: 4px;
+    padding: .3rem .7rem;
+    font-size: .85rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--unam-azul);
+    background: #fff;
+  }
+  .card-sesion .rutas a.card.ruta:hover {
+    background: var(--unam-azul-suave);
+    transform: none;
+  }
+  .card-sesion .rutas .card.ruta.pendiente,
+  .card-sesion .rutas .ruta.sin-render {
+    border: 1px dashed #C9D0DC;
+    border-left: 1px dashed #C9D0DC;
+    color: var(--gris);            /* 6.06:1 sobre #FAFBFD */
+    background: #FAFBFD;
+    font-weight: 500;
+  }
+  /* La leyenda del gateado dentro de un boton: en línea y pequeña, no como
+     bloque debajo del titulo de una tarjeta grande. */
+  .card-sesion .rutas .card.ruta .pendiente-nota {
+    display: inline;
+    margin: 0 0 0 .4rem;
+    padding: 0;
+    border: 0;
+    font-size: .78rem;
+  }
+  .pendiente {
+    border: 1px dashed #C9D0DC;
+    border-left: 5px solid #C9D0DC;
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    color: var(--gris);
+    background: #FAFBFD;
+  }
+  .aviso {
+    background: var(--unam-oro-suave);
+    border-left: 5px solid var(--unam-oro);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    font-size: .92rem;
+    margin: 1.5rem 0 0;
+  }
+  footer {
+    border-top: 1px solid #E4E8EF;
+    padding: 1.5rem;
+    font-size: .82rem;
+    color: var(--gris);
+    text-align: center;
+  }
+  footer a { color: var(--unam-azul); }
+
+  /* ── Tarjetas que todavía no se publican ────────────────────────────────
+     El índice se genera con scripts/python/gatear-indice.py. Una tarjeta no
+     liberada deja de ser <a> y pasa a <div>, así que necesita sus propias
+     reglas: toda la hoja está escrita para `a.card` y un div se quedaría sin
+     borde ni caja. */
+  div.card {
+    display: block;
+    border: 1px solid #DCE1EA;
+    border-left: 5px solid #C9D0DC;
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    background: #FBFCFD;
+  }
+  div.card .tit { color: #5A6373; }   /* 6.06:1 sobre el fondo claro */
+  .card .pendiente-nota {
+    display: inline-block;
+    margin-top: .5rem;
+    padding: .15rem .45rem;
+    border: 1px dashed #5A6373;
+    border-radius: 4px;
+    font-size: var(--t-etiqueta);
+    color: #5A6373;
+  }
+
+  </style>
+</head>
+<body>
+
+<header>
+  
+  <img class="identidad" src="assets/images/identidad-single-cell.svg"
+       alt="Análisis de datos de célula única · Licenciatura en Ciencias Genómicas, ENES Juriquilla UNAM">
+  <div class="wrap datos">
+    <p>Dra. Yalbi Itzel Balderas-Martínez · Laboratorio de Biología Computacional, INER</p>
+    <p>Martes y jueves, 12:30–14:30 · Del 18 de agosto al 17 de septiembre de 2026 · Modalidad en línea</p>
+  </div>
+</header>
+
+<main>
+
+  <h2>Sesiones</h2>
+  <div class="cards">
+    
+
+    <a class="card" href="01-fundamentos-y-tecnologias.html">
+      <span class="num">Sesión 01 · Martes 18 de agosto</span>
+      <div class="tit">Fundamentos de single-cell. Tecnologías y plataformas</div>
+      <div class="meta">Yalbi Itzel Balderas Martínez y Luis Alberto Meza Cova</div>
+    </a>
+
+    <a class="card" href="02-diseno-experimental.html">
+      <span class="num">Sesión 02 · Jueves 20 de agosto</span>
+      <div class="tit">Diseño experimental</div>
+      <div class="meta">Yalbi Itzel Balderas Martínez y Luis Alberto Meza Cova</div>
+    </a>
+
+    <a class="card" href="03-de-fastq-a-matriz.html">
+      <span class="num">Sesión 03 · Martes 25 de agosto</span>
+      <div class="tit">De FASTQ a matriz</div>
+      <div class="meta">Yalbi Itzel Balderas Martínez y José Antonio Ovando Ricárdez</div>
+    </a>
+
+    <a class="card" href="04-de-matriz-a-objeto.html">
+      <span class="num">Sesión 04 · Jueves 27 de agosto</span>
+      <div class="tit">De matriz a objeto listo. Rutas de importación y estructuras de datos</div>
+      <div class="meta">Yalbi Itzel Balderas Martínez y Alfredo Morales Salazar</div>
+    </a>
+
+    <a class="card" href="05-control-de-calidad.html">
+      <span class="num">Sesión 05 · Martes 1 de septiembre</span>
+      <div class="tit">Control de calidad: del experimento a los datos</div>
+      <div class="meta">Luis Alberto Meza Cova, José Antonio Ovando Ricárdez y Alfredo Morales Salazar</div>
+    </a>
+
+    <a class="card" href="05b-detectives-de-datos.html">
+      <span class="num">Sesión 05 · Complemento</span>
+      <div class="tit">Detectives de datos: control de calidad, sopa ambiental y dobletes</div>
+      <div class="meta">Alfredo Morales Salazar</div>
+    </a>
+
+    <a class="card" href="06-practica-integradora.html">
+      <span class="num">Sesión 06 · Jueves 3 de septiembre</span>
+      <div class="tit">Práctica integradora y arranque del proyecto</div>
+      <div class="meta">Yalbi Itzel Balderas Martínez, Luis Alberto Meza Cova, José Antonio Ovando Ricárdez y Alfredo Morales Salazar</div>
+    </a>
+
+    <div class="card pendiente">
+      <span class="num">Sesión 07 · Martes 15 de septiembre</span>
+      <div class="tit">Control de calidad: efecto de lote (introducción)</div>
+      <div class="meta">Yalbi Itzel Balderas Martínez y José Antonio Ovando Ricárdez</div>
+      <span class="pendiente-nota">Se publica al terminar su sesión</span>
+    </div>
+
+    <div class="card pendiente">
+      <span class="num">Sesión 08 · Jueves 17 de septiembre</span>
+      <div class="tit">Presentación de los equipos</div>
+      <div class="meta">Yalbi Itzel Balderas Martínez, Luis Alberto Meza Cova, José Antonio Ovando Ricárdez y Alfredo Morales Salazar</div>
+      <span class="pendiente-nota">Se publica al terminar su sesión</span>
+    </div>
+
+  </div>
+
+  <h2>Manual y prácticas</h2>
+
+  <div class="cards">
+
+    <a class="card" href="manual/index.html">
+      <span class="num">Manual del módulo</span>
+      <div class="tit">Análisis de single-cell RNA-seq</div>
+      <div class="meta">La versión escrita de cada sesión, con el argumento completo y las referencias</div>
+    </a>
+
+    <div class="card-sesion">
+      <span class="num">Práctica · Sesión 01</span>
+      <div class="tit">Explorar la forma de un dataset de single-cell</div>
+      <div class="meta">Qué tamaño tiene la matriz, qué hay en cada dimensión y por qué casi todo son ceros</div>
+      <div class="rutas">
+        <a class="card ruta" href="notebooks/01-explorar-un-dataset.html">R</a>
+        <span class="ruta sin-render">Python · en preparación</span>
+      </div>
+    </div>
+
+    <div class="card-sesion">
+      <span class="num">Práctica · Sesión 03</span>
+      <div class="tit">De FASTQ a matriz: inspeccionar las lecturas y enviar el trabajo</div>
+      <div class="meta">Qué mirar en un FASTQ antes de alinear, y cómo mandar el trabajo a la cola del clúster</div>
+      
+      <div class="rutas">
+        <a class="card ruta" href="notebooks/03-fastq-y-cola.html">Línea de comandos</a>
+      </div>
+    </div>
+
+    <div class="card-sesion">
+      <span class="num">Práctica · Sesión 04</span>
+      <div class="tit">De matriz a objeto listo</div>
+      <div class="meta">El mismo dato en tres objetos · qué gotas tienen célula · cuánto ambiente entró · unir muestras sin perder células</div>
+      <div class="rutas">
+        <a class="card ruta" href="notebooks/04-practica-r.html">R</a>
+        <span class="ruta sin-render">Python · en preparación</span>
+      </div>
+    </div>
+
+    <div class="card-sesion">
+      <span class="num">Práctica · Sesión 05</span>
+      <div class="tit">Control de calidad: umbrales y dobletes</div>
+      <div class="meta">Umbrales fijos contra adaptativos, artefactos del protocolo y detección de dobletes</div>
+      <div class="rutas">
+        <div class="card pendiente">R · adaptativo
+      <span class="pendiente-nota">Se publica al terminar su sesión</span>
+    </div>
+        <a class="card ruta" href="notebooks/05-qc-umbrales-dobletes.html">R · umbrales y dobletes</a>
+        <span class="ruta sin-render">Python · en preparación</span>
+      </div>
+    </div>
+
+    <div class="card-sesion">
+      <span class="num">Práctica · Sesión 07</span>
+      <div class="tit">Integración multi-lote y cómo evaluarla</div>
+      <div class="meta">Corregir el efecto de lote sin borrar la biología, y cómo saber si la corrección se pasó</div>
+      <div class="rutas">
+        <div class="card pendiente">R
+      <span class="pendiente-nota">Se publica al terminar su sesión</span>
+    </div>
+        <span class="ruta sin-render">Python · en preparación</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="aviso">
+    El material se publica <strong>conforme se va dando</strong>. Los temas que
+    aparecen en gris se habilitan al terminar su sesión. Si algo que ya viste no
+    aparece aquí, escríbelo en Google&nbsp;Classroom.
+  </div>
+
+  <div class="aviso">
+    Entre la sesión 06 y la 07 se imparte el módulo del <strong>Dr. Danilo
+    Ceschin</strong> (8 y 10 de septiembre): normalización, reducción de
+    dimensionalidad, clustering, anotación celular y CITE-seq. Ese material no
+    forma parte de este sitio.
+  </div>
+
+</main>
+
+<footer>
+  Material bajo
+  <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.es">CC BY-NC 4.0</a> ·
+  Laboratorio de Biología Computacional, INER
+</footer>
+
+</body>
+</html>

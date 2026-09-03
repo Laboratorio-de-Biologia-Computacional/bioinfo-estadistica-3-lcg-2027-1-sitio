@@ -1,0 +1,2385 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<script src="02-diseno-experimental_files/libs/clipboard/clipboard.min.js"></script>
+<script src="02-diseno-experimental_files/libs/quarto-html/tabby.min.js"></script>
+<script src="02-diseno-experimental_files/libs/quarto-html/popper.min.js"></script>
+<script src="02-diseno-experimental_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="02-diseno-experimental_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="02-diseno-experimental_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="02-diseno-experimental_files/libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.37">
+
+  <title>Sesión 02 · Diseño experimental</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="02-diseno-experimental_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="02-diseno-experimental_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="02-diseno-experimental_files/libs/revealjs/dist/theme/quarto-eff76549595117daa6042551194cffed.css">
+  <link href="02-diseno-experimental_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="02-diseno-experimental_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="02-diseno-experimental_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="02-diseno-experimental_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+
+<section class="slide level2 lcg-portada">
+<h2></h2>
+<div class="lcg-portada-layout">
+<div class="lcg-portada-texto">
+<p><img data-src="assets/images/logo-lcgej.png" class="lcg-portada-logo" alt="Licenciatura en Ciencias Genómicas, ENES Juriquilla"></p>
+<p><span class="lcg-eyebrow">Sesión 02 · Jueves 20 de agosto de 2026</span></p>
+<p><span class="lcg-titulo-2">Diseño experimental</span></p>
+<p><span class="lcg-subtitulo">Bioinformática y Estadística 3 · Licenciatura en Ciencias Genómicas</span><br>
+<span class="lcg-subtitulo-2">ENES Juriquilla, UNAM · Semestre 2027-1</span></p>
+<div class="lcg-autores">
+<p><strong>Yalbi Itzel Balderas Martínez (90 min)</strong><br>
+<strong>Luis Alberto Meza Cova (30 min)</strong><br>
+<span class="lcg-afiliacion">Laboratorio de Biología Computacional · INER</span></p>
+</div>
+</div>
+<div class="lcg-portada-imagen">
+<p><img data-src="assets/images/motivo-single-cell.svg"></p>
+</div>
+</div>
+</section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Antes de empezar</h1>
+
+</section>
+<section class="slide level2">
+<h2>Objetivo de la sesión</h2>
+<p>Diseñar un experimento de célula única que permita separar el efecto biológico del efecto técnico, aplicando los conceptos de réplica biológica, unidad de análisis, confusión entre variables y potencia estadística; y reconocer los diseños en los que ninguna corrección posterior puede rescatar el experimento.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Cómo está armada</strong></p>
+</div>
+<div class="callout-content">
+<p>Sesión <strong>teórico-práctica</strong> de 120 minutos.</p>
+<ul>
+<li>Se abre <strong>cerrando la actividad del martes</strong>: la plenaria de los tres escenarios</li>
+<li><strong>6 bloques</strong> de trabajo, con descansos entre ellos</li>
+<li>Se alterna explicación y trabajo propio</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>El caso que abre la sesión</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>Caso de aplicación: el estudio que no se pudo salvar: un diseño en el que todos los casos se procesaron en una corrida y todos los controles en otra. El efecto de lote y el efecto de enfermedad son matemáticamente indistinguibles: no existe método de corrección que los separe, porque no hay ninguna observación que comparta lote y difiera en condición. Es el ejemplo más útil del curso porque demuestra que hay errores que el análisis no arregla, y que el momento de evitarlos es antes de secuenciar. Este mismo conjunto de datos es el que se retoma el 15 de septiembre para trabajar efecto de lote, de modo que los estudiantes comprueban en la práctica lo que predijeron en agosto.</p>
+</div>
+</div>
+</div>
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Desarrollo</h1>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Lo que quedó pendiente del martes</h2>
+<p>La actividad de los tres escenarios se quedó <strong>sin plenaria</strong>. Cada equipo llega hoy con su tabla llena en su marco del tablero.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Orden</th>
+<th>Escenario</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.º</td>
+<td><strong>escenario A</strong> · biopsia congelada de tumor</td>
+</tr>
+<tr class="even">
+<td>2.º</td>
+<td><strong>escenario C</strong> · organoide de ~400 células</td>
+</tr>
+<tr class="odd">
+<td>3.º</td>
+<td><strong>escenario B</strong> · sangre fresca, 12 donantes</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Nota</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Quién abre cada escenario se sortea en el momento.</strong> Quien abre dice su elección <strong>y qué pierde con ella</strong>. Los demás solo añaden lo que sea distinto: no se repite lo ya dicho.</p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Los tres escenarios, cerrados</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Escenario</th>
+<th>Qué mandaba</th>
+<th>La elección</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A</strong> · biopsia congelada de tumor</td>
+<td>está congelado: la membrana no sobrevive</td>
+<td><strong>núcleos aislados</strong>, en gota</td>
+</tr>
+<tr class="even">
+<td><strong>C</strong> · organoide de ~400 células</td>
+<td>con 400 células el costo por célula deja de mandar</td>
+<td><strong>placa</strong>, longitud completa: manda la sensibilidad</td>
+</tr>
+<tr class="odd">
+<td><strong>B</strong> · sangre fresca, 12 donantes</td>
+<td>fresco y con muchas muestras</td>
+<td><strong>10x 3′</strong> —o 5′ si además quieren repertorio inmune—</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Advertencia</strong></p>
+</div>
+<div class="callout-content">
+<p>El escenario <strong>B</strong> queda abierto: falta una decisión que nadie tomó todavía.</p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>🗺️ Dónde vamos · bloque 1 de 4</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>La pregunta que contesta</th>
+<th>Con esto se diagnostica…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>▶ 1</strong></td>
+<td><strong>¿Qué más varía, además de mi condición?</strong></td>
+<td><strong>el diseño confundido</strong></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>¿Quién es mi <code>n</code>?</td>
+<td>la muestra única</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>¿Qué pasa si me equivoco de <code>n</code>?</td>
+<td>las células tratadas como réplicas</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>¿Alcanza para ver lo que busco?</td>
+<td>la población demasiado rara</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Un estudio que no se puede rescatar</h2>
+<p>El <strong>escenario B</strong> que acaban de discutir —12 donantes, 2 condiciones— no era hipotético. Es un estudio real. <strong>Seis pacientes y seis controles.</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Corrida</th>
+<th>Muestras</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Corrida 1</td>
+<td>los <strong>seis pacientes</strong></td>
+</tr>
+<tr class="even">
+<td>Corrida 2</td>
+<td>los <strong>seis controles</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Todo lo demás está bien hecho: buena calidad, buena profundidad, análisis cuidadoso.</p>
+<ul>
+<li class="fragment">¿Cuánto costó ese experimento?</li>
+<li class="fragment">¿Qué se puede concluir de él?</li>
+</ul>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Pónganlo por escrito</h2>
+<div class="columns">
+<div class="column" style="width:34%;">
+<p><img data-src="assets/images/qr-slido.svg" alt="Código QR que abre la votación en slido.com barra 3180054"></p>
+</div><div class="column" style="width:66%;">
+<h3>slido.com/3180054</h3>
+<p><strong>¿Cuánto costó ese experimento?</strong></p>
+<p>La cifra <strong>en miles de dólares</strong>, sin comas ni signos.</p>
+<p>Ejemplo: <code>60</code> son 60 000 USD.</p>
+<p><span class="lcg-fuente">Anónimo y sin cuenta. Una cifra por persona.</span></p>
+</div></div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Costó entre 35 000 y 46 000 dólares</h2>
+<p>Doce muestras de scRNA-seq, con lo que cuesta cada partida:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Partida</th>
+<th>Por muestra</th>
+<th>Las doce muestras</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Preparación de librería</td>
+<td>2 500 – 3 200 USD</td>
+<td>30 000 – 38 400 USD</td>
+</tr>
+<tr class="even">
+<td>Secuenciación</td>
+<td>400 – 600 USD</td>
+<td>4 800 – 7 200 USD</td>
+</tr>
+<tr class="odd">
+<td><strong>Total</strong></td>
+<td>2 900 – 3 800 USD</td>
+<td><strong>34 800 – 45 600 USD</strong></td>
+</tr>
+</tbody>
+</table>
+<p><span class="lcg-fuente">Rango aproximado, de listas públicas de precios de servicios universitarios, 2026. Comprando en México queda en el mismo orden de magnitud.</span></p>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Y qué se puede concluir: nada</h2>
+<ul>
+<li class="fragment">Toda muestra de la corrida 1 es paciente. Toda muestra de la corrida 2 es control</li>
+<li class="fragment"><strong>No hay una sola observación que comparta corrida y difiera en condición</strong></li>
+<li class="fragment">El efecto de lote y el efecto de enfermedad son <em>matemáticamente</em> indistinguibles</li>
+</ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>No es que sea difícil de corregir. Es que <strong>no hay nada que corregir con</strong>: la información que haría falta nunca se midió.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definición · lote y efecto de lote</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Lote:</strong> el conjunto de muestras que se procesaron juntas —misma corrida, mismo día, mismo reactivo, misma persona—. En este curso <em>lote</em> y <em>corrida</em> son lo mismo. <strong>Efecto de lote:</strong> la diferencia sistemática de medición entre lotes, que no viene de la biología.</p>
+<p><span class="lcg-fuente">El lote es la mayor fuente de variación técnica en célula única: <span class="citation" data-cites="tung2017lote">Tung et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2017</a>)</span></span></p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Ejemplos · qué cuenta como un lote distinto</h2>
+<p>Un lote es <strong>cualquier cosa que compartan unas muestras y no otras, y que no sea la biología</strong>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dos muestras difieren en…</th>
+<th>¿Lote distinto?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>la corrida de secuenciación</td>
+<td>sí</td>
+</tr>
+<tr class="even">
+<td>el día en que se procesaron</td>
+<td>sí</td>
+</tr>
+<tr class="odd">
+<td>el lote del kit, de las perlas o de la enzima</td>
+<td>sí</td>
+</tr>
+<tr class="even">
+<td>la persona que las manipuló</td>
+<td>sí</td>
+</tr>
+<tr class="odd">
+<td>el hospital donde se colectaron</td>
+<td>sí</td>
+</tr>
+<tr class="even">
+<td>el chip de 10x, dentro de la misma corrida</td>
+<td>sí, y casi nadie lo anota</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Confusión entre lote y condición</h2>
+<p>Un diseño está confundido cuando <strong>no se puede distinguir</strong> el efecto de interés del efecto técnico.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Diseño</th>
+<th>Lote 1</th>
+<th>Lote 2</th>
+<th>¿Se puede separar?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Confundido</strong></td>
+<td>6 pacientes</td>
+<td>6 controles</td>
+<td><strong>no</strong></td>
+</tr>
+<tr class="even">
+<td>Equilibrado</td>
+<td>3 pac + 3 ctrl</td>
+<td>3 pac + 3 ctrl</td>
+<td>sí</td>
+</tr>
+<tr class="odd">
+<td>Parcialmente confundido</td>
+<td>5 pac + 1 ctrl</td>
+<td>1 pac + 5 ctrl</td>
+<td>mal, pero algo</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>La corrección de lote necesita <strong>observaciones que compartan lote y difieran en condición</strong>. Si no existen, no hay método que las invente.</p>
+</div>
+</div>
+</div>
+<p><span class="lcg-fuente">Confusión, bloqueo y aleatorización en secuenciación: <span class="citation" data-cites="auer2010diseno">Auer &amp; Doerge (<a href="#/references" role="doc-biblioref" onclick="">2010</a>)</span></span></p>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Confundido, equilibrado y parcialmente confundido</h2>
+<p><img data-src="assets/images/confusion-y-balance.svg" style="max-height:42vh" alt="Tres repartos de seis casos, en azul, y seis controles, en oro, entre dos lotes. En el confundido, el lote uno lleva los seis casos y el lote dos los seis controles: no se puede separar. En el equilibrado, cada lote lleva tres casos y tres controles: se separa bien. En el parcialmente confundido, un lote lleva cinco casos y un control y el otro al revés: se separa con poca precisión. Al pie: corregir por lote exige observaciones que compartan lote y difieran en condición, y en el primero no existe ninguna."></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definición · confusión, bloqueo y aleatorización</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Confusión:</strong> dos factores varían juntos, de modo que sus efectos no se pueden estimar por separado. <strong>Bloqueo:</strong> repartir las condiciones dentro de cada lote para que sí se puedan. <strong>Aleatorización:</strong> decidir el reparto al azar, para no confundirse con lo que nadie anotó.</p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Ejemplos · el caso, variable por variable</h2>
+<p>El estudio del principio, con <strong>todo</strong> lo que se anotó:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Los seis pacientes</th>
+<th>Los seis controles</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Condición</td>
+<td>enfermos</td>
+<td>sanos</td>
+</tr>
+<tr class="even">
+<td>Corrida</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>Fecha de proceso</td>
+<td>marzo</td>
+<td>junio</td>
+</tr>
+<tr class="even">
+<td>Lote de reactivo</td>
+<td>A</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>Quién lo procesó</td>
+<td>Ana</td>
+<td>Luis</td>
+</tr>
+<tr class="even">
+<td>Hospital</td>
+<td>INER</td>
+<td>otro centro</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>No hay <strong>una</strong> variable confundida con la condición: hay <strong>cinco</strong>. Y basta una sola para que el experimento no se pueda interpretar.</p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>El diseño irrecuperable</h2>
+<ul>
+<li class="fragment">El PCA muestra <strong>separación perfecta</strong> entre los dos grupos</li>
+<li class="fragment">Parece el mejor resultado posible</li>
+<li class="fragment">Es indistinguible de un artefacto de lote total</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definición · PCA</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Análisis de componentes principales:</strong> resume cada muestra en unos pocos ejes —los componentes— construidos para capturar la mayor variación posible. Si dos grupos se separan en el primer componente, es que <strong>algo</strong> los diferencia mucho. El PCA no dice <strong>qué</strong>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Advertencia</strong></p>
+</div>
+<div class="callout-content">
+<p>Una separación demasiado limpia es motivo de <strong>sospecha</strong>, no de celebración. Lo primero que hay que preguntar es cómo se repartieron las muestras.</p>
+<p><span class="lcg-fuente">El lote como fuente dominante de variación en célula única: <span class="citation" data-cites="tung2017lote">Tung et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2017</a>)</span></span></p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Ejemplos · qué puede estar separando el PCA</h2>
+<p>Los grupos se separan limpiamente en el primer componente. <strong>Antes de celebrar, se cruza contra lo que sí se anotó:</strong></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Si la separación coincide con…</th>
+<th>Entonces es…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>la corrida o la fecha de proceso</td>
+<td>efecto de lote</td>
+</tr>
+<tr class="even">
+<td>el sexo del donante</td>
+<td>biología real, pero no la que buscas</td>
+</tr>
+<tr class="odd">
+<td>el número de genes detectados por célula</td>
+<td>calidad, no biología</td>
+</tr>
+<tr class="even">
+<td>la proporción de lecturas mitocondriales</td>
+<td>células dañadas</td>
+</tr>
+<tr class="odd">
+<td>el tipo celular dominante de cada muestra</td>
+<td>composición, no expresión</td>
+</tr>
+<tr class="even">
+<td><strong>nada de lo anotado</strong></td>
+<td>algo que no se midió: ahí es donde duele</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>🗺️ Dónde vamos · bloque 2 de 4</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>La pregunta que contesta</th>
+<th>Con esto se diagnostica…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>¿Qué más varía, además de mi condición?</td>
+<td>el diseño confundido</td>
+</tr>
+<tr class="even">
+<td><strong>▶ 2</strong></td>
+<td><strong>¿Quién es mi <code>n</code>?</strong></td>
+<td><strong>la muestra única</strong></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>¿Qué pasa si me equivoco de <code>n</code>?</td>
+<td>las células tratadas como réplicas</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>¿Alcanza para ver lo que busco?</td>
+<td>la población demasiado rara</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Qué es una réplica biológica</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Qué varía</th>
+<th>¿Réplica biológica?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dos donantes distintos</td>
+<td>el individuo</td>
+<td><strong>sí</strong></td>
+</tr>
+<tr class="even">
+<td>Dos ratones de la misma camada</td>
+<td>el individuo</td>
+<td><strong>sí</strong></td>
+</tr>
+<tr class="odd">
+<td>Dos alícuotas del mismo tejido</td>
+<td>nada biológico</td>
+<td>no: es técnica</td>
+</tr>
+<tr class="even">
+<td>Dos corridas de la misma muestra</td>
+<td>nada biológico</td>
+<td>no: es técnica</td>
+</tr>
+<tr class="odd">
+<td><strong>Dos células de la misma persona</strong></td>
+<td><strong>nada entre individuos</strong></td>
+<td><strong>no</strong></td>
+</tr>
+</tbody>
+</table>
+<p><span class="lcg-fuente">Tratar células como réplicas infla los falsos positivos: <span class="citation" data-cites="squair2021falsediscoveries">Squair et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span></span></p>
+<ul>
+<li class="fragment">La réplica es <strong>el donante</strong>, no la célula</li>
+<li class="fragment">Diez mil células de una persona describen a <strong>una</strong> persona</li>
+</ul>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Réplica biológica y réplica técnica</h2>
+<p><img data-src="assets/images/replica-biologica-vs-tecnica.svg" style="max-height:42vh" alt="Tres columnas comparan qué varía en cada tipo de réplica. En la primera, dos donantes distintos: varía el individuo, su genotipo, su edad y su exposición, y la n es dos. En la segunda, un donante repartido en dos alícuotas: no varía nada biológico, solo se mide el ruido del método, y la n es uno. En la tercera, un donante del que salen muchas células: las células comparten donante y lote y no son independientes entre sí, así que la n sigue siendo uno. Al pie: diez mil células de una persona describen a una persona, y la n del modelo es el número de individuos."></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definición · réplica biológica y técnica</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Réplica biológica:</strong> unidad independiente que recibe la condición; entre réplicas varía el material biológico. <strong>Réplica técnica:</strong> medición repetida de la <em>misma</em> unidad; entre réplicas solo varía el procedimiento.</p>
+<p><span class="lcg-fuente">Blainey, Krzywinski y Altman separan así las dos: <span class="citation" data-cites="blainey2014replication">Blainey et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2014</a>)</span></span></p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Ejemplos · réplica en animales de laboratorio</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>El caso</th>
+<th>¿Réplica biológica?</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dos ratones de la misma camada</td>
+<td><strong>sí</strong></td>
+<td>son individuos distintos</td>
+</tr>
+<tr class="even">
+<td>Dos ratones de camadas distintas</td>
+<td><strong>sí</strong></td>
+<td>y además capturan la variación entre camadas</td>
+</tr>
+<tr class="odd">
+<td>El mismo ratón, sangre en dos tiempos</td>
+<td>no</td>
+<td>es el mismo individuo medido dos veces</td>
+</tr>
+<tr class="even">
+<td>Dos cortes del mismo cerebro</td>
+<td>no</td>
+<td>dos trozos del mismo individuo</td>
+</tr>
+<tr class="odd">
+<td>Diez ratones de una cepa isogénica</td>
+<td><strong>sí</strong>, con reserva</td>
+<td>son individuos, pero comparten genotipo: el resultado no generaliza más allá de la cepa</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Ejemplos · réplica en cultivo celular</h2>
+<p>Es el caso más discutido, y el que más se equivoca:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>El caso</th>
+<th>¿Réplica biológica?</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tres pozos de la misma placa, mismo pase</td>
+<td>no</td>
+<td>es una población dividida en tres</td>
+</tr>
+<tr class="even">
+<td>Tres pases distintos del mismo cultivo</td>
+<td>discutible</td>
+<td>se cuenta como tal por costumbre, pero comparten origen</td>
+</tr>
+<tr class="odd">
+<td>Tres descongelaciones del mismo vial</td>
+<td>discutible</td>
+<td>igual que arriba</td>
+</tr>
+<tr class="even">
+<td>Líneas derivadas de <strong>tres donantes</strong></td>
+<td><strong>sí</strong></td>
+<td>son tres individuos</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>En cultivo, la <em>n</em> <strong>no</strong> es el número de pozos. Es cuántas veces se repitió el experimento de forma independiente.</p>
+<p><span class="lcg-fuente">Lazic y colaboradores desarman este caso en detalle: <span class="citation" data-cites="lazic2018unidad">Lazic et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></span></p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Por qué la célula parece la unidad y no lo es</h2>
+<p>La matriz tiene una célula por columna. La tentación es tratar cada columna como una observación independiente.</p>
+<ul>
+<li class="fragment">Las células de un donante <strong>comparten</strong> su genotipo, su edad, su tratamiento, su lote</li>
+<li class="fragment">No son independientes entre sí: eso es <strong>pseudorreplicación</strong></li>
+<li class="fragment">Con <em>n</em> = 10 000 en vez de <em>n</em> = 6, cualquier diferencia sale significativa</li>
+</ul>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Cómo se detecta</strong></p>
+</div>
+<div class="callout-content">
+<p>Valores de <em>p</em> absurdamente pequeños y miles de genes «significativos». Cuando la lista de genes diferenciales tiene 8 000 entradas, el problema no es la biología.</p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Dónde vive la n</h2>
+<p><img data-src="assets/images/unidad-de-analisis.svg" style="max-height:42vh" alt="A la izquierda, la jerarquía de un experimento en cuatro niveles: la condición, caso y control; los donantes que cuelgan de cada condición, tres y tres; las células que cuelgan de cada donante; y las lecturas que cuelgan de cada célula. Una llave marca el nivel del donante como unidad de análisis, con n igual a seis, y una tache marca el nivel de la célula con la nota «aquí no». Al pie del panel: las células de un donante comparten su genotipo, su tratamiento y su lote, y contarlas como réplicas es pseudorreplicación. A la derecha, las dos n posibles: seis donantes, la que existe, y diez mil células, la que se cuela; con la segunda, cualquier diferencia sale significativa."></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definición · unidad experimental y pseudorreplicación</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Unidad experimental:</strong> el nivel más pequeño al que se asigna la condición de forma independiente. <strong>Pseudorreplicación:</strong> usar estadística inferencial tratando como independientes observaciones que no lo son.</p>
+<p><span class="lcg-fuente">Unidad experimental: <span class="citation" data-cites="lazic2018unidad">Lazic et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span> · Pseudorreplicación: <span class="citation" data-cites="hurlbert1984pseudoreplicacion">Hurlbert (<a href="#/references" role="doc-biblioref" onclick="">1984</a>)</span></span></p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Ejemplos · dónde cae la unidad experimental</h2>
+<p>La regla: la unidad es <strong>aquello a lo que se le aplicó la condición</strong>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Si la condición se aplica a…</th>
+<th>La unidad es…</th>
+<th>Y NO es…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>el agua de bebida de la jaula</td>
+<td>la <strong>jaula</strong></td>
+<td>cada ratón de la jaula</td>
+</tr>
+<tr class="even">
+<td>cada ratón, por inyección</td>
+<td>el <strong>ratón</strong></td>
+<td>cada corte de su tejido</td>
+</tr>
+<tr class="odd">
+<td>el donante</td>
+<td>el <strong>donante</strong></td>
+<td>cada una de sus células</td>
+</tr>
+<tr class="even">
+<td>la placa completa</td>
+<td>la <strong>placa</strong></td>
+<td>cada pozo</td>
+</tr>
+<tr class="odd">
+<td>el paciente</td>
+<td>el <strong>paciente</strong></td>
+<td>cada biopsia suya</td>
+</tr>
+</tbody>
+</table>
+<p><span class="lcg-fuente">Lazic, Clarke-Williams y Munafò, sobre la <em>n</em> en cultivo y en animales: <span class="citation" data-cites="lazic2018unidad">Lazic et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></span></p>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>🗺️ Dónde vamos · bloque 3 de 4</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>La pregunta que contesta</th>
+<th>Con esto se diagnostica…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>¿Qué más varía, además de mi condición?</td>
+<td>el diseño confundido</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>¿Quién es mi <code>n</code>?</td>
+<td>la muestra única</td>
+</tr>
+<tr class="odd">
+<td><strong>▶ 3</strong></td>
+<td><strong>¿Qué pasa si me equivoco de <code>n</code>?</strong></td>
+<td><strong>las células tratadas como réplicas</strong></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>¿Alcanza para ver lo que busco?</td>
+<td>la población demasiado rara</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Qué dice y qué no dice un valor de p</h2>
+<p>Se viene usando en toda la sesión —«valores de <em>p</em> absurdamente pequeños», «sale significativa»—, así que conviene decir qué es exactamente.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definición · valor de p y significancia</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Valor de <em>p</em>:</strong> la probabilidad de observar una diferencia <strong>al menos tan grande como la medida</strong>, suponiendo que en realidad no hay ninguna. <strong>Significativo</strong> solo quiere decir que ese valor quedó por debajo de un umbral que alguien eligió, casi siempre 0.05.</p>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment"><strong>No</strong> es la probabilidad de que la diferencia sea real</li>
+<li class="fragment"><strong>No</strong> mide el tamaño de la diferencia: eso es el tamaño de efecto</li>
+<li class="fragment">Depende de la <em>n</em>, y por eso una <em>n</em> inflada lo hunde sin que cambie la biología</li>
+</ul>
+<p><span class="lcg-fuente">Por qué reportar tamaño de efecto e intervalo, y no solo <em>p</em>: <span class="citation" data-cites="nakagawa2007efecto">Nakagawa &amp; Cuthill (<a href="#/references" role="doc-biblioref" onclick="">2007</a>)</span></span></p>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Ejemplos · el mismo gen, cuatro veces</h2>
+<p><strong>Un solo gen. La misma diferencia real en los cuatro renglones:</strong> sube 0.30 en log₂ —un 23 % más—, con una desviación estándar de 0.35.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Lo que se compara</th>
+<th>Valor de <em>p</em></th>
+<th>¿Significativo?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3 donantes por grupo</td>
+<td>0.35</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>6 donantes por grupo</td>
+<td>0.17</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>20 donantes por grupo</td>
+<td>0.010</td>
+<td>sí</td>
+</tr>
+<tr class="even">
+<td><strong>5 000 células por grupo, de esos mismos 6 donantes</strong></td>
+<td><strong>≈ 10⁻⁴⁰⁰</strong></td>
+<td>sí, y es <strong>mentira</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>La biología es idéntica en las cuatro. Lo único que cambió es qué se contó como observación.</p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Veinte mil pruebas a la vez</h2>
+<p><img data-src="assets/images/fdr-falsos-positivos.svg" style="max-height:42vh" alt="A la izquierda, el histograma de los valores p de veinte mil genes en los que no hay ninguna diferencia real: es plano, cae un cinco por ciento en cada una de las veinte barras, y la primera barra reúne unos mil genes con p menor que cero punto cero cinco, ninguno de los cuales es una diferencia real. A la derecha, los valores p ordenados de menor a mayor frente a la recta i sobre m por q: los primeros puntos quedan por debajo de la recta y se declaran, los demás quedan por encima y no se declaran. Al pie: el control de FDR limita la proporción de falsos entre los declarados, pero no arregla una p calculada con la n equivocada."></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definición · tasa de falso descubrimiento</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Tasa de falso descubrimiento (FDR):</strong> proporción esperada de falsos positivos <em>entre los resultados declarados significativos</em>. El procedimiento de Benjamini-Hochberg la controla al nivel <em>q</em>.</p>
+<p><span class="lcg-fuente">Benjamini y Hochberg lo definen y lo demuestran: <span class="citation" data-cites="benjamini1995fdr">Benjamini &amp; Hochberg (<a href="#/references" role="doc-biblioref" onclick="">1995</a>)</span></span></p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Ejemplos · cuántos falsos hay que esperar</h2>
+<p>Sobre 20 000 genes probados, <strong>sin que exista ninguna diferencia real</strong>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Regla que se usa</th>
+<th>Genes declarados</th>
+<th>De ellos, falsos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em>p</em> &lt; 0.05, sin corregir</td>
+<td>~1 000</td>
+<td><strong>los 1 000</strong></td>
+</tr>
+<tr class="even">
+<td><em>p</em> &lt; 0.01, sin corregir</td>
+<td>~200</td>
+<td><strong>los 200</strong></td>
+</tr>
+<tr class="odd">
+<td><em>p</em> &lt; 0.05 / 20 000 (Bonferroni)</td>
+<td>~0</td>
+<td>ninguno, y tampoco encuentra lo verdadero</td>
+</tr>
+<tr class="even">
+<td>FDR &lt; 0.05 (Benjamini-Hochberg)</td>
+<td>los que superen la recta</td>
+<td><strong>como mucho el 5 % de ellos</strong></td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Qué se hace en su lugar</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Estrategia</th>
+<th>Qué hace</th>
+<th>Cuándo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Pseudobulk</strong></td>
+<td>suma las cuentas de todas las células de una muestra, y compara muestras</td>
+<td>lo predeterminado para comparar condiciones</td>
+</tr>
+<tr class="even">
+<td><strong>Modelos mixtos</strong></td>
+<td>modela al donante como efecto aleatorio</td>
+<td>cuando interesa la variabilidad entre células</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li class="fragment">Pseudobulk «desperdicia» la resolución de célula única —y aun así es lo correcto</li>
+<li class="fragment">La resolución sirvió para <strong>definir el tipo celular</strong>; la comparación se hace por muestra</li>
+</ul>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Pseudobulk y modelos mixtos</h2>
+<p><img data-src="assets/images/pseudobulk-y-modelo-mixto.svg" style="max-height:42vh" alt="Las dos estrategias lado a lado, con seis muestras: tres de una condición y tres de la otra. A la izquierda, pseudobulk: las células de cada muestra se suman y cada muestra queda reducida a una sola columna, con n igual a seis. A la derecha, modelo mixto: las células no se agregan y el donante entra en la fórmula como término entre paréntesis, expresión en función de la condición más uno entre barra donante, que dice que las células de un mismo donante están correlacionadas entre sí; la n también es seis. Al pie: las dos cuentan donantes, no células, y se diferencian en qué hacen con la variación entre células."></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definición · pseudobulk y modelo mixto</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Pseudobulk:</strong> sumar las cuentas de las células de una muestra para obtener un perfil por muestra, y comparar muestras. <strong>Modelo mixto:</strong> modelo con un término aleatorio por donante, que estima y descuenta la correlación entre las células de un mismo individuo.</p>
+<p><span class="lcg-fuente">Pseudobulk: <span class="citation" data-cites="crowell2020muscat">Crowell et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2020</a>)</span> · Modelos mixtos: <span class="citation" data-cites="zimmerman2021mixtos">Zimmerman et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span></span></p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Ejemplos · cuál de los dos, según la pregunta</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>La pregunta que quieres contestar</th>
+<th>Qué se usa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>¿Los macrófagos de los enfermos expresan más <em>IL6</em> que los de los sanos?</td>
+<td><strong>pseudobulk</strong></td>
+</tr>
+<tr class="even">
+<td>¿Es más <strong>variable</strong> la expresión de célula a célula en los enfermos?</td>
+<td><strong>modelo mixto</strong></td>
+</tr>
+<tr class="odd">
+<td>¿Qué genes distinguen a este grupo de células de los demás?</td>
+<td>ninguno de los dos: eso es buscar marcadores, no comparar condiciones</td>
+</tr>
+<tr class="even">
+<td>¿Cambia la <strong>proporción</strong> de macrófagos entre enfermos y sanos?</td>
+<td>ninguno de los dos: eso se prueba sobre la composición</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>🗺️ Dónde vamos · bloque 4 de 4</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>La pregunta que contesta</th>
+<th>Con esto se diagnostica…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>¿Qué más varía, además de mi condición?</td>
+<td>el diseño confundido</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>¿Quién es mi <code>n</code>?</td>
+<td>la muestra única</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>¿Qué pasa si me equivoco de <code>n</code>?</td>
+<td>las células tratadas como réplicas</td>
+</tr>
+<tr class="even">
+<td><strong>▶ 4</strong></td>
+<td><strong>¿Alcanza para ver lo que busco?</strong></td>
+<td><strong>la población demasiado rara</strong></td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section class="slide level2 smaller-notes scrollable">
+<h2>Potencia: la pregunta tiene tres partes</h2>
+<p>Para detectar un cambio en una población celular hacen falta tres cosas, y las tres se deciden <strong>antes</strong> de secuenciar:</p>
+<ol type="1">
+<li class="fragment"><strong>Muestras suficientes</strong> — la potencia para comparar condiciones</li>
+<li class="fragment"><strong>Células suficientes de esa población</strong> — para que aparezca en la muestra</li>
+<li class="fragment"><strong>Profundidad suficiente por célula</strong> — para que el gen se detecte</li>
+</ol>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definición · profundidad y población rara</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Profundidad por célula:</strong> cuántas lecturas —o UMI— se obtienen de cada célula. Poca profundidad hace que un gen poco expresado salga en cero aunque esté ahí. <strong>Población rara:</strong> el tipo celular que es una fracción pequeña del tejido; con un 5 %, de cada 1 000 células capturadas solo unas 50 son suyas.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Advertencia</strong></p>
+</div>
+<div class="callout-content">
+<p>Las tres compiten por el mismo presupuesto. No se optimizan por separado.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2 smaller-notes scrollable">
+<h2>Qué mueve la potencia</h2>
+<p><img data-src="assets/images/potencia-y-tamano-de-efecto.svg" style="max-height:42vh" alt="A la izquierda, dos campanas sobre el mismo eje: la de sin diferencia, en azul, y la de con diferencia, en oro, separadas por una distancia rotulada tamaño de efecto. Una línea de puntos marca el umbral de decisión; el área azul a su derecha es alfa, decir que hay diferencia cuando no la hay, y el área dorada a su izquierda es beta, no verla cuando sí la hay. La potencia es uno menos beta. A la derecha, con el mismo tamaño de efecto, la potencia crece al aumentar el número de muestras por condición y cruza el nivel habitual de cero punto ocho alrededor de siete muestras. Al pie: sube la potencia quien sube el número de muestras, y más células por muestra no compran potencia entre condiciones."></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definición · potencia y tamaño de efecto</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Potencia:</strong> probabilidad de detectar un efecto <strong>cuando ese efecto existe</strong>. <strong>Tamaño de efecto:</strong> la magnitud de la diferencia, acompañada de su intervalo de confianza —no un valor de <em>p</em>—.</p>
+<p><span class="lcg-fuente">Potencia: <span class="citation" data-cites="krzywinski2013potencia">Krzywinski &amp; Altman (<a href="#/references" role="doc-biblioref" onclick="">2013</a>)</span> · Tamaño de efecto: <span class="citation" data-cites="nakagawa2007efecto">Nakagawa &amp; Cuthill (<a href="#/references" role="doc-biblioref" onclick="">2007</a>)</span></span></p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>El compromiso, en concreto</h2>
+<p>Presupuesto fijo. Si se aumenta una cosa, se paga con otra:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Si subes…</th>
+<th>Pagas con…</th>
+<th>Se pierde</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>número de muestras</td>
+<td>células por muestra</td>
+<td>poblaciones raras</td>
+</tr>
+<tr class="even">
+<td>células por muestra</td>
+<td>profundidad por célula</td>
+<td>genes poco expresados</td>
+</tr>
+<tr class="odd">
+<td>profundidad por célula</td>
+<td>número de muestras</td>
+<td><strong>potencia estadística</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li class="fragment">Si el presupuesto no alcanza: <strong>se recorta el número de células antes que el número de muestras</strong></li>
+<li class="fragment">Tres réplicas biológicas por condición es el mínimo practicable</li>
+</ul>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Una población del 5 %</h2>
+<p>Si la población de interés es el <strong>5 % del tejido</strong>:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Células capturadas</th>
+<th>Células de esa población (esperadas)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1 000</td>
+<td>~50</td>
+</tr>
+<tr class="even">
+<td>5 000</td>
+<td>~250</td>
+</tr>
+<tr class="odd">
+<td>10 000</td>
+<td>~500</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li class="fragment">Y eso <strong>por muestra</strong>: con seis muestras, ~300 células con 1 000 capturadas</li>
+<li class="fragment">Con una población del 1 %, los mismos números se dividen entre cinco</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Nota</strong></p>
+</div>
+<div class="callout-content">
+<p>Es aritmética, no estadística todavía. La estadística viene ahora, con scPower.</p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>El diseño y la química se deciden juntos</h2>
+<ul>
+<li class="fragment">El 18 de agosto se eligió plataforma: gota, placa o indexado</li>
+<li class="fragment">Esa elección <strong>ya fijó</strong> el rango de células y de profundidad posible</li>
+<li class="fragment">Y el tipo de preparación fijó qué poblaciones se pueden recuperar</li>
+</ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>No es «primero el diseño y luego la plataforma». Es <strong>una sola decisión</strong> con dos caras.</p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>El cálculo formal queda en el manual</h2>
+<p>La aritmética de la diapositiva anterior dice <strong>cuántas células</strong> salen de una población del 5 %. No dice si esas células <strong>alcanzan para detectar el cambio</strong>: eso depende del tamaño de efecto, de la profundidad y de la potencia que se quiera.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Nota</strong></p>
+</div>
+<div class="callout-content">
+<p>Ese cálculo se hace con <code>scPower</code>, y está desarrollado en el <strong>manual de esta sesión</strong>, con los supuestos escritos y el número que sale de ellos.</p>
+<p><span class="lcg-fuente">Schmid y colaboradores describen scPower: <span class="citation" data-cites="schmid2021scpower">Schmid et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span></span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>Lo que sí se evalúa hoy: cualquier número de células que propongan en el rediseño va <strong>con sus supuestos</strong>. Un número sin supuestos no se puede discutir ni defender — es lo mismo que copiar un umbral de un tutorial.</p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes scrollable">
+<h2>La actividad 2.2 va de tarea</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Equipo</th>
+<th>El defecto que le tocó</th>
+<th>Se vio en…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A</strong></td>
+<td>Lote confundido con condición</td>
+<td>bloque <strong>1</strong></td>
+</tr>
+<tr class="even">
+<td><strong>B</strong></td>
+<td>Una sola muestra por condición</td>
+<td>bloque <strong>2</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>C</strong></td>
+<td>Células tratadas como réplicas</td>
+<td>bloque <strong>3</strong></td>
+</tr>
+<tr class="even">
+<td><strong>D</strong></td>
+<td>Muy pocas células de la población rara</td>
+<td>bloque <strong>4</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Qué entrega cada equipo</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Diagnóstico · rediseño · predicción · qué la haría falsa.</strong> La predicción va en el formulario y <strong>se reabre el 15 de septiembre</strong>. Todavía <strong>no pueden multiplexar</strong>: esa restricción se levanta en el bloque que sigue.</p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2">
+<h2>Se levanta la restricción: ahora sí pueden multiplexar</h2>
+<p>Varias muestras <strong>en la misma corrida</strong>, distinguibles después.</p>
+<ul>
+<li class="fragment">El diseño deja de estar confundido: las condiciones caben <strong>en el mismo lote</strong></li>
+<li class="fragment">Menos corridas para las mismas muestras: <strong>más muestras por el mismo dinero</strong></li>
+<li class="fragment">Y los dobletes <strong>entre muestras</strong> se pueden detectar</li>
+</ul>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Cell Hashing</h2>
+
+<img data-src="assets/images/cell-hashing.svg" alt="Un anticuerpo en forma de Y se une a una proteína de la superficie celular y lleva colgando un oligo con el código de la muestra, rotulado HTO-1. Al lado se explica que se pega a una proteína que tienen todas las células, que cada muestra lleva un HTO distinto, y que no sirve en núcleos porque no tienen esa proteína." class="r-stretch"><p><span class="lcg-fuente">Stoeckius y colaboradores describen Cell Hashing: <span class="citation" data-cites="stoeckius2018cellhashing"><span class="nocase">Stoeckius et&nbsp;al.</span> (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></span></p>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Cell Hashing, átomo por átomo</h2>
+
+<img data-src="assets/images/cell-hashing-atomos.svg" alt="A la izquierda, la estructura atómica de un anticuerpo completo: dos brazos Fab arriba y el tallo Fc abajo. A la derecha, en animación, uno de esos brazos se separa y vuelve a acoplarse sobre una molécula de MHC clase I. El anticuerpo entra por debajo y agarra la beta-2-microglobulina, en oro, sin tocar el surco donde va el péptido, en rojo, que queda arriba. Al pie, que el anticuerpo no toca el surco del péptido y se agarra por debajo, a la beta-2-microglobulina." class="r-stretch">
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Cell Hashing en la mesa</h2>
+
+<img data-src="assets/images/protocolo-cell-hashing.svg" alt="Flujo de banco de Cell Hashing en seis pasos. Uno: un tubo por muestra, sin juntar todavía. Dos: bloquear los receptores Fc, diez minutos a cuatro grados. Tres: centrifugar el anticuerpo a catorce mil g para quitar agregados. Cuatro: teñir treinta minutos a cuatro grados. Cinco: lavar tres o cuatro veces, el paso crítico. Seis: contar, juntar las muestras y cargar un solo canal. Aviso: el anticuerpo mal lavado se amplifica igual y sale como fondo en todas las gotas." class="r-stretch">
+</section>
+<section class="slide level2 smaller-notes">
+<h2>MULTI-seq</h2>
+
+<img data-src="assets/images/multi-seq.svg" alt="Una bicapa lipídica con un hueco por el que se inserta, en animación, un lípido unido a un oligo con el código de la muestra, rotulado BAR-1. Al lado se explica que el lípido se ancla por afinidad como un detergente, que no necesita anticuerpo, y que por eso sí funciona en núcleos porque la envoltura nuclear también es bicapa." class="r-stretch"><p><span class="lcg-fuente">McGinnis y colaboradores describen MULTI-seq: <span class="citation" data-cites="mcginnis2019multiseq"><span class="nocase">McGinnis et&nbsp;al.</span> (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></span></p>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>MULTI-seq, átomo por átomo</h2>
+
+<img data-src="assets/images/multi-seq-atomos.svg" alt="A la izquierda, una bicapa lipídica resuelta experimentalmente, con la acuaporina-0 incrustada en gris, rotulada abajo como PDB 2B6O. Sobre ella, en animación, un ácido graso de veinticuatro carbonos en oro, con un dúplex de ADN encima, entra y sale de la hemicapa externa; el ADN se queda siempre fuera de la membrana. Al lado se explica que la bicapa mide 33.5 ángstrom entre los planos de fosfato y que es una medida y no una estimación, que el ancla es ácido lignocérico de veinticuatro carbonos y 29.9 ángstrom, casi tan larga como todo el grosor de la membrana, que el oligo se queda fuera y nada cruza al citoplasma y que además es grueso, veinte ángstrom, la mitad que la bicapa, y que los ocho nucleótidos del código son de muestra porque el código de célula y el UMI los pone después la perla." class="r-stretch">
+</section>
+<section class="slide level2 smaller-notes">
+<h2>MULTI-seq en la mesa</h2>
+
+<img data-src="assets/images/protocolo-multi-seq.svg" alt="Flujo de banco de MULTI-seq en seis pasos. Uno: lavar las células hasta quitar todo el suero y la albúmina, en PBS sin proteína. Dos: añadir el ancla lipídica junto con el oligo del código, cinco minutos en hielo. Tres: añadir el co-ancla, cinco minutos más, sin lavar en medio. Cuatro: frenar la reacción con albúmina al uno por ciento en frío. Cinco: dos lavados, contar y juntar. Seis: cargar el chip manteniendo todo en hielo. Aviso: la albúmina secuestra el lípido, así que antes del marcaje estorba y después sirve justamente para frenarlo." class="r-stretch">
+</section>
+<section class="slide level2 smaller-notes">
+<h2>De una gota, dos librerías</h2>
+
+<img data-src="assets/images/dos-librerias.svg" alt="De una gota salen dos librerías, en cuatro pasos. Uno: la gota se cierra con la célula entera dentro y la etiqueta clavada por fuera, en su superficie, junto a la perla. Dos: la lisis rompe la membrana, que queda hecha fragmentos, y suelta en el mismo charco el ARN mensajero y la etiqueta; las dos moléculas terminan en la misma cola de poli-A, en oro, así que el poli-dT de la perla no las distingue y captura las dos. Tres: se amplifican en la misma reacción de PCR, en un solo tubo. Cuatro: una limpieza con perlas SPRI a cero coma seis equis parte la mezcla por tamaño. Lo que se pega a las perlas es el cDNA, largo, que da la librería de expresión; lo que se queda en el líquido es la etiqueta, corta, que nunca se fragmenta. Aviso: el sobrenadante no se tira, porque es toda la librería de multiplexado." class="r-stretch">
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Demultiplexado genético</h2>
+
+<img data-src="assets/images/demux-genetico.svg" alt="Tres donantes con la misma región del genoma escrita debajo; en cada uno, dos posiciones aparecen en rojo y con una letra distinta: son los SNP. Al lado se explica que las propias lecturas del experimento llevan esos SNP, que la separación se hace después por programa sin reactivo ni paso de laboratorio, y que exige donantes distintos porque dos muestras del mismo donante son genéticamente idénticas." class="r-stretch"><p><span class="lcg-fuente">Kang y colaboradores demuestran el demultiplexado genético: <span class="citation" data-cites="kang2018demuxlet"><span class="nocase">Kang et&nbsp;al.</span> (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></span></p>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>El demultiplexado genético en la computadora</h2>
+
+<img data-src="assets/images/protocolo-demux-genetico.svg" alt="Flujo del demultiplexado genético, partido en dos mitades. En la mesa, tres pasos: elegir donantes genéticamente distintos, que es una decisión de diseño y no una acción de laboratorio; juntar los tubos, que es todo el multiplexado; y cargar el chip, que produce una sola librería. En la computadora, tres pasos más: partir del BAM y los códigos de barras que da Cell Ranger; contar alelos, que tarda de tres a cinco horas y puede pedir hasta noventa y un gigabytes; y decidir según haya genotipos de referencia o no, con demuxlet o con vireo. Aviso: sin reactivo, sin lavados y sin segunda librería, el trabajo se mudó al cómputo." class="r-stretch">
+</section>
+<section class="slide level2 smaller-notes">
+<h2>¿Y los dobletes?</h2>
+
+<img data-src="assets/images/multiplexado-dobletes.svg" alt="Dos gotas. En la primera, dos células de muestras distintas, cada una de su color: lleva dos etiquetas y se detecta. En la segunda, dos células de la misma muestra, del mismo color: lleva una sola etiqueta y pasa desapercibido. Al lado se explica que las tres estrategias detectan dobletes igual, porque llevan dos códigos o SNP de dos donantes, y que ninguna ve el doblete de una sola muestra." class="r-stretch">
+</section>
+<section class="slide level2 smaller-notes scrollable">
+<h2>Segunda vuelta · va de tarea</h2>
+<p>Sobre las mismas tarjetas, cada equipo revisa <strong>fuera del aula</strong>:</p>
+<ol type="1">
+<li class="fragment">¿Su rediseño <strong>mejora</strong> con multiplexado?</li>
+<li class="fragment">¿O el rediseño de la primera vuelta <strong>ya resolvía</strong> el problema?</li>
+<li class="fragment">¿Qué supuesto nuevo introduce el multiplexado que antes no tenían?</li>
+</ol>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>Que exista una técnica no obliga a usarla. Un equipo que argumente <strong>por qué no la necesita</strong> responde tan bien como uno que la adopta.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Advertencia</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Entrega: antes del martes 25 de agosto</strong>, en el marco de su equipo. Se recupera al abrir la sesión 03.</p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Segunda vuelta · las respuestas</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Equipo</th>
+<th>Su defecto</th>
+<th>¿Gana con multiplexado?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A</strong></td>
+<td>lote confundido</td>
+<td><strong>sí, muchísimo</strong>: las dos condiciones caben en la misma corrida</td>
+</tr>
+<tr class="even">
+<td><strong>B</strong></td>
+<td>una sola muestra por condición</td>
+<td><strong>no gana nada</strong>: no crea réplicas que no existen</td>
+</tr>
+<tr class="odd">
+<td><strong>C</strong></td>
+<td>células como réplicas</td>
+<td><strong>no</strong>: la pseudorreplicación es de análisis, no de captura</td>
+</tr>
+<tr class="even">
+<td><strong>D</strong></td>
+<td>pocas células de la población</td>
+<td><strong>no directamente</strong>: abarata muestras, y más muestras dan más células</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>El supuesto nuevo: el demultiplexado genético <strong>exige donantes distintos</strong>; el marcaje, <strong>que el reactivo pegue en ese tejido</strong>.</p>
+</div>
+</div>
+</div>
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Errores comunes</h1>
+
+</section>
+<section class="slide level2">
+<h2>Tratar cada célula como una réplica independiente</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Cómo se detecta</strong></td>
+<td>Valores de p absurdamente pequeños; miles de genes “significativos”</td>
+</tr>
+<tr class="even">
+<td><strong>Cómo se resuelve</strong></td>
+<td>Agregar por muestra (pseudobulk) antes de comparar condiciones, o usar modelos mixtos. La réplica es el donante, no la célula.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+<h2>Confundir lote con condición</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Cómo se detecta</strong></td>
+<td>Separación perfecta entre grupos en el PCA, que parece un gran resultado</td>
+</tr>
+<tr class="even">
+<td><strong>Cómo se resuelve</strong></td>
+<td>Distribuir las condiciones entre lotes desde el diseño. Si ya ocurrió, se reporta la limitación; no se corrige.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+<h2>Una sola muestra por condición</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Cómo se detecta</strong></td>
+<td>Resultados no generalizables; se está describiendo a dos individuos</td>
+</tr>
+<tr class="even">
+<td><strong>Cómo se resuelve</strong></td>
+<td>Mínimo tres réplicas biológicas por condición. Si el presupuesto no alcanza, se reduce el número de células por muestra antes que el número de muestras.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+<h2>Muy pocas células de la población de interés</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Cómo se detecta</strong></td>
+<td>El tipo celular que motivó el estudio aparece con un puñado de células por muestra, o no aparece en algunas</td>
+</tr>
+<tr class="even">
+<td><strong>Cómo se resuelve</strong></td>
+<td>Calcular antes cuántas se esperan: con una población del 5 %, de 1 000 células capturadas solo ~50 son suyas. Si no alcanzan, se enriquece por citometría antes de cargar, o se capturan más células por muestra —nunca a costa del número de muestras—.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+<h2>Ignorar el sexo, la edad o el sitio de colecta</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Cómo se detecta</strong></td>
+<td>Efectos que aparecen después y no se pueden atribuir</td>
+</tr>
+<tr class="even">
+<td><strong>Cómo se resuelve</strong></td>
+<td>Registrar todas las covariables desde el inicio, aunque no se vayan a usar. Añadirlas después es imposible.</td>
+</tr>
+</tbody>
+</table>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Cierre</h1>
+
+</section>
+<section class="slide level2 smaller-notes scrollable">
+<h2>Antes de irse: la hoja de muestras</h2>
+
+<img data-src="assets/images/hoja-de-muestras.svg" alt="Una hoja de muestras con seis filas y siete columnas: muestra, condición, lote, donante, sexo, edad y sitio. Tres casos y tres controles, seis donantes distintos, y los dos lotes llevan las dos condiciones. Las columnas de sexo, edad y sitio se resaltan en animación. Al lado se explica que va una fila por muestra y nunca por célula, que el lote balanceado es lo que compra el multiplexado, y que sexo, edad y sitio se registran hoy o no existen después." class="r-stretch">
+</section>
+<section class="slide level2">
+<h2>Qué mensaje se llevan a casa</h2>
+<ul>
+<li class="fragment">La réplica es <strong>el donante</strong>, no la célula</li>
+<li class="fragment">Un diseño confundido <strong>no se arregla después</strong>: no hay con qué</li>
+<li class="fragment">Si el presupuesto aprieta, se recortan células antes que muestras</li>
+<li class="fragment">El multiplexado resuelve el lote, <strong>no</strong> la falta de réplicas</li>
+</ul>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Su predicción tiene fecha de vencimiento</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>El diseño que rediseñaron hoy <strong>vuelve el 15 de septiembre</strong>.</p>
+<p>Ese día se analizan los datos de ese mismo experimento y se abren las predicciones que acaban de escribir.</p>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment">Son <strong>26 días</strong> y en medio va el módulo del Dr.&nbsp;Ceschin</li>
+<li class="fragment">Por eso se escriben: nadie se acuerda de lo que predijo hace cuatro semanas</li>
+<li class="fragment">No es un examen sorpresa. Es una hipótesis suya, comprobada contra datos</li>
+</ul>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>El martes 25: de FASTQ a matriz</h2>
+<ul>
+<li class="fragment">Se acaba la teoría: la primera práctica es en el clúster</li>
+<li class="fragment">Cell Ranger corriendo en vivo sobre FASTQ reales</li>
+<li class="fragment">Lo que el 18 de agosto fue un diagrama en papel, ese día es un archivo</li>
+</ul>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Advertencia</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>El entorno debe estar instalado el lunes 24.</strong> Si no puedes entrar al clúster, avisa <strong>esta semana</strong>, no el martes.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Para leer</h2>
+<ul>
+<li>Pseudorréplica y falsos descubrimientos: <span class="citation" data-cites="squair2021falsediscoveries">Squair et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span></li>
+<li>Cuántas células y a qué profundidad: <span class="citation" data-cites="svensson2017power">Svensson et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2017</a>)</span></li>
+<li>Panorama de buenas prácticas: <span class="citation" data-cites="luecken2019bestpractices">Luecken &amp; Theis (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></li>
+<li>Cell Hashing: <span class="citation" data-cites="stoeckius2018cellhashing"><span class="nocase">Stoeckius et&nbsp;al.</span> (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></li>
+<li>MULTI-seq, índices lipídicos: <span class="citation" data-cites="mcginnis2019multiseq"><span class="nocase">McGinnis et&nbsp;al.</span> (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></li>
+<li>Demultiplexado por variación genética: <span class="citation" data-cites="kang2018demuxlet"><span class="nocase">Kang et&nbsp;al.</span> (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></li>
+</ul>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Para leer · conceptos de los bloques 1 y 2</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Concepto</th>
+<th>Fuente</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Efecto de lote en célula única</td>
+<td><span class="citation" data-cites="tung2017lote">Tung et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2017</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Confusión, bloqueo y aleatorización</td>
+<td><span class="citation" data-cites="auer2010diseno">Auer &amp; Doerge (<a href="#/references" role="doc-biblioref" onclick="">2010</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>Réplica biológica y técnica</td>
+<td><span class="citation" data-cites="blainey2014replication">Blainey et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2014</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Unidad experimental</td>
+<td><span class="citation" data-cites="lazic2018unidad">Lazic et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>Pseudorreplicación</td>
+<td><span class="citation" data-cites="hurlbert1984pseudoreplicacion">Hurlbert (<a href="#/references" role="doc-biblioref" onclick="">1984</a>)</span></td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Para leer · conceptos de los bloques 3 y 4</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Concepto</th>
+<th>Fuente</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tasa de falso descubrimiento</td>
+<td><span class="citation" data-cites="benjamini1995fdr">Benjamini &amp; Hochberg (<a href="#/references" role="doc-biblioref" onclick="">1995</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Tamaño de efecto</td>
+<td><span class="citation" data-cites="nakagawa2007efecto">Nakagawa &amp; Cuthill (<a href="#/references" role="doc-biblioref" onclick="">2007</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>Pseudobulk</td>
+<td><span class="citation" data-cites="crowell2020muscat">Crowell et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2020</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Modelos mixtos</td>
+<td><span class="citation" data-cites="zimmerman2021mixtos">Zimmerman et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span></td>
+</tr>
+<tr class="odd">
+<td>Potencia y tamaño de muestra</td>
+<td><span class="citation" data-cites="krzywinski2013potencia">Krzywinski &amp; Altman (<a href="#/references" role="doc-biblioref" onclick="">2013</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Potencia en estudios de varias muestras</td>
+<td><span class="citation" data-cites="schmid2021scpower">Schmid et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span></td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section class="slide level2 smaller-notes scrollable smaller" id="references"><h2>Referencias completas (1/3)</h2>
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list"><div id="ref-auer2010diseno" class="csl-entry" role="listitem">
+Auer, P. L., &amp; Doerge, R. W. (2010). Statistical design and analysis of <span>RNA</span> sequencing data. <em>Genetics</em>, <em>185</em>(2), 405-416. <a href="https://doi.org/10.1534/genetics.110.114983">https://doi.org/10.1534/genetics.110.114983</a>
+</div><div id="ref-benjamini1995fdr" class="csl-entry" role="listitem">
+Benjamini, Y., &amp; Hochberg, Y. (1995). Controlling the false discovery rate: a practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society: Series B (Methodological)</em>, <em>57</em>(1), 289-300. <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02031.x">https://doi.org/10.1111/j.2517-6161.1995.tb02031.x</a>
+</div><div id="ref-blainey2014replication" class="csl-entry" role="listitem">
+Blainey, P., Krzywinski, M., &amp; Altman, N. (2014). Replication. <em>Nature Methods</em>, <em>11</em>(9), 879-880. <a href="https://doi.org/10.1038/nmeth.3091">https://doi.org/10.1038/nmeth.3091</a>
+</div><div id="ref-crowell2020muscat" class="csl-entry" role="listitem">
+Crowell, H. L., Soneson, C., Germain, P.-L., Calini, D., Collin, L., Raposo, C., Malhotra, D., &amp; Robinson, M. D. (2020). <span>muscat</span> detects subpopulation-specific state transitions from multi-sample multi-condition single-cell transcriptomics data. <em>Nature Communications</em>, <em>11</em>, 6077. <a href="https://doi.org/10.1038/s41467-020-19894-4">https://doi.org/10.1038/s41467-020-19894-4</a>
+</div><div id="ref-hurlbert1984pseudoreplicacion" class="csl-entry" role="listitem">
+Hurlbert, S. H. (1984). Pseudoreplication and the design of ecological field experiments. <em>Ecological Monographs</em>, <em>54</em>(2), 187-211. <a href="https://doi.org/10.2307/1942661">https://doi.org/10.2307/1942661</a>
+</div><div id="ref-kang2018demuxlet" class="csl-entry" role="listitem">
+<span class="nocase">Kang, H. M., Subramaniam, M., Targ, S., Nguyen, M., Maliskova, L., et&nbsp;al.</span> (2018). Multiplexed Droplet Single-Cell RNA-Sequencing Using Natural Genetic Variation. <em>Nature Biotechnology</em>, <em>36</em>(1), 89-94. <a href="https://doi.org/10.1038/nbt.4042">https://doi.org/10.1038/nbt.4042</a>
+</div></div></section><section class="slide level2 smaller-notes scrollable smaller" id="references-2"><h2>Referencias completas (2/3)</h2><div id="refs-2" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list"><div id="ref-krzywinski2013potencia" class="csl-entry" role="listitem">
+Krzywinski, M., &amp; Altman, N. (2013). Power and sample size. <em>Nature Methods</em>, <em>10</em>(12), 1139-1140. <a href="https://doi.org/10.1038/nmeth.2738">https://doi.org/10.1038/nmeth.2738</a>
+</div><div id="ref-lazic2018unidad" class="csl-entry" role="listitem">
+Lazic, S. E., Clarke-Williams, C. J., &amp; Munafò, M. R. (2018). What exactly is <span><span>«N»</span></span> in cell culture and animal experiments? <em>PLOS Biology</em>, <em>16</em>(4), e2005282. <a href="https://doi.org/10.1371/journal.pbio.2005282">https://doi.org/10.1371/journal.pbio.2005282</a>
+</div><div id="ref-luecken2019bestpractices" class="csl-entry" role="listitem">
+Luecken, M. D., &amp; Theis, F. J. (2019). Current best practices in single-cell <span>RNA</span>-seq analysis: a tutorial. <em>Molecular Systems Biology</em>, <em>15</em>(6), e8746. <a href="https://doi.org/10.15252/msb.20188746">https://doi.org/10.15252/msb.20188746</a>
+</div><div id="ref-mcginnis2019multiseq" class="csl-entry" role="listitem">
+<span class="nocase">McGinnis, C. S., Patterson, D. M., Winkler, J., Conrad, D. N., Hein, M. Y., et&nbsp;al.</span> (2019). MULTI-seq: Sample Multiplexing for Single-Cell RNA Sequencing Using Lipid-Tagged Indices. <em>Nature Methods</em>, <em>16</em>(7), 619-626. <a href="https://doi.org/10.1038/s41592-019-0433-8">https://doi.org/10.1038/s41592-019-0433-8</a>
+</div><div id="ref-nakagawa2007efecto" class="csl-entry" role="listitem">
+Nakagawa, S., &amp; Cuthill, I. C. (2007). Effect size, confidence interval and statistical significance: a practical guide for biologists. <em>Biological Reviews</em>, <em>82</em>(4), 591-605. <a href="https://doi.org/10.1111/j.1469-185X.2007.00027.x">https://doi.org/10.1111/j.1469-185X.2007.00027.x</a>
+</div><div id="ref-schmid2021scpower" class="csl-entry" role="listitem">
+Schmid, K. T., Höllbacher, B., Cruceanu, C., Böttcher, A., Lickert, H., Binder, E. B., Theis, F. J., &amp; Heinig, M. (2021). <span>scPower</span> accelerates and optimizes the design of multi-sample single cell transcriptomic studies. <em>Nature Communications</em>, <em>12</em>, 6625. <a href="https://doi.org/10.1038/s41467-021-26779-7">https://doi.org/10.1038/s41467-021-26779-7</a>
+</div></div></section><section class="slide level2 smaller-notes scrollable smaller" id="references-3"><h2>Referencias completas (3/3)</h2><div id="refs-3" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list"><div id="ref-squair2021falsediscoveries" class="csl-entry" role="listitem">
+Squair, J. W., Gautier, M., Kathe, C., Anderson, M. A., James, N. D., Hutson, T. H., Hudelle, R., Qaiser, T., Matson, K. J. E., Barraud, Q., Levine, A. J., La Manno, G., Skinnider, M. A., &amp; Courtine, G. (2021). Confronting false discoveries in single-cell differential expression. <em>Nature Communications</em>, <em>12</em>, 5692. <a href="https://doi.org/10.1038/s41467-021-25960-2">https://doi.org/10.1038/s41467-021-25960-2</a>
+</div><div id="ref-stoeckius2018cellhashing" class="csl-entry" role="listitem">
+<span class="nocase">Stoeckius, M., Zheng, S., Houck-Loomis, B., Hao, S., Yeung, B. Z., et&nbsp;al.</span> (2018). Cell Hashing with Barcoded Antibodies Enables Multiplexing and Doublet Detection for Single Cell Genomics. <em>Genome Biology</em>, <em>19</em>(1), 224. <a href="https://doi.org/10.1186/s13059-018-1603-1">https://doi.org/10.1186/s13059-018-1603-1</a>
+</div><div id="ref-svensson2017power" class="csl-entry" role="listitem">
+Svensson, V., Natarajan, K. N., Ly, L.-H., Miragaia, R. J., Labalette, C., Macaulay, I. C., Cvejic, A., &amp; Teichmann, S. A. (2017). Power analysis of single-cell <span>RNA</span>-sequencing experiments. <em>Nature Methods</em>, <em>14</em>(4), 381-387. <a href="https://doi.org/10.1038/nmeth.4220">https://doi.org/10.1038/nmeth.4220</a>
+</div><div id="ref-tung2017lote" class="csl-entry" role="listitem">
+Tung, P.-Y., Blischak, J. D., Hsiao, C. J., Knowles, D. A., Burnett, J. E., Pritchard, J. K., &amp; Gilad, Y. (2017). Batch effects and the effective design of single-cell gene expression studies. <em>Scientific Reports</em>, <em>7</em>, 39921. <a href="https://doi.org/10.1038/srep39921">https://doi.org/10.1038/srep39921</a>
+</div><div id="ref-zimmerman2021mixtos" class="csl-entry" role="listitem">
+Zimmerman, K. D., Espeland, M. A., &amp; Langefeld, C. D. (2021). A practical solution to pseudoreplication bias in single-cell studies. <em>Nature Communications</em>, <em>12</em>, 738. <a href="https://doi.org/10.1038/s41467-021-21038-1">https://doi.org/10.1038/s41467-021-21038-1</a>
+</div></div></section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>Análisis de single-cell RNA-seq · Bioinformática y Estadística 3 · LCG, ENES Juriquilla UNAM · 2027-1</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="02-diseno-experimental_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="02-diseno-experimental_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="02-diseno-experimental_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="02-diseno-experimental_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="02-diseno-experimental_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="02-diseno-experimental_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="02-diseno-experimental_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="02-diseno-experimental_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="02-diseno-experimental_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="02-diseno-experimental_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 4.0e-2,
+
+        // Bounds for smallest/largest possible scale to apply to content
+        minScale: 0.4,
+
+        maxScale: 1.8,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiado");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiado");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    <a href="index.html" class="unam-home-button" title="Volver al índice del módulo">
+      <svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
+      </svg>
+      <span>Inicio</span>
+    </a>
+    
+
+</body></html>

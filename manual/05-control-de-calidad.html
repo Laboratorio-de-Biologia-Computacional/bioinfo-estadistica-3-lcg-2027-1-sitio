@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; Control de calidad: del experimento a los datos – Análisis de single-cell RNA-seq</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./06-practica-integradora.html" rel="next">
+<link href="./04-de-matriz-a-objeto.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-95e7826f4813621490ae0bbac6a5e5e5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-10f5dae605ba7ed116c0e84354baeedf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-de-fastq-a-matriz.html">Del FASTQ a un objeto en el que se puede confiar</a></li><li class="breadcrumb-item"><a href="./05-control-de-calidad.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control de calidad: del experimento a los datos</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Análisis de single-cell RNA-seq</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Presentación</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Antes de tocar los datos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-fundamentos-y-tecnologias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Fundamentos de single-cell. Tecnologías y plataformas</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-diseno-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Diseño experimental</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Del FASTQ a un objeto en el que se puede confiar</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-de-fastq-a-matriz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">De FASTQ a matriz</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-de-matriz-a-objeto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">De matriz a objeto listo. Rutas de importación y estructuras de datos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-control-de-calidad.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control de calidad: del experimento a los datos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Autonomía y cierre</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-practica-integradora.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Práctica integradora y arranque del proyecto</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Anexos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./90-anexo-entornos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: entornos de trabajo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./91-anexo-glosario.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: glosario</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./92-anexo-rutas-de-importacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: rutas de importación y estructuras de datos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./93-anexo-replicas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: ¿réplica biológica o técnica?</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./99-referencias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">En este capítulo</h2>
+   
+  <ul>
+  <li><a href="#cómo-se-desarrolla-la-sesión" id="toc-cómo-se-desarrolla-la-sesión" class="nav-link active" data-scroll-target="#cómo-se-desarrolla-la-sesión"><span class="header-section-number">5.1</span> Cómo se desarrolla la sesión</a></li>
+  <li><a href="#caso-de-aplicación" id="toc-caso-de-aplicación" class="nav-link" data-scroll-target="#caso-de-aplicación"><span class="header-section-number">5.2</span> Caso de aplicación</a></li>
+  <li><a href="#desarrollo" id="toc-desarrollo" class="nav-link" data-scroll-target="#desarrollo"><span class="header-section-number">5.3</span> Desarrollo</a>
+  <ul class="collapse">
+  <li><a href="#el-tipo-celular-que-era-el-protocolo" id="toc-el-tipo-celular-que-era-el-protocolo" class="nav-link" data-scroll-target="#el-tipo-celular-que-era-el-protocolo"><span class="header-section-number">5.3.1</span> El tipo celular que era el protocolo</a></li>
+  <li><a href="#la-cadena-decisión-por-decisión" id="toc-la-cadena-decisión-por-decisión" class="nav-link" data-scroll-target="#la-cadena-decisión-por-decisión"><span class="header-section-number">5.3.2</span> La cadena, decisión por decisión</a></li>
+  <li><a href="#las-métricas-por-célula-leídas-como-evidencia" id="toc-las-métricas-por-célula-leídas-como-evidencia" class="nav-link" data-scroll-target="#las-métricas-por-célula-leídas-como-evidencia"><span class="header-section-number">5.3.3</span> Las métricas por célula, leídas como evidencia</a></li>
+  <li><a href="#umbrales-de-dónde-tienen-que-salir" id="toc-umbrales-de-dónde-tienen-que-salir" class="nav-link" data-scroll-target="#umbrales-de-dónde-tienen-que-salir"><span class="header-section-number">5.3.4</span> Umbrales: de dónde tienen que salir</a></li>
+  <li><a href="#dobletes" id="toc-dobletes" class="nav-link" data-scroll-target="#dobletes"><span class="header-section-number">5.3.5</span> Dobletes</a></li>
+  <li><a href="#el-control-de-calidad-no-se-hace-una-sola-vez" id="toc-el-control-de-calidad-no-se-hace-una-sola-vez" class="nav-link" data-scroll-target="#el-control-de-calidad-no-se-hace-una-sola-vez"><span class="header-section-number">5.3.6</span> El control de calidad no se hace una sola vez</a></li>
+  </ul></li>
+  <li><a href="#errores-comunes" id="toc-errores-comunes" class="nav-link" data-scroll-target="#errores-comunes"><span class="header-section-number">5.4</span> Errores comunes</a></li>
+  <li><a href="#recursos" id="toc-recursos" class="nav-link" data-scroll-target="#recursos"><span class="header-section-number">5.5</span> Recursos</a></li>
+  <li><a href="#si-algo-falla" id="toc-si-algo-falla" class="nav-link" data-scroll-target="#si-algo-falla"><span class="header-section-number">5.6</span> Si algo falla</a></li>
+  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias"><span class="header-section-number">5.7</span> Referencias</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-de-fastq-a-matriz.html">Del FASTQ a un objeto en el que se puede confiar</a></li><li class="breadcrumb-item"><a href="./05-control-de-calidad.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control de calidad: del experimento a los datos</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span id="sec-s05" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control de calidad: del experimento a los datos</span></span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- ANDAMIO GENERADO. No edites el objetivo ni las tablas de esta seccion
+     a mano: salen de docs/planeacion/sesiones.yml, que a su vez sale del
+     plan operativo en Word. Para cambiarlos, edita el .docx y vuelve a
+     correr scripts/python/06-extraer-plan.py y 07-generar-sesiones.py.
+     El desarrollo del capitulo SI se escribe a mano, debajo. -->
+<p><strong>Sesión 05 · Martes 1 de septiembre de 2026</strong> · sesión práctica, 120 minutos Imparten: Luis Alberto Meza Cova, José Antonio Ovando Ricárdez y Alfredo Morales Salazar</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Objetivo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Reconocer que la calidad de un experimento de célula única se decide en el laboratorio y no en el análisis; identificar qué decisión experimental produce cada artefacto observable en los datos; y aplicar los criterios bioinformáticos que permiten detectarlos, decidiendo con criterio explícito y defendible qué células se descartan.</p>
+</div>
+</div>
+<section id="cómo-se-desarrolla-la-sesión" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="cómo-se-desarrolla-la-sesión"><span class="header-section-number">5.1</span> Cómo se desarrolla la sesión</h2>
+<p>Práctica guiada por tres instructores, con los equipos repartidos en salas simultáneas. La sesión recorre la cadena completa: qué decisión se tomó en el laboratorio, qué artefacto produce en la matriz y con qué herramienta se detecta. Se revisan el tiempo de isquemia y el almacenamiento, el método y la temperatura de disociación y su firma de estrés, la elección entre células íntegras y núcleos aislados, la viabilidad al cargar y la carga del canal. Después, las métricas de calidad por célula (cuentas totales, genes detectados y proporción de lecturas mitocondriales, ribosomales y de hemoglobina) y qué revela cada una sobre lo que ocurrió en el banco de trabajo. Umbrales fijos frente a umbrales adaptativos basados en la desviación absoluta mediana, y por qué el umbral debe calcularse por lote. Discusión del caso en que una proporción mitocondrial elevada corresponde a biología legítima y no a daño celular. Identificación de dobletes y su relación con el número de células cargadas. Actividad central: cada equipo aplica un criterio de filtrado distinto al mismo conjunto de datos; en plenaria se comparan cuántas células descartó cada criterio y, sobre todo, qué poblaciones celulares desaparecieron con cada uno.</p>
+<ul>
+<li><strong>6</strong> bloques en 120 minutos, con descansos entre ellos</li>
+<li>Se alterna explicacion y trabajo propio</li>
+</ul>
+</section>
+<section id="caso-de-aplicación" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="caso-de-aplicación"><span class="header-section-number">5.2</span> Caso de aplicación</h2>
+<p>Caso de aplicación: el tipo celular que era el protocolo: en 2017 se documentó que la disociación enzimática a 37 grados induce una respuesta de estrés —FOS, JUN, JUNB, EGR1 y proteínas de choque térmico— en una fracción de las células. Esa fracción aparece después como un grupo propio, con marcadores coherentes y reproducible entre muestras, y se ha publicado más de una vez como un estado celular novedoso. No lo es: es el protocolo. La consecuencia práctica para el curso es doble. Primero, el artefacto no se corrige filtrando, porque las células afectadas están vivas y tienen buenas métricas. Segundo, se previene en el laboratorio, usando proteasa activa en frío, y se detecta en el análisis puntuando esa firma antes de interpretar cualquier grupo. Es el ejemplo más claro de que la calidad se decide antes de secuenciar.</p>
+</section>
+<section id="desarrollo" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="desarrollo"><span class="header-section-number">5.3</span> Desarrollo</h2>
+<section id="el-tipo-celular-que-era-el-protocolo" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="el-tipo-celular-que-era-el-protocolo"><span class="header-section-number">5.3.1</span> El tipo celular que era el protocolo</h3>
+<p>En 2017 se documentó algo incómodo: la disociación enzimática a 37 °C induce una respuesta de estrés en una fracción de las células. Los genes son reconocibles —<em>FOS</em>, <em>JUN</em>, <em>JUNB</em>, <em>EGR1</em> y proteínas de choque térmico— y la fracción afectada aparece después como un grupo propio, con marcadores coherentes y reproducible entre muestras <span class="citation" data-cites="vandenbrink2017">(<a href="99-referencias.html#ref-vandenbrink2017" role="doc-biblioref"><span class="nocase">Brink et&nbsp;al.</span>, 2017</a>)</span>.</p>
+<p>Se ha publicado más de una vez como un estado celular novedoso. No lo es: es el protocolo.</p>
+<p>El caso importa por dos razones prácticas, y conviene enunciarlas por separado.</p>
+<p>La primera es que <strong>el artefacto no se corrige filtrando</strong>. Las células afectadas están vivas, tienen buenas cuentas, buenos genes detectados y una proporción mitocondrial normal. Ningún umbral de calidad las separa, porque por todas las métricas de calidad son células buenas. Lo que tienen de anómalo es su programa transcripcional, y eso no es un criterio de filtrado.</p>
+<p>La segunda es que <strong>se previene en el laboratorio</strong>. Disociar con proteasa activa en frío reduce la respuesta de forma sustancial <span class="citation" data-cites="oflanagan2019">(<a href="99-referencias.html#ref-oflanagan2019" role="doc-biblioref"><span class="nocase">O’Flanagan et&nbsp;al.</span>, 2019</a>)</span>. Es una decisión que se toma antes de secuenciar y que ningún análisis posterior puede recuperar.</p>
+<p>De ahí la afirmación que organiza toda la sesión: la calidad de un experimento de célula única se decide en el laboratorio. El análisis la mide; no la produce.</p>
+</section>
+<section id="la-cadena-decisión-por-decisión" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="la-cadena-decisión-por-decisión"><span class="header-section-number">5.3.2</span> La cadena, decisión por decisión</h3>
+<p>Cada decisión experimental deja una huella medible. La tabla siguiente es el mapa de la sesión: se lee de izquierda a derecha, del banco de trabajo a la matriz, y es también el orden en que conviene revisar un conjunto de datos ajeno.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Decisión</th>
+<th>Artefacto</th>
+<th>Cómo se detecta</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tiempo de isquemia prolongado</td>
+<td>muerte celular</td>
+<td>proporción mitocondrial elevada</td>
+</tr>
+<tr class="even">
+<td>Almacenamiento antes de procesar</td>
+<td>pérdida de poblaciones frágiles</td>
+<td>composición incoherente con el tejido</td>
+</tr>
+<tr class="odd">
+<td>Disociación a 37 °C</td>
+<td>firma de estrés</td>
+<td>puntuación de la firma, que <strong>atraviesa</strong> poblaciones</td>
+</tr>
+<tr class="even">
+<td>Células íntegras en tejido fibroso o congelado</td>
+<td>faltan tipos celulares</td>
+<td>contraste con la histología</td>
+</tr>
+<tr class="odd">
+<td>Baja viabilidad al cargar</td>
+<td>RNA ambiental abundante</td>
+<td>fracción de gotas vacías, perfil del ambiente</td>
+</tr>
+<tr class="even">
+<td>Sobrecarga del canal</td>
+<td>dobletes</td>
+<td>tasa esperada según células cargadas</td>
+</tr>
+</tbody>
+</table>
+<p>Hay una asimetría que conviene notar. Los tres primeros artefactos se ven en las métricas por célula; los tres últimos, no del todo. El sesgo de composición —faltan poblaciones enteras— es invisible para cualquier métrica por célula, porque las células que quedaron pueden ser perfectas. Solo se detecta comparando contra lo que se sabe del tejido, y esa comparación es conocimiento biológico, no una función de R. El estudio sistemático de estos sesgos está en <span class="citation" data-cites="denisenko2020"><span class="nocase">Denisenko et&nbsp;al.</span> (<a href="99-referencias.html#ref-denisenko2020" role="doc-biblioref">2020</a>)</span>.</p>
+</section>
+<section id="las-métricas-por-célula-leídas-como-evidencia" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="las-métricas-por-célula-leídas-como-evidencia"><span class="header-section-number">5.3.3</span> Las métricas por célula, leídas como evidencia</h3>
+<p>Las cuatro métricas habituales no son un trámite: cada una responde a una pregunta distinta sobre lo que ocurrió antes.</p>
+<ul>
+<li><strong>Cuentas totales</strong> por célula. Muy bajas sugieren una gota con poco material; muy altas, un doblete.</li>
+<li><strong>Genes detectados</strong>. Se lee junto con las cuentas: muchas cuentas y pocos genes es el perfil de una célula dominada por unos pocos transcritos, que suele ser daño.</li>
+<li><strong>Proporción mitocondrial</strong>. Elevada indica pérdida de integridad de la membrana, con el citoplasma escapando y el RNA mitocondrial quedándose. Pero no siempre: hay tipos celulares metabólicamente activos —cardiomiocitos, hepatocitos— cuya proporción alta es biología legítima.</li>
+<li><strong>Proporción ribosomal y de hemoglobina</strong>. La segunda delata contaminación por eritrocitos, frecuente en tejido no perfundido.</li>
+</ul>
+<p>La clasificación formal de células de baja calidad, con más métricas y su comportamiento conjunto, está en <span class="citation" data-cites="ilicic2016"><span class="nocase">Ilicic et&nbsp;al.</span> (<a href="99-referencias.html#ref-ilicic2016" role="doc-biblioref">2016</a>)</span>.</p>
+</section>
+<section id="umbrales-de-dónde-tienen-que-salir" class="level3" data-number="5.3.4">
+<h3 data-number="5.3.4" class="anchored" data-anchor-id="umbrales-de-dónde-tienen-que-salir"><span class="header-section-number">5.3.4</span> Umbrales: de dónde tienen que salir</h3>
+<p>El error más común del módulo es copiar los umbrales de un tutorial. «Mitocondrial menor al 5 %, más de 200 genes» funciona razonablemente en PBMC y puede ser desastroso en tejido cardiaco, donde elimina justamente las células de interés.</p>
+<p>La alternativa es derivar el umbral de la distribución de los propios datos. El criterio habitual usa la <strong>desviación absoluta mediana</strong>: se marca como atípica la célula que se aparta de la mediana más de un número dado de desviaciones, típicamente tres <span class="citation" data-cites="mccarthy2017scater">(<a href="99-referencias.html#ref-mccarthy2017scater" role="doc-biblioref">McCarthy et&nbsp;al., 2017</a>)</span>. La mediana y la MAD se eligen, en lugar de la media y la desviación estándar, porque son robustas: los propios valores extremos que se quieren detectar no arrastran el umbral.</p>
+<div class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Importante</span>El umbral se calcula por lote
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Con varios lotes de profundidad distinta, un umbral global se ancla en el lote dominante y elimina casi entero al de menor profundidad. El cálculo se hace <strong>por lote</strong>.</p>
+<p>Esto exige que los metadatos de lote existan en el objeto, que es exactamente lo que se decidió al diseñar el experimento en el <a href="02-diseno-experimental.html" class="quarto-xref"><span>Capítulo 2</span></a>. Un diseño sin lote registrado no permite este cálculo, y a esas alturas ya no hay forma de reconstruirlo.</p>
+</div>
+</div>
+</section>
+<section id="dobletes" class="level3" data-number="5.3.5">
+<h3 data-number="5.3.5" class="anchored" data-anchor-id="dobletes"><span class="header-section-number">5.3.5</span> Dobletes</h3>
+<p>Una gota que captura dos células produce un perfil que mezcla dos programas transcripcionales. Si son de tipos distintos, el resultado puede parecer un tipo celular intermedio y publicarse como tal.</p>
+<p>La tasa esperada no es un misterio: depende del número de células cargadas y la plataforma la documenta. Se usa como <strong>referencia</strong>, no como verdad: un método de detección que encuentra el triple de lo esperado está diciendo algo sobre la carga, y uno que encuentra la mitad puede estar fallando. En el módulo se usa <code>scDblFinder</code>, que simula dobletes artificiales a partir de los propios datos y puntúa cada célula por su parecido con ellos <span class="citation" data-cites="germain2021scdblfinder">(<a href="99-referencias.html#ref-germain2021scdblfinder" role="doc-biblioref">Germain et&nbsp;al., 2021</a>)</span>.</p>
+</section>
+<section id="el-control-de-calidad-no-se-hace-una-sola-vez" class="level3" data-number="5.3.6">
+<h3 data-number="5.3.6" class="anchored" data-anchor-id="el-control-de-calidad-no-se-hace-una-sola-vez"><span class="header-section-number">5.3.6</span> El control de calidad no se hace una sola vez</h3>
+<p>La última idea es de método. El control de calidad se suele tratar como un paso inicial que se despacha antes de lo interesante. Conviene volver a él <strong>después de agrupar</strong>: un grupo con métricas raras —cuentas sistemáticamente bajas, mitocondrial alta, o la firma de disociación— casi siempre es un artefacto que sobrevivió al filtrado, y a esas alturas es fácil confundirlo con un tipo celular.</p>
+<div class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Importante</span>La conclusión de la sesión
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Filtrar es una decisión, no un trámite. Dos criterios razonables aplicados al mismo conjunto de datos producen resultados distintos, y la diferencia no está en cuántas células sobreviven sino en <strong>cuáles</strong>. Por eso el entregable de hoy es el reporte con la justificación, y no la tabla de resultados.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="errores-comunes" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="errores-comunes"><span class="header-section-number">5.4</span> Errores comunes</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Error</th>
+<th>Cómo se detecta</th>
+<th>Cómo se resuelve</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Interpretar la firma de disociación como biología</td>
+<td>Un grupo definido por FOS, JUN, EGR1 y proteínas de choque térmico, presente en varias poblaciones</td>
+<td>Puntuar la firma de estrés antes de anotar. Si atraviesa poblaciones, es técnica. Se prevé con disociación en frío; en el análisis se anota y se decide si se excluye o se modela.</td>
+</tr>
+<tr class="even">
+<td>Copiar los umbrales de un tutorial</td>
+<td>Se pierden poblaciones celulares legítimas sin ningún aviso</td>
+<td>Los umbrales se derivan de la distribución de los propios datos. Umbrales adaptativos por desviación absoluta mediana.</td>
+</tr>
+<tr class="odd">
+<td>Calcular umbrales de forma global cuando hay varios lotes</td>
+<td>El lote con menor profundidad se elimina casi entero</td>
+<td>Calcular por lote. Requiere que los metadatos de lote existan, que es lo que se decidió el 20 de agosto.</td>
+</tr>
+<tr class="even">
+<td>Interpretar todo porcentaje mitocondrial alto como daño</td>
+<td>Se descartan tipos celulares metabólicamente activos</td>
+<td>Contrastar contra el tipo celular esperado. Si la población perdida es coherente entre réplicas, probablemente es biología.</td>
+</tr>
+<tr class="odd">
+<td>Usar células íntegras en tejido fibrótico o congelado</td>
+<td>Faltan poblaciones esperadas; las proporciones no cuadran con la histología</td>
+<td>Núcleos aislados. El sesgo de composición no se detecta con métricas por célula: solo se ve comparando con lo que se sabe del tejido.</td>
+</tr>
+<tr class="even">
+<td>Filtrar dobletes sin considerar la tasa esperada</td>
+<td>Se eliminan células reales, o quedan dobletes que aparecen como un tipo celular nuevo</td>
+<td>La tasa esperada depende del número de células cargadas y la indica la plataforma. Se usa como referencia, no como verdad.</td>
+</tr>
+<tr class="odd">
+<td>Hacer el control de calidad una sola vez y no volver a mirar</td>
+<td>Los problemas aparecen después, al agrupar, y se atribuyen a biología</td>
+<td>El control de calidad se revisita después de agrupar. Un grupo con métricas raras suele ser un artefacto.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="recursos" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="recursos"><span class="header-section-number">5.5</span> Recursos</h2>
+<p>Clúster institucional; R con scuttle, scater y scDblFinder; lista de genes de respuesta a disociación; resultado de detección de dobletes en Python precalculado para contrastar; Seurat para la traducción del mismo filtrado; datos de PBMC y un conjunto de datos de tejido disociado en caliente para contraste; plantilla de reporte en Quarto; tablero de Miro; guion común escrito y ensayado por los tres instructores.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>En línea
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Modalidad en línea Tres instructores, tres salas simultáneas, dos equipos por sala. Cada equipo pega en el tablero de Miro su gráfica de métricas y el número de células que perdió. La plenaria compara los tableros, no los relatos: sin ese soporte visual la comparación entre seis criterios no se sostiene en línea.</p>
+</div>
+</div>
+</section>
+<section id="si-algo-falla" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="si-algo-falla"><span class="header-section-number">5.6</span> Si algo falla</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Si falla</th>
+<th>Plan B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Los tres instructores dan criterios inconsistentes</td>
+<td>Guion común escrito y ensayado antes del 1 de septiembre. Es plan A, no plan B: sin él la plenaria no se puede comparar.</td>
+</tr>
+<tr class="even">
+<td>Los equipos no terminan y la plenaria no cuadra</td>
+<td>Tener los resultados de todos los criterios precalculados y publicarlos en el tablero.</td>
+</tr>
+<tr class="odd">
+<td>No se consigue un conjunto de datos con firma de disociación marcada</td>
+<td>Se usa la figura publicada del artículo de 2017 y se puntúa la firma sobre los datos de PBMC, donde aparece débil. El contraste se pierde, pero el método se enseña igual.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="referencias" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="referencias"><span class="header-section-number">5.7</span> Referencias</h2>
+<ul>
+<li>El artefacto de disociación, descrito por primera vez: <span class="citation" data-cites="vandenbrink2017"><span class="nocase">Brink et&nbsp;al.</span> (<a href="99-referencias.html#ref-vandenbrink2017" role="doc-biblioref">2017</a>)</span>.</li>
+<li>Cómo se previene en el laboratorio, con proteasa activa en frío: <span class="citation" data-cites="oflanagan2019"><span class="nocase">O’Flanagan et&nbsp;al.</span> (<a href="99-referencias.html#ref-oflanagan2019" role="doc-biblioref">2019</a>)</span>.</li>
+<li>Evaluación sistemática de sesgos por disociación y almacenamiento: <span class="citation" data-cites="denisenko2020"><span class="nocase">Denisenko et&nbsp;al.</span> (<a href="99-referencias.html#ref-denisenko2020" role="doc-biblioref">2020</a>)</span>.</li>
+<li>Métricas por célula y umbrales adaptativos: <span class="citation" data-cites="mccarthy2017scater">McCarthy et&nbsp;al. (<a href="99-referencias.html#ref-mccarthy2017scater" role="doc-biblioref">2017</a>)</span>.</li>
+<li>Clasificación de células de baja calidad: <span class="citation" data-cites="ilicic2016"><span class="nocase">Ilicic et&nbsp;al.</span> (<a href="99-referencias.html#ref-ilicic2016" role="doc-biblioref">2016</a>)</span>.</li>
+<li>Detección de dobletes: <span class="citation" data-cites="germain2021scdblfinder">Germain et&nbsp;al. (<a href="99-referencias.html#ref-germain2021scdblfinder" role="doc-biblioref">2021</a>)</span>.</li>
+<li>Panorama del flujo completo: <span class="citation" data-cites="luecken2019bestpractices">Luecken &amp; Theis (<a href="99-referencias.html#ref-luecken2019bestpractices" role="doc-biblioref">2019</a>)</span>.</li>
+</ul>
+<p>El texto de referencia del módulo, con las rutas de Bioconductor, es <span class="citation" data-cites="amezquita2020osca">Amezquita et&nbsp;al. (<a href="99-referencias.html#ref-amezquita2020osca" role="doc-biblioref">2020</a>)</span>.</p>
+
+
+<!-- -->
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-amezquita2020osca" class="csl-entry" role="listitem">
+Amezquita, R. A., Lun, A. T. L., Becht, E., Carey, V. J., Carpp, L. N., Geistlinger, L., Marini, F., Rue-Albrecht, K., Risso, D., Soneson, C., Waldron, L., Pagès, H., Smith, M. L., Huber, W., Morgan, M., Gottardo, R., &amp; Hicks, S. C. (2020). Orchestrating single-cell analysis with <span>Bioconductor</span>. <em>Nature Methods</em>, <em>17</em>(2), 137-145. <a href="https://doi.org/10.1038/s41592-019-0654-x">https://doi.org/10.1038/s41592-019-0654-x</a>
+</div>
+<div id="ref-vandenbrink2017" class="csl-entry" role="listitem">
+<span class="nocase">Brink, S. C. van den, Sage, F., Vértesy, Á., Spanjaard, B., Peterson-Maduro, J., Baron, C. S., et&nbsp;al.</span> (2017). Single-cell sequencing reveals dissociation-induced gene expression in tissue subpopulations. <em>Nature Methods</em>, <em>14</em>, 935-936. <a href="https://doi.org/10.1038/nmeth.4437">https://doi.org/10.1038/nmeth.4437</a>
+</div>
+<div id="ref-denisenko2020" class="csl-entry" role="listitem">
+<span class="nocase">Denisenko, E., Guo, B. B., Jones, M., Hou, R., Kock, L. de, Lassmann, T., et&nbsp;al.</span> (2020). Systematic assessment of tissue dissociation and storage biases in single-cell and single-nucleus <span>RNA</span>-seq workflows. <em>Genome Biology</em>, <em>21</em>, 130. <a href="https://doi.org/10.1186/s13059-020-02048-6">https://doi.org/10.1186/s13059-020-02048-6</a>
+</div>
+<div id="ref-germain2021scdblfinder" class="csl-entry" role="listitem">
+Germain, P.-L., Lun, A., Macnair, W., &amp; Robinson, M. D. (2021). Doublet identification in single-cell sequencing data using <span>scDblFinder</span>. <em>F1000Research</em>, <em>10</em>, 979. <a href="https://doi.org/10.12688/f1000research.73600.1">https://doi.org/10.12688/f1000research.73600.1</a>
+</div>
+<div id="ref-ilicic2016" class="csl-entry" role="listitem">
+<span class="nocase">Ilicic, T., Kim, J. K., Kolodziejczyk, A. A., Bagger, F. O., McCarthy, D. J., Marioni, J. C., et&nbsp;al.</span> (2016). Classification of low quality cells from single-cell <span>RNA</span>-seq data. <em>Genome Biology</em>, <em>17</em>, 29. <a href="https://doi.org/10.1186/s13059-016-0888-1">https://doi.org/10.1186/s13059-016-0888-1</a>
+</div>
+<div id="ref-luecken2019bestpractices" class="csl-entry" role="listitem">
+Luecken, M. D., &amp; Theis, F. J. (2019). Current best practices in single-cell <span>RNA</span>-seq analysis: a tutorial. <em>Molecular Systems Biology</em>, <em>15</em>(6), e8746. <a href="https://doi.org/10.15252/msb.20188746">https://doi.org/10.15252/msb.20188746</a>
+</div>
+<div id="ref-mccarthy2017scater" class="csl-entry" role="listitem">
+McCarthy, D. J., Campbell, K. R., Lun, A. T. L., &amp; Wills, Q. F. (2017). <span>Scater</span>: pre-processing, quality control, normalization and visualization of single-cell <span>RNA</span>-seq data in R. <em>Bioinformatics</em>, <em>33</em>, 1179-1186. <a href="https://doi.org/10.1093/bioinformatics/btw777">https://doi.org/10.1093/bioinformatics/btw777</a>
+</div>
+<div id="ref-oflanagan2019" class="csl-entry" role="listitem">
+<span class="nocase">O’Flanagan, C. H., Campbell, K. R., Zhang, A. W., Kabeer, F., Lim, J. L. P., Biele, J., et&nbsp;al.</span> (2019). Dissociation of solid tumor tissues with cold active protease for single-cell <span>RNA</span>-seq minimizes conserved collagenase-associated stress responses. <em>Genome Biology</em>, <em>20</em>, 210. <a href="https://doi.org/10.1186/s13059-019-1830-0">https://doi.org/10.1186/s13059-019-1830-0</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./04-de-matriz-a-objeto.html" class="pagination-link" aria-label="De matriz a objeto listo. Rutas de importación y estructuras de datos">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">De matriz a objeto listo. Rutas de importación y estructuras de datos</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./06-practica-integradora.html" class="pagination-link" aria-label="Práctica integradora y arranque del proyecto">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Práctica integradora y arranque del proyecto</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Control de calidad: del experimento a los datos {#sec-s05}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ANDAMIO GENERADO. No edites el objetivo ni las tablas de esta seccion</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">     a mano: salen de docs/planeacion/sesiones.yml, que a su vez sale del</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">     plan operativo en Word. Para cambiarlos, edita el .docx y vuelve a</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">     correr scripts/python/06-extraer-plan.py y 07-generar-sesiones.py.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">     El desarrollo del capitulo SI se escribe a mano, debajo. --&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>**Sesión 05 · Martes 1 de septiembre de 2026** · sesión práctica, 120 minutos</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Imparten: Luis Alberto Meza Cova, José Antonio Ovando Ricárdez y Alfredo Morales Salazar</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Objetivo</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>Reconocer que la calidad de un experimento de célula única se decide en el laboratorio y no en el análisis; identificar qué decisión experimental produce cada artefacto observable en los datos; y aplicar los criterios bioinformáticos que permiten detectarlos, decidiendo con criterio explícito y defendible qué células se descartan.</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cómo se desarrolla la sesión</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>Práctica guiada por tres instructores, con los equipos repartidos en salas simultáneas. La sesión recorre la cadena completa: qué decisión se tomó en el laboratorio, qué artefacto produce en la matriz y con qué herramienta se detecta. Se revisan el tiempo de isquemia y el almacenamiento, el método y la temperatura de disociación y su firma de estrés, la elección entre células íntegras y núcleos aislados, la viabilidad al cargar y la carga del canal. Después, las métricas de calidad por célula (cuentas totales, genes detectados y proporción de lecturas mitocondriales, ribosomales y de hemoglobina) y qué revela cada una sobre lo que ocurrió en el banco de trabajo. Umbrales fijos frente a umbrales adaptativos basados en la desviación absoluta mediana, y por qué el umbral debe calcularse por lote. Discusión del caso en que una proporción mitocondrial elevada corresponde a biología legítima y no a daño celular. Identificación de dobletes y su relación con el número de células cargadas. Actividad central: cada equipo aplica un criterio de filtrado distinto al mismo conjunto de datos; en plenaria se comparan cuántas células descartó cada criterio y, sobre todo, qué poblaciones celulares desaparecieron con cada uno.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**6** bloques en 120 minutos, con descansos entre ellos</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Se alterna explicacion y trabajo propio</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## Caso de aplicación</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>Caso de aplicación: el tipo celular que era el protocolo: en 2017 se documentó que la disociación enzimática a 37 grados induce una respuesta de estrés —FOS, JUN, JUNB, EGR1 y proteínas de choque térmico— en una fracción de las células. Esa fracción aparece después como un grupo propio, con marcadores coherentes y reproducible entre muestras, y se ha publicado más de una vez como un estado celular novedoso. No lo es: es el protocolo. La consecuencia práctica para el curso es doble. Primero, el artefacto no se corrige filtrando, porque las células afectadas están vivas y tienen buenas métricas. Segundo, se previene en el laboratorio, usando proteasa activa en frío, y se detecta en el análisis puntuando esa firma antes de interpretar cualquier grupo. Es el ejemplo más claro de que la calidad se decide antes de secuenciar.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Desarrollo</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">### El tipo celular que era el protocolo</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>En 2017 se documentó algo incómodo: la disociación enzimática a 37 °C induce una</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>respuesta de estrés en una fracción de las células. Los genes son reconocibles</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>—*FOS*, *JUN*, *JUNB*, *EGR1* y proteínas de choque térmico— y la fracción</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>afectada aparece después como un grupo propio, con marcadores coherentes y</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>reproducible entre muestras <span class="co">[</span><span class="ot">@vandenbrink2017</span><span class="co">]</span>.</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>Se ha publicado más de una vez como un estado celular novedoso. No lo es: es el</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>protocolo.</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>El caso importa por dos razones prácticas, y conviene enunciarlas por separado.</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>La primera es que **el artefacto no se corrige filtrando**. Las células</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>afectadas están vivas, tienen buenas cuentas, buenos genes detectados y una</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>proporción mitocondrial normal. Ningún umbral de calidad las separa, porque por</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>todas las métricas de calidad son células buenas. Lo que tienen de anómalo es su</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>programa transcripcional, y eso no es un criterio de filtrado.</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>La segunda es que **se previene en el laboratorio**. Disociar con proteasa</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>activa en frío reduce la respuesta de forma sustancial <span class="co">[</span><span class="ot">@oflanagan2019</span><span class="co">]</span>. Es una</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>decisión que se toma antes de secuenciar y que ningún análisis posterior puede</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>recuperar.</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>De ahí la afirmación que organiza toda la sesión: la calidad de un experimento</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>de célula única se decide en el laboratorio. El análisis la mide; no la produce.</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="fu">### La cadena, decisión por decisión</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>Cada decisión experimental deja una huella medible. La tabla siguiente es el</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>mapa de la sesión: se lee de izquierda a derecha, del banco de trabajo a la</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>matriz, y es también el orden en que conviene revisar un conjunto de datos</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>ajeno.</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Decisión <span class="pp">|</span> Artefacto <span class="pp">|</span> Cómo se detecta <span class="pp">|</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Tiempo de isquemia prolongado <span class="pp">|</span> muerte celular <span class="pp">|</span> proporción mitocondrial elevada <span class="pp">|</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Almacenamiento antes de procesar <span class="pp">|</span> pérdida de poblaciones frágiles <span class="pp">|</span> composición incoherente con el tejido <span class="pp">|</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Disociación a 37 °C <span class="pp">|</span> firma de estrés <span class="pp">|</span> puntuación de la firma, que **atraviesa** poblaciones <span class="pp">|</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Células íntegras en tejido fibroso o congelado <span class="pp">|</span> faltan tipos celulares <span class="pp">|</span> contraste con la histología <span class="pp">|</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Baja viabilidad al cargar <span class="pp">|</span> RNA ambiental abundante <span class="pp">|</span> fracción de gotas vacías, perfil del ambiente <span class="pp">|</span></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Sobrecarga del canal <span class="pp">|</span> dobletes <span class="pp">|</span> tasa esperada según células cargadas <span class="pp">|</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>Hay una asimetría que conviene notar. Los tres primeros artefactos se ven en las</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>métricas por célula; los tres últimos, no del todo. El sesgo de composición</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>—faltan poblaciones enteras— es invisible para cualquier métrica por célula,</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>porque las células que quedaron pueden ser perfectas. Solo se detecta comparando</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>contra lo que se sabe del tejido, y esa comparación es conocimiento biológico,</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>no una función de R. El estudio sistemático de estos sesgos está en</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>@denisenko2020.</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="fu">### Las métricas por célula, leídas como evidencia</span></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>Las cuatro métricas habituales no son un trámite: cada una responde a una</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>pregunta distinta sobre lo que ocurrió antes.</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cuentas totales** por célula. Muy bajas sugieren una gota con poco material;</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>  muy altas, un doblete.</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Genes detectados**. Se lee junto con las cuentas: muchas cuentas y pocos</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>  genes es el perfil de una célula dominada por unos pocos transcritos, que</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>  suele ser daño.</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Proporción mitocondrial**. Elevada indica pérdida de integridad de la</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>  membrana, con el citoplasma escapando y el RNA mitocondrial quedándose. Pero</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>  no siempre: hay tipos celulares metabólicamente activos —cardiomiocitos,</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>  hepatocitos— cuya proporción alta es biología legítima.</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Proporción ribosomal y de hemoglobina**. La segunda delata contaminación por</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  eritrocitos, frecuente en tejido no perfundido.</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>La clasificación formal de células de baja calidad, con más métricas y su</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>comportamiento conjunto, está en @ilicic2016.</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="fu">### Umbrales: de dónde tienen que salir</span></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>El error más común del módulo es copiar los umbrales de un tutorial. «Mitocondrial</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>menor al 5 %, más de 200 genes» funciona razonablemente en PBMC y puede ser</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>desastroso en tejido cardiaco, donde elimina justamente las células de interés.</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>La alternativa es derivar el umbral de la distribución de los propios datos. El</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>criterio habitual usa la **desviación absoluta mediana**: se marca como atípica</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>la célula que se aparta de la mediana más de un número dado de desviaciones,</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>típicamente tres <span class="co">[</span><span class="ot">@mccarthy2017scater</span><span class="co">]</span>. La mediana y la MAD se eligen, en lugar</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>de la media y la desviación estándar, porque son robustas: los propios valores</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>extremos que se quieren detectar no arrastran el umbral.</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a><span class="fu">## El umbral se calcula por lote</span></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>Con varios lotes de profundidad distinta, un umbral global se ancla en el lote</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>dominante y elimina casi entero al de menor profundidad. El cálculo se hace **por</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>lote**.</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>Esto exige que los metadatos de lote existan en el objeto, que es exactamente lo</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>que se decidió al diseñar el experimento en el @sec-s02. Un diseño sin lote</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>registrado no permite este cálculo, y a esas alturas ya no hay forma de</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>reconstruirlo.</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="fu">### Dobletes</span></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>Una gota que captura dos células produce un perfil que mezcla dos programas</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>transcripcionales. Si son de tipos distintos, el resultado puede parecer un tipo</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>celular intermedio y publicarse como tal.</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>La tasa esperada no es un misterio: depende del número de células cargadas y la</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>plataforma la documenta. Se usa como **referencia**, no como verdad: un método</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>de detección que encuentra el triple de lo esperado está diciendo algo sobre la</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>carga, y uno que encuentra la mitad puede estar fallando. En el módulo se usa</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a><span class="in">`scDblFinder`</span>, que simula dobletes artificiales a partir de los propios datos y</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>puntúa cada célula por su parecido con ellos <span class="co">[</span><span class="ot">@germain2021scdblfinder</span><span class="co">]</span>.</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a><span class="fu">### El control de calidad no se hace una sola vez</span></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>La última idea es de método. El control de calidad se suele tratar como un paso</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>inicial que se despacha antes de lo interesante. Conviene volver a él **después</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>de agrupar**: un grupo con métricas raras —cuentas sistemáticamente bajas,</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>mitocondrial alta, o la firma de disociación— casi siempre es un artefacto que</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>sobrevivió al filtrado, y a esas alturas es fácil confundirlo con un tipo</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>celular.</span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a><span class="fu">## La conclusión de la sesión</span></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>Filtrar es una decisión, no un trámite. Dos criterios razonables aplicados al</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>mismo conjunto de datos producen resultados distintos, y la diferencia no está</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>en cuántas células sobreviven sino en **cuáles**. Por eso el entregable de hoy</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>es el reporte con la justificación, y no la tabla de resultados.</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="fu">## Errores comunes</span></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Error <span class="pp">|</span> Cómo se detecta <span class="pp">|</span> Cómo se resuelve <span class="pp">|</span></span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Interpretar la firma de disociación como biología <span class="pp">|</span> Un grupo definido por FOS, JUN, EGR1 y proteínas de choque térmico, presente en varias poblaciones <span class="pp">|</span> Puntuar la firma de estrés antes de anotar. Si atraviesa poblaciones, es técnica. Se prevé con disociación en frío; en el análisis se anota y se decide si se excluye o se modela. <span class="pp">|</span></span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Copiar los umbrales de un tutorial <span class="pp">|</span> Se pierden poblaciones celulares legítimas sin ningún aviso <span class="pp">|</span> Los umbrales se derivan de la distribución de los propios datos. Umbrales adaptativos por desviación absoluta mediana. <span class="pp">|</span></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Calcular umbrales de forma global cuando hay varios lotes <span class="pp">|</span> El lote con menor profundidad se elimina casi entero <span class="pp">|</span> Calcular por lote. Requiere que los metadatos de lote existan, que es lo que se decidió el 20 de agosto. <span class="pp">|</span></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Interpretar todo porcentaje mitocondrial alto como daño <span class="pp">|</span> Se descartan tipos celulares metabólicamente activos <span class="pp">|</span> Contrastar contra el tipo celular esperado. Si la población perdida es coherente entre réplicas, probablemente es biología. <span class="pp">|</span></span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Usar células íntegras en tejido fibrótico o congelado <span class="pp">|</span> Faltan poblaciones esperadas; las proporciones no cuadran con la histología <span class="pp">|</span> Núcleos aislados. El sesgo de composición no se detecta con métricas por célula: solo se ve comparando con lo que se sabe del tejido. <span class="pp">|</span></span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Filtrar dobletes sin considerar la tasa esperada <span class="pp">|</span> Se eliminan células reales, o quedan dobletes que aparecen como un tipo celular nuevo <span class="pp">|</span> La tasa esperada depende del número de células cargadas y la indica la plataforma. Se usa como referencia, no como verdad. <span class="pp">|</span></span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Hacer el control de calidad una sola vez y no volver a mirar <span class="pp">|</span> Los problemas aparecen después, al agrupar, y se atribuyen a biología <span class="pp">|</span> El control de calidad se revisita después de agrupar. Un grupo con métricas raras suele ser un artefacto. <span class="pp">|</span></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a><span class="fu">## Recursos</span></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>Clúster institucional; R con scuttle, scater y scDblFinder; lista de genes de respuesta a disociación; resultado de detección de dobletes en Python precalculado para contrastar; Seurat para la traducción del mismo filtrado; datos de PBMC y un conjunto de datos de tejido disociado en caliente para contraste; plantilla de reporte en Quarto; tablero de Miro; guion común escrito y ensayado por los tres instructores.</span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="fu">## En línea</span></span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>Modalidad en línea Tres instructores, tres salas simultáneas, dos equipos por sala. Cada equipo pega en el tablero de Miro su gráfica de métricas y el número de células que perdió. La plenaria compara los tableros, no los relatos: sin ese soporte visual la comparación entre seis criterios no se sostiene en línea.</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a><span class="fu">## Si algo falla</span></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Si falla <span class="pp">|</span> Plan B <span class="pp">|</span></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Los tres instructores dan criterios inconsistentes <span class="pp">|</span> Guion común escrito y ensayado antes del 1 de septiembre. Es plan A, no plan B: sin él la plenaria no se puede comparar. <span class="pp">|</span></span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Los equipos no terminan y la plenaria no cuadra <span class="pp">|</span> Tener los resultados de todos los criterios precalculados y publicarlos en el tablero. <span class="pp">|</span></span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> No se consigue un conjunto de datos con firma de disociación marcada <span class="pp">|</span> Se usa la figura publicada del artículo de 2017 y se puntúa la firma sobre los datos de PBMC, donde aparece débil. El contraste se pierde, pero el método se enseña igual. <span class="pp">|</span></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referencias</span></span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>El artefacto de disociación, descrito por primera vez: @vandenbrink2017.</span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Cómo se previene en el laboratorio, con proteasa activa en frío: @oflanagan2019.</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Evaluación sistemática de sesgos por disociación y almacenamiento: @denisenko2020.</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Métricas por célula y umbrales adaptativos: @mccarthy2017scater.</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Clasificación de células de baja calidad: @ilicic2016.</span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Detección de dobletes: @germain2021scdblfinder.</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Panorama del flujo completo: @luecken2019bestpractices.</span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>El texto de referencia del módulo, con las rutas de Bioconductor, es</span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>@amezquita2020osca.</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Bioinformática y Estadística 3 · LCG-UNAM · LABBIC-INER · <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.es">CC BY-NC 4.0</a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Hecho con <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

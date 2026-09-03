@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Smart-seq2 frente a Smart-seq3: dónde entra el UMI">
+  <defs>
+    <style>
+      .t   { font-family: "Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .tit { font-size: 26px; font-weight: 700; }
+      .eti { font-size: 24px; font-weight: 700; }
+      .nota{ font-size: 24px; font-weight: 600; fill:#5A6373; }
+    </style>
+  </defs>
+
+  <!-- ══════ Smart-seq2 ══════ -->
+  <g transform="translate(0,10)">
+    <text class="t tit" x="40" y="28" fill="#141A4A">Smart-seq2</text>
+
+    <text class="t eti" x="150" y="88" fill="#6E5E00">TSO</text>
+    <rect x="150" y="96" width="210" height="22" rx="11" fill="#6E5E00"/>
+    <rect x="366" y="96" width="430" height="22" rx="11" fill="#2B3FA8"/>
+    <text class="t eti" x="581" y="88" text-anchor="middle" fill="#2B3FA8">cDNA de longitud completa</text>
+    <rect x="802" y="96" width="150" height="22" rx="11" fill="#937E00"/>
+    <text class="t eti" x="877" y="88" text-anchor="middle" fill="#6E5E00">poli-dT</text>
+
+    <rect x="150" y="132" width="210" height="34" rx="8" fill="#ffffff" stroke="#6E5E00" stroke-width="3" stroke-dasharray="7 5"/>
+    <text class="t eti" x="255" y="156" text-anchor="middle" fill="#6E5E00">sin UMI</text>
+
+    <text class="t tit" x="990" y="118" fill="#A01B2B">cuenta lecturas</text>
+  </g>
+
+  <line x1="40" y1="200" x2="1140" y2="200" stroke="#DDD8C6" stroke-width="2"/>
+
+  <!-- ══════ Smart-seq3 ══════ -->
+  <g transform="translate(0,232)">
+    <text class="t tit" x="40" y="28" fill="#141A4A">Smart-seq3</text>
+
+    <text class="t eti" x="150" y="88" fill="#6E5E00">TSO</text>
+    <rect x="150" y="96" width="100" height="22" rx="11" fill="#6E5E00"/>
+    <rect x="256" y="96" width="104" height="22" rx="11" fill="#2E9AA6"/>
+    <rect x="366" y="96" width="430" height="22" rx="11" fill="#2B3FA8"/>
+    <rect x="802" y="96" width="150" height="22" rx="11" fill="#937E00"/>
+    <text class="t eti" x="877" y="88" text-anchor="middle" fill="#6E5E00">poli-dT</text>
+
+    <rect x="252" y="132" width="112" height="34" rx="8" fill="#ffffff" stroke="#2E9AA6" stroke-width="3"/>
+    <text class="t eti" x="308" y="156" text-anchor="middle" fill="#2E9AA6">UMI</text>
+    <line x1="308" y1="128" x2="308" y2="118" stroke="#2E9AA6" stroke-width="3"/>
+
+    <text class="t tit" x="990" y="118" fill="#1F7A3D">cuenta moléculas</text>
+  </g>
+
+  <text class="t nota" x="590" y="424" text-anchor="middle">el UMI va dentro del TSO, que ya estaba ahí: mismo protocolo, distinta unidad de conteo</text>
+</svg>

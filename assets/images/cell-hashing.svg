@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Cell Hashing: un anticuerpo contra una proteína de superficie lleva colgando un oligo con el código de la muestra">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .seq { font-family:ui-monospace,"Cascadia Mono",Consolas,monospace; font-size:24px; font-weight:700; fill:#ffffff; }
+    </style>
+  </defs>
+
+  <!-- membrana de la célula -->
+  <path d="M40,300 Q300,246 560,300" fill="none" stroke="#2B3FA8" stroke-width="7"/>
+  <path d="M40,318 Q300,264 560,318" fill="none" stroke="#2B3FA8" stroke-width="7"/>
+  <text class="t cap" x="40" y="380">membrana de la célula</text>
+
+  <!-- proteína de superficie -->
+  <rect x="278" y="222" width="44" height="52" rx="8" fill="#5A6373"/>
+  <text class="t cap" x="196" y="212" text-anchor="end">proteína de</text>
+  <text class="t cap" x="196" y="242" text-anchor="end">superficie</text>
+  <line x1="206" y1="232" x2="270" y2="240" stroke="#5A6373" stroke-width="2"/>
+
+  <!-- anticuerpo en Y -->
+  <path d="M300,222 L300,180 M300,180 L270,142 M300,180 L330,142"
+        fill="none" stroke="#000977" stroke-width="9" stroke-linecap="round"/>
+  <text class="t eti" x="352" y="152" fill="#000977">anticuerpo</text>
+
+  <!-- el oligo que cuelga -->
+  <line x1="330" y1="142" x2="392" y2="106" stroke="#5A6373" stroke-width="4"/>
+  <rect x="400" y="76" width="150" height="30" rx="15" fill="#2E9AA6"/>
+  <text class="t seq" x="475" y="99" text-anchor="middle">HTO-1</text>
+  <text class="t eti" x="572" y="99" fill="#2E9AA6">código de la muestra</text>
+
+  <!-- lo que hay que saber -->
+  <line x1="640" y1="150" x2="640" y2="360" stroke="#DDD8C6" stroke-width="2"/>
+  <text class="t eti" x="680" y="180" fill="#141A4A">Se pega a proteínas que tienen</text>
+  <text class="t eti" x="680" y="212" fill="#141A4A">casi todas las nucleadas.</text>
+
+  <text class="t cap" x="680" y="268">Una muestra, un HTO distinto.</text>
+  <text class="t cap" x="680" y="300">Se mezclan y van a la misma corrida.</text>
+
+  <text class="t eti" x="680" y="352" fill="#A01B2B">No sirve en núcleos:</text>
+  <text class="t cap" x="680" y="386">no tienen esa proteína</text>
+</svg>

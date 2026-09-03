@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Hoja de muestras: una fila por muestra, con condición, lote, donante, sexo, edad y sitio">
+  <!-- Lienzo 1180x430 como el resto de las figuras del modulo: r-stretch lo
+       escala x1.085 y el texto de 24 px acaba en 26, por encima del piso de 24. -->
+  <defs>
+    <style>
+      .t    { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .cab  { font-size:24px; font-weight:700; }
+      .eti  { font-size:24px; font-weight:600; }
+      .cap  { font-size:24px; font-weight:600; fill:#5A6373; }
+      .banda{ fill:#E7E9F7; }
+      /* La animacion resalta las tres columnas que se olvidan. En CSS, no en
+         SMIL, para que prefers-reduced-motion la pueda apagar. */
+      .resalta { fill:#F3EFDD; opacity:0; animation: latir 4.5s ease-in-out infinite; }
+      @keyframes latir { 0%,52%,100% { opacity:0 } 70%,88% { opacity:1 } }
+      @media (prefers-reduced-motion: reduce) {
+        .resalta { animation:none; opacity:1; }
+      }
+    </style>
+  </defs>
+
+  <!-- resalte detras de sexo, edad y sitio -->
+  <rect class="resalta" x="456" y="50" width="306" height="296" rx="10"/>
+
+  <!-- bandas de fila, alternas -->
+  <rect class="banda" x="24" y="92"  width="740" height="42" rx="6"/>
+  <rect class="banda" x="24" y="176" width="740" height="42" rx="6"/>
+  <rect class="banda" x="24" y="260" width="740" height="42" rx="6"/>
+
+  <!-- encabezado -->
+  <text class="t cab" x="30"  y="74">muestra</text>
+  <text class="t cab" x="141" y="74">condición</text>
+  <text class="t cab" x="277" y="74">lote</text>
+  <text class="t cab" x="351" y="74">donante</text>
+  <text class="t cab" x="462" y="74" fill="#6E5E00">sexo</text>
+  <text class="t cab" x="536" y="74" fill="#6E5E00">edad</text>
+  <text class="t cab" x="610" y="74" fill="#6E5E00">sitio</text>
+  <line x1="24" y1="84" x2="764" y2="84" stroke="#000977" stroke-width="3"/>
+
+  <!-- tres casos -->
+  <text class="t eti" x="30"  y="122">S1</text>
+  <text class="t eti" x="141" y="122" fill="#000977">caso</text>
+  <text class="t eti" x="277" y="122">L1</text>
+  <text class="t eti" x="351" y="122">D1</text>
+  <text class="t eti" x="462" y="122">M</text>
+  <text class="t eti" x="536" y="122">41</text>
+  <text class="t eti" x="610" y="122">Juriquilla</text>
+
+  <text class="t eti" x="30"  y="164">S2</text>
+  <text class="t eti" x="141" y="164" fill="#000977">caso</text>
+  <text class="t eti" x="277" y="164">L2</text>
+  <text class="t eti" x="351" y="164">D2</text>
+  <text class="t eti" x="462" y="164">H</text>
+  <text class="t eti" x="536" y="164">38</text>
+  <text class="t eti" x="610" y="164">CU</text>
+
+  <text class="t eti" x="30"  y="206">S3</text>
+  <text class="t eti" x="141" y="206" fill="#000977">caso</text>
+  <text class="t eti" x="277" y="206">L1</text>
+  <text class="t eti" x="351" y="206">D3</text>
+  <text class="t eti" x="462" y="206">H</text>
+  <text class="t eti" x="536" y="206">45</text>
+  <text class="t eti" x="610" y="206">Juriquilla</text>
+
+  <!-- tres controles -->
+  <text class="t eti" x="30"  y="248">S4</text>
+  <text class="t eti" x="141" y="248" fill="#6E5E00">control</text>
+  <text class="t eti" x="277" y="248">L2</text>
+  <text class="t eti" x="351" y="248">D4</text>
+  <text class="t eti" x="462" y="248">M</text>
+  <text class="t eti" x="536" y="248">40</text>
+  <text class="t eti" x="610" y="248">CU</text>
+
+  <text class="t eti" x="30"  y="290">S5</text>
+  <text class="t eti" x="141" y="290" fill="#6E5E00">control</text>
+  <text class="t eti" x="277" y="290">L1</text>
+  <text class="t eti" x="351" y="290">D5</text>
+  <text class="t eti" x="462" y="290">H</text>
+  <text class="t eti" x="536" y="290">44</text>
+  <text class="t eti" x="610" y="290">Juriquilla</text>
+
+  <text class="t eti" x="30"  y="332">S6</text>
+  <text class="t eti" x="141" y="332" fill="#6E5E00">control</text>
+  <text class="t eti" x="277" y="332">L2</text>
+  <text class="t eti" x="351" y="332">D6</text>
+  <text class="t eti" x="462" y="332">M</text>
+  <text class="t eti" x="536" y="332">37</text>
+  <text class="t eti" x="610" y="332">CU</text>
+
+  <text class="t cap" x="30" y="384">seis muestras, seis donantes distintos</text>
+  <text class="t cap" x="30" y="418">y los dos lotes llevan las dos condiciones</text>
+
+  <!-- columna derecha -->
+  <line x1="820" y1="30" x2="820" y2="400" stroke="#BDB69F" stroke-width="2"/>
+  <text class="t eti" x="856" y="100">una fila por muestra,</text>
+  <text class="t eti" x="856" y="134">nunca por célula</text>
+
+  <text class="t eti" x="856" y="208" fill="#000977">el lote balanceado es</text>
+  <text class="t eti" x="856" y="242" fill="#000977">lo que compra el</text>
+  <text class="t eti" x="856" y="276" fill="#000977">multiplexado</text>
+
+  <text class="t eti" x="856" y="350" fill="#6E5E00">sexo, edad y sitio:</text>
+  <text class="t eti" x="856" y="384" fill="#6E5E00">se registran hoy, o</text>
+  <text class="t eti" x="856" y="418" fill="#6E5E00">no existen después</text>
+</svg>

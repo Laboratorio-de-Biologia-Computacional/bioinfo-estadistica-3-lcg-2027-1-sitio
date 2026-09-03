@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="En gota el adaptador viene del oligo de la perla y solo un fragmento amplifica; en placa la transposasa pone adaptador en todos">
+  <defs>
+    <marker id="fGris" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5A6373"/>
+    </marker>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .tit { font-size:26px; font-weight:700; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+    </style>
+  </defs>
+
+  <!-- ══════ GOTA ══════ -->
+  <text class="t tit" x="30" y="60" fill="#000977">Gota</text>
+  <text class="t cap" x="240" y="32" text-anchor="middle" fill="#6E5E00">TSO</text>
+  <text class="t cap" x="960" y="32" text-anchor="middle" fill="#000977">código, de la perla</text>
+  <rect x="200" y="42" width="80"  height="18" rx="9" fill="#6E5E00"/>
+  <rect x="286" y="42" width="560" height="18" rx="9" fill="#2B3FA8"/>
+  <rect x="852" y="42" width="70"  height="18" rx="9" fill="#2E9AA6"/>
+  <rect x="928" y="42" width="110" height="18" rx="9" fill="#000977"/>
+
+  <line x1="480" y1="74" x2="480" y2="106" stroke="#5A6373" stroke-width="3" marker-end="url(#fGris)"/>
+  <text class="t cap" x="504" y="100">se amplifica y se fragmenta</text>
+
+  <g opacity="0.28">
+    <rect x="200" y="120" width="150" height="18" rx="9" fill="#8A93A8"/>
+    <rect x="358" y="120" width="150" height="18" rx="9" fill="#8A93A8"/>
+    <rect x="516" y="120" width="150" height="18" rx="9" fill="#8A93A8"/>
+    <rect x="674" y="120" width="150" height="18" rx="9" fill="#8A93A8"/>
+  </g>
+  <rect x="832" y="120" width="206" height="18" rx="9" fill="#2B3FA8"/>
+  <rect x="960" y="120" width="78"  height="18" rx="9" fill="#000977"/>
+  <rect x="826" y="114" width="218" height="30" rx="8" fill="none" stroke="#A01B2B" stroke-width="3"/>
+
+  <text class="t eti" x="30" y="180" fill="#A01B2B">el adaptador está en un extremo:</text>
+  <text class="t eti" x="30" y="212" fill="#A01B2B">solo ese fragmento amplifica</text>
+
+  <line x1="30" y1="236" x2="1150" y2="236" stroke="#DDD8C6" stroke-width="2"/>
+
+  <!-- ══════ PLACA ══════ -->
+  <text class="t tit" x="30" y="292" fill="#000977">Placa</text>
+  <text class="t cap" x="240"  y="264" text-anchor="middle" fill="#6E5E00">TSO</text>
+  <text class="t cap" x="1000" y="264" text-anchor="middle" fill="#6E5E00">poli-dT libre</text>
+  <rect x="200" y="274" width="80"  height="18" rx="9" fill="#6E5E00"/>
+  <rect x="286" y="274" width="672" height="18" rx="9" fill="#2B3FA8"/>
+  <rect x="964" y="274" width="74"  height="18" rx="9" fill="#937E00"/>
+
+  <line x1="480" y1="306" x2="480" y2="338" stroke="#5A6373" stroke-width="3" marker-end="url(#fGris)"/>
+  <text class="t cap" x="504" y="332">la transposasa corta e inserta adaptadores</text>
+
+  <rect x="200" y="352" width="150" height="18" rx="9" fill="#2B3FA8"/>
+  <rect x="358" y="352" width="150" height="18" rx="9" fill="#2B3FA8"/>
+  <rect x="516" y="352" width="150" height="18" rx="9" fill="#2B3FA8"/>
+  <rect x="674" y="352" width="150" height="18" rx="9" fill="#2B3FA8"/>
+  <rect x="832" y="352" width="206" height="18" rx="9" fill="#2B3FA8"/>
+  <rect x="194" y="346" width="850" height="30" rx="8" fill="none" stroke="#1F7A3D" stroke-width="3"/>
+
+  <text class="t eti" x="30" y="412" fill="#1F7A3D">todos llevan adaptador: todos amplifican</text>
+</svg>

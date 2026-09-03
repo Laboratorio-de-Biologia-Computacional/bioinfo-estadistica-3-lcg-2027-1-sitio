@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Tres filas, una por ronda. Fila uno, retrotranscripción: ocurre dentro del núcleo, que se dibuja entero, y añade el primer código de barras. Entre filas, la indicación de juntar todo y volver a repartir. Fila dos, ligación: también dentro del núcleo entero, y añade el segundo código. Fila tres, lisis y PCR: aquí el núcleo se dibuja roto, con su contenido suelto, y la PCR añade el tercer código. A la derecha de cada fila se ve la etiqueta creciendo, de un bloque a tres. Cada fila indica noventa y seis pozos con unos mil núcleos en cada uno. Al pie: noventa y seis al cubo son ochocientas ochenta y cuatro mil setecientas treinta y seis casillas para cien mil núcleos, un exceso de ocho coma ocho veces, y una tasa de colisión del cinco coma cuatro por ciento.">
+<defs><style>.t{font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif;fill:#141A4A;}.eti{font-size:24px;font-weight:700;}.nota{font-size:24px;font-weight:600;fill:#5A6373;}.dentro{font-size:24px;font-weight:700;fill:#ffffff;}</style><marker id="fl2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5A6373"/></marker></defs>
+<circle cx="42" cy="54" r="20" fill="#000977"/>
+<text class="t dentro" x="42" y="62" text-anchor="middle">1</text>
+<text class="t eti" x="74" y="46">Retrotranscripción</text>
+<text class="t nota" x="74" y="76" fill="#5A6373">dentro del núcleo</text>
+<rect x="352" y="25" width="180" height="58" rx="8" fill="#ffffff" stroke="#141A4A" stroke-width="2"/>
+<circle cx="368" cy="44" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="368" cy="44" r="3" fill="#8A93A8"/>
+<circle cx="368" cy="65" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="368" cy="65" r="3" fill="#8A93A8"/>
+<circle cx="389" cy="44" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="389" cy="44" r="3" fill="#8A93A8"/>
+<circle cx="389" cy="65" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="389" cy="65" r="3" fill="#8A93A8"/>
+<circle cx="410" cy="44" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="410" cy="44" r="3" fill="#8A93A8"/>
+<circle cx="410" cy="65" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="410" cy="65" r="3" fill="#8A93A8"/>
+<circle cx="431" cy="44" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="431" cy="44" r="3" fill="#8A93A8"/>
+<circle cx="431" cy="65" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="431" cy="65" r="3" fill="#8A93A8"/>
+<circle cx="452" cy="44" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="452" cy="44" r="3" fill="#8A93A8"/>
+<circle cx="452" cy="65" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="452" cy="65" r="3" fill="#8A93A8"/>
+<circle cx="473" cy="44" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="473" cy="44" r="3" fill="#8A93A8"/>
+<circle cx="473" cy="65" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="473" cy="65" r="3" fill="#8A93A8"/>
+<circle cx="494" cy="44" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="494" cy="44" r="3" fill="#8A93A8"/>
+<circle cx="494" cy="65" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="494" cy="65" r="3" fill="#8A93A8"/>
+<circle cx="515" cy="44" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="515" cy="44" r="3" fill="#8A93A8"/>
+<circle cx="515" cy="65" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="515" cy="65" r="3" fill="#8A93A8"/>
+<text class="t nota" x="352" y="108">96 pozos · ~1 040 c/u</text>
+<circle cx="586" cy="54" r="26" fill="#E7E9F7" stroke="#000977" stroke-width="4"/>
+<circle cx="586" cy="54" r="9" fill="#000977"/>
+<rect x="646" y="39" width="88" height="30" rx="8" fill="#000977"/>
+<text class="t dentro" x="690" y="62" text-anchor="middle">1</text>
+<text class="t nota" x="754" y="62">código</text>
+<line x1="352" y1="120" x2="450" y2="120" stroke="#5A6373" stroke-width="3" marker-end="url(#fl2)"/>
+<text class="t nota" x="462" y="128">juntar todo y volver a repartir</text>
+<circle cx="42" cy="184" r="20" fill="#000977"/>
+<text class="t dentro" x="42" y="192" text-anchor="middle">2</text>
+<text class="t eti" x="74" y="176">Ligación</text>
+<text class="t nota" x="74" y="206" fill="#5A6373">dentro del núcleo</text>
+<rect x="352" y="155" width="180" height="58" rx="8" fill="#ffffff" stroke="#141A4A" stroke-width="2"/>
+<circle cx="368" cy="174" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="368" cy="174" r="3" fill="#8A93A8"/>
+<circle cx="368" cy="195" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="368" cy="195" r="3" fill="#8A93A8"/>
+<circle cx="389" cy="174" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="389" cy="174" r="3" fill="#8A93A8"/>
+<circle cx="389" cy="195" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="389" cy="195" r="3" fill="#8A93A8"/>
+<circle cx="410" cy="174" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="410" cy="174" r="3" fill="#8A93A8"/>
+<circle cx="410" cy="195" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="410" cy="195" r="3" fill="#8A93A8"/>
+<circle cx="431" cy="174" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="431" cy="174" r="3" fill="#8A93A8"/>
+<circle cx="431" cy="195" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="431" cy="195" r="3" fill="#8A93A8"/>
+<circle cx="452" cy="174" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="452" cy="174" r="3" fill="#8A93A8"/>
+<circle cx="452" cy="195" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="452" cy="195" r="3" fill="#8A93A8"/>
+<circle cx="473" cy="174" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="473" cy="174" r="3" fill="#8A93A8"/>
+<circle cx="473" cy="195" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="473" cy="195" r="3" fill="#8A93A8"/>
+<circle cx="494" cy="174" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="494" cy="174" r="3" fill="#8A93A8"/>
+<circle cx="494" cy="195" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="494" cy="195" r="3" fill="#8A93A8"/>
+<circle cx="515" cy="174" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="515" cy="174" r="3" fill="#8A93A8"/>
+<circle cx="515" cy="195" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="515" cy="195" r="3" fill="#8A93A8"/>
+<text class="t nota" x="352" y="238">96 pozos · ~1 040 c/u</text>
+<circle cx="586" cy="184" r="26" fill="#E7E9F7" stroke="#000977" stroke-width="4"/>
+<circle cx="586" cy="184" r="9" fill="#000977"/>
+<rect x="646" y="169" width="88" height="30" rx="8" fill="#000977"/>
+<text class="t dentro" x="690" y="192" text-anchor="middle">1</text>
+<rect x="742" y="169" width="88" height="30" rx="8" fill="#2E9AA6"/>
+<text class="t dentro" x="786" y="192" text-anchor="middle">2</text>
+<text class="t nota" x="850" y="192">códigos</text>
+<line x1="352" y1="250" x2="450" y2="250" stroke="#5A6373" stroke-width="3" marker-end="url(#fl2)"/>
+<text class="t nota" x="462" y="258">juntar todo y volver a repartir</text>
+<circle cx="42" cy="314" r="20" fill="#000977"/>
+<text class="t dentro" x="42" y="322" text-anchor="middle">3</text>
+<text class="t eti" x="74" y="306">Lisis y luego PCR</text>
+<text class="t nota" x="74" y="336" fill="#6E5E00">el núcleo se rompe</text>
+<rect x="352" y="285" width="180" height="58" rx="8" fill="#ffffff" stroke="#141A4A" stroke-width="2"/>
+<circle cx="368" cy="304" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="368" cy="304" r="3" fill="#8A93A8"/>
+<circle cx="368" cy="325" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="368" cy="325" r="3" fill="#8A93A8"/>
+<circle cx="389" cy="304" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="389" cy="304" r="3" fill="#8A93A8"/>
+<circle cx="389" cy="325" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="389" cy="325" r="3" fill="#8A93A8"/>
+<circle cx="410" cy="304" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="410" cy="304" r="3" fill="#8A93A8"/>
+<circle cx="410" cy="325" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="410" cy="325" r="3" fill="#8A93A8"/>
+<circle cx="431" cy="304" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="431" cy="304" r="3" fill="#8A93A8"/>
+<circle cx="431" cy="325" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="431" cy="325" r="3" fill="#8A93A8"/>
+<circle cx="452" cy="304" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="452" cy="304" r="3" fill="#8A93A8"/>
+<circle cx="452" cy="325" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="452" cy="325" r="3" fill="#8A93A8"/>
+<circle cx="473" cy="304" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="473" cy="304" r="3" fill="#8A93A8"/>
+<circle cx="473" cy="325" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="473" cy="325" r="3" fill="#8A93A8"/>
+<circle cx="494" cy="304" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="494" cy="304" r="3" fill="#8A93A8"/>
+<circle cx="494" cy="325" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="494" cy="325" r="3" fill="#8A93A8"/>
+<circle cx="515" cy="304" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="515" cy="304" r="3" fill="#8A93A8"/>
+<circle cx="515" cy="325" r="7" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="1.5"/>
+<circle cx="515" cy="325" r="3" fill="#8A93A8"/>
+<text class="t nota" x="352" y="368">96 pozos · ~1 040 c/u</text>
+<circle cx="586" cy="314" r="26" fill="none" stroke="#8A93A8" stroke-width="4" stroke-dasharray="9 8"/>
+<circle cx="570" cy="300" r="5" fill="#2B3FA8"/>
+<circle cx="600" cy="304" r="5" fill="#2B3FA8"/>
+<circle cx="592" cy="330" r="5" fill="#2B3FA8"/>
+<circle cx="576" cy="326" r="5" fill="#2B3FA8"/>
+<rect x="646" y="299" width="88" height="30" rx="8" fill="#000977"/>
+<text class="t dentro" x="690" y="322" text-anchor="middle">1</text>
+<rect x="742" y="299" width="88" height="30" rx="8" fill="#2E9AA6"/>
+<text class="t dentro" x="786" y="322" text-anchor="middle">2</text>
+<rect x="838" y="299" width="88" height="30" rx="8" fill="#937E00"/>
+<text class="t dentro" x="882" y="322" text-anchor="middle">3</text>
+<text class="t nota" x="946" y="322">códigos</text>
+<text class="t nota" x="20" y="418" fill="#000977">96³ = 884 736 casillas para 100 000 núcleos: exceso 8,8× y colisión 5,4 %</text>
+</svg>

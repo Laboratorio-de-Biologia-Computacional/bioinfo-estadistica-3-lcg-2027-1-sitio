@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="La PCR duplica cada molécula ciclo tras ciclo, y todas las copias heredan el mismo UMI">
+  <!-- Animacion en CSS para poder apagarla con prefers-reduced-motion. Cada
+       generacion aparece con su propio retardo; el bucle dura 8 s. -->
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      @keyframes surge { 0%,4%{opacity:0} 12%,100%{opacity:1} }
+      .g2 { animation: surge 8s linear infinite;  animation-delay: -6.0s }
+      .g3 { animation: surge 8s linear infinite;  animation-delay: -4.0s }
+      .g4 { animation: surge 8s linear infinite;  animation-delay: -2.0s }
+      @media (prefers-reduced-motion: reduce) { .g2,.g3,.g4 { animation:none; opacity:1 } }
+    </style>
+    <g id="mol">
+      <rect x="0" y="0" width="34" height="14" rx="7" fill="#2E9AA6"/>
+      <rect x="38" y="0" width="96" height="14" rx="7" fill="#2B3FA8"/>
+    </g>
+  </defs>
+
+  <text class="t eti" x="30"  y="40" fill="#141A4A">1 molécula</text>
+  <text class="t eti" x="330" y="40" fill="#5A6373">ciclo 1</text>
+  <text class="t eti" x="590" y="40" fill="#5A6373">ciclo 2</text>
+  <text class="t eti" x="850" y="40" fill="#5A6373">ciclo 3</text>
+
+  <!-- generacion 0 -->
+  <g transform="translate(30,120)"><use href="#mol"/></g>
+
+  <!-- generacion 1 -->
+  <g class="g2">
+    <g transform="translate(330,86)"><use href="#mol"/></g>
+    <g transform="translate(330,154)"><use href="#mol"/></g>
+  </g>
+
+  <!-- generacion 2 -->
+  <g class="g3">
+    <g transform="translate(590,52)"><use href="#mol"/></g>
+    <g transform="translate(590,120)"><use href="#mol"/></g>
+    <g transform="translate(590,188)"><use href="#mol"/></g>
+    <g transform="translate(590,256)"><use href="#mol"/></g>
+  </g>
+
+  <!-- generacion 3 -->
+  <g class="g4">
+    <g transform="translate(850,52)"><use href="#mol"/></g>
+    <g transform="translate(850,86)"><use href="#mol"/></g>
+    <g transform="translate(850,120)"><use href="#mol"/></g>
+    <g transform="translate(850,154)"><use href="#mol"/></g>
+    <g transform="translate(850,188)"><use href="#mol"/></g>
+    <g transform="translate(850,222)"><use href="#mol"/></g>
+    <g transform="translate(850,256)"><use href="#mol"/></g>
+    <g transform="translate(850,290)"><use href="#mol"/></g>
+  </g>
+
+  <line x1="30" y1="330" x2="1150" y2="330" stroke="#DDD8C6" stroke-width="2"/>
+  <rect x="30" y="356" width="34" height="14" rx="7" fill="#2E9AA6"/>
+  <text class="t eti" x="80" y="370" fill="#2E9AA6">el UMI</text>
+  <text class="t cap" x="190" y="370">se puso ANTES de amplificar, así que todas las copias lo heredan</text>
+  <text class="t eti" x="30" y="412" fill="#000977">Ocho copias, un solo UMI: la matriz cuenta 1.</text>
+</svg>

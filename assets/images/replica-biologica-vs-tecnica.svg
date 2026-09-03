@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Tres columnas comparan que varia en cada tipo de replica y con que n se queda el modelo: dos donantes distintos son n igual a dos; un donante en dos alicuotas es n igual a uno; y muchas celulas de un donante siguen siendo n igual a uno.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 24px; font-weight: 700; }
+    .sub { font-size: 16px; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .via { font-size: 15px; }
+    .num { font-size: 21px; font-weight: 700; }
+    .gde { font-size: 30px; font-weight: 700; }
+    .pie { font-size: 17px; }
+  ]]></style>
+
+<rect x="40" y="56" width="353" height="296" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="216" y="42" text-anchor="middle" fill="#00053F">Réplica biológica</text>
+<text class="t sub" x="216" y="86" text-anchor="middle" fill="#5A6373">dos individuos distintos</text>
+<rect x="157.0" y="300" width="118" height="34" rx="17" fill="#D6D8E9" stroke="#8C90C2" stroke-width="1.4"/><text class="t num" x="216" y="324" text-anchor="middle" fill="#091163">n = 2</text>
+<rect x="413" y="56" width="353" height="296" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="589" y="42" text-anchor="middle" fill="#00053F">Réplica técnica</text>
+<text class="t sub" x="589" y="86" text-anchor="middle" fill="#5A6373">un individuo, dos alícuotas</text>
+<rect x="530.0" y="300" width="118" height="34" rx="17" fill="#EEEAD6" stroke="#CEC58C" stroke-width="1.4"/><text class="t num" x="589" y="324" text-anchor="middle" fill="#5A5121">n = 1</text>
+<rect x="786" y="56" width="353" height="296" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="962" y="42" text-anchor="middle" fill="#00053F">Células de un donante</text>
+<text class="t sub" x="962" y="86" text-anchor="middle" fill="#5A6373">un individuo, muchas células</text>
+<rect x="903.0" y="300" width="118" height="34" rx="17" fill="#DEEFF1" stroke="#A1D2D7" stroke-width="1.4"/><text class="t num" x="962" y="324" text-anchor="middle" fill="#22607D">n = 1</text>
+<circle cx="150" cy="148.7" r="13" fill="#000977"/><path d="M 130.5 176 a 19.5 20.8 0 0 1 39.0 0 z" fill="#000977"/>
+<circle cx="258" cy="148.7" r="13" fill="#937E00"/><path d="M 238.5 176 a 19.5 20.8 0 0 1 39.0 0 z" fill="#937E00"/>
+<text class="t via" x="150" y="202" text-anchor="middle" fill="#5A6373">donante 1</text>
+<text class="t via" x="258" y="202" text-anchor="middle" fill="#5A6373">donante 2</text>
+<text class="t lab" x="216" y="248" text-anchor="middle" fill="#141A4A">Varía el individuo</text>
+<text class="t via" x="216" y="274" text-anchor="middle" fill="#5A6373">genotipo, edad, exposición</text>
+<circle cx="589" cy="120.7" r="13" fill="#937E00"/><path d="M 569.5 148 a 19.5 20.8 0 0 1 39.0 0 z" fill="#937E00"/>
+<path d="M 589.0 158.0 L 589.0 177.0" fill="none" stroke="#5A6373" stroke-width="2.2"/><path d="M 589 184 l -5.5 -9 l 11 0 z" fill="#5A6373"/>
+<path d="M 544.0 190 l 0 35.0 a 9.0 9.0 0 0 0 18 0 l 0 -35.0 z" fill="white" stroke="#937E00" stroke-width="2.2"/><path d="M 546.0 211.1 l 0 13.2 a 7.0 7.0 0 0 0 14 0 l 0 -13.2 z" fill="#C4B873" stroke="none"/>
+<path d="M 616.0 190 l 0 35.0 a 9.0 9.0 0 0 0 18 0 l 0 -35.0 z" fill="white" stroke="#937E00" stroke-width="2.2"/><path d="M 618.0 211.1 l 0 13.2 a 7.0 7.0 0 0 0 14 0 l 0 -13.2 z" fill="#C4B873" stroke="none"/>
+<text class="t lab" x="589" y="260" text-anchor="middle" fill="#141A4A">No varía nada biológico</text>
+<text class="t via" x="589" y="284" text-anchor="middle" fill="#5A6373">mide el ruido del método</text>
+<circle cx="962" cy="120.7" r="13" fill="#2E9AA6"/><path d="M 942.5 148 a 19.5 20.8 0 0 1 39.0 0 z" fill="#2E9AA6"/>
+<path d="M 962.0 158.0 L 962.0 177.0" fill="none" stroke="#5A6373" stroke-width="2.2"/><path d="M 962 184 l -5.5 -9 l 11 0 z" fill="#5A6373"/>
+<circle cx="892" cy="206" r="8" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="892" cy="206" r="3.0" fill="#2E9AA6"/>
+<circle cx="912" cy="206" r="8" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="912" cy="206" r="3.0" fill="#2E9AA6"/>
+<circle cx="932" cy="206" r="8" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="932" cy="206" r="3.0" fill="#2E9AA6"/>
+<circle cx="952" cy="206" r="8" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="952" cy="206" r="3.0" fill="#2E9AA6"/>
+<circle cx="972" cy="206" r="8" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="972" cy="206" r="3.0" fill="#2E9AA6"/>
+<circle cx="992" cy="206" r="8" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="992" cy="206" r="3.0" fill="#2E9AA6"/>
+<circle cx="1012" cy="206" r="8" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="1012" cy="206" r="3.0" fill="#2E9AA6"/>
+<circle cx="1032" cy="206" r="8" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="1032" cy="206" r="3.0" fill="#2E9AA6"/>
+<text class="t lab" x="962" y="260" text-anchor="middle" fill="#141A4A">Comparten donante y lote</text>
+<text class="t via" x="962" y="284" text-anchor="middle" fill="#5A6373">no son independientes entre sí</text>
+<rect x="40" y="376" width="1100" height="40" rx="8" fill="#F3EFDD" stroke="none"/><text class="t pie" x="590" y="402" text-anchor="middle" fill="#6E5E00">Diez mil células de una persona describen a UNA persona: la n del modelo es el número de individuos.</text>
+</svg>

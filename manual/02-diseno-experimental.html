@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Diseño experimental – Análisis de single-cell RNA-seq</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./03-de-fastq-a-matriz.html" rel="next">
+<link href="./01-fundamentos-y-tecnologias.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-95e7826f4813621490ae0bbac6a5e5e5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-10f5dae605ba7ed116c0e84354baeedf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-fundamentos-y-tecnologias.html">Antes de tocar los datos</a></li><li class="breadcrumb-item"><a href="./02-diseno-experimental.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Diseño experimental</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Análisis de single-cell RNA-seq</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Presentación</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Antes de tocar los datos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-fundamentos-y-tecnologias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Fundamentos de single-cell. Tecnologías y plataformas</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-diseno-experimental.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Diseño experimental</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Del FASTQ a un objeto en el que se puede confiar</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-de-fastq-a-matriz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">De FASTQ a matriz</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-de-matriz-a-objeto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">De matriz a objeto listo. Rutas de importación y estructuras de datos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-control-de-calidad.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control de calidad: del experimento a los datos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Autonomía y cierre</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-practica-integradora.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Práctica integradora y arranque del proyecto</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Anexos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./90-anexo-entornos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: entornos de trabajo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./91-anexo-glosario.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: glosario</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./92-anexo-rutas-de-importacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: rutas de importación y estructuras de datos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./93-anexo-replicas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: ¿réplica biológica o técnica?</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./99-referencias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">En este capítulo</h2>
+   
+  <ul>
+  <li><a href="#cómo-se-desarrolla-la-sesión" id="toc-cómo-se-desarrolla-la-sesión" class="nav-link active" data-scroll-target="#cómo-se-desarrolla-la-sesión"><span class="header-section-number">2.1</span> Cómo se desarrolla la sesión</a></li>
+  <li><a href="#caso-de-aplicación" id="toc-caso-de-aplicación" class="nav-link" data-scroll-target="#caso-de-aplicación"><span class="header-section-number">2.2</span> Caso de aplicación</a></li>
+  <li><a href="#desarrollo" id="toc-desarrollo" class="nav-link" data-scroll-target="#desarrollo"><span class="header-section-number">2.3</span> Desarrollo</a>
+  <ul class="collapse">
+  <li><a href="#el-experimento-que-no-se-pudo-salvar" id="toc-el-experimento-que-no-se-pudo-salvar" class="nav-link" data-scroll-target="#el-experimento-que-no-se-pudo-salvar"><span class="header-section-number">2.3.1</span> El experimento que no se pudo salvar</a></li>
+  <li><a href="#réplica-biológica-réplica-técnica-y-la-trampa-de-la-célula" id="toc-réplica-biológica-réplica-técnica-y-la-trampa-de-la-célula" class="nav-link" data-scroll-target="#réplica-biológica-réplica-técnica-y-la-trampa-de-la-célula"><span class="header-section-number">2.3.2</span> Réplica biológica, réplica técnica y la trampa de la célula</a></li>
+  <li><a href="#qué-se-hace-en-su-lugar" id="toc-qué-se-hace-en-su-lugar" class="nav-link" data-scroll-target="#qué-se-hace-en-su-lugar"><span class="header-section-number">2.3.3</span> Qué se hace en su lugar</a></li>
+  <li><a href="#confusión-entre-variables" id="toc-confusión-entre-variables" class="nav-link" data-scroll-target="#confusión-entre-variables"><span class="header-section-number">2.3.4</span> Confusión entre variables</a></li>
+  <li><a href="#potencia-tres-cosas-que-compiten-por-el-mismo-presupuesto" id="toc-potencia-tres-cosas-que-compiten-por-el-mismo-presupuesto" class="nav-link" data-scroll-target="#potencia-tres-cosas-que-compiten-por-el-mismo-presupuesto"><span class="header-section-number">2.3.5</span> Potencia: tres cosas que compiten por el mismo presupuesto</a></li>
+  <li><a href="#multiplexado" id="toc-multiplexado" class="nav-link" data-scroll-target="#multiplexado"><span class="header-section-number">2.3.6</span> Multiplexado</a></li>
+  </ul></li>
+  <li><a href="#errores-comunes" id="toc-errores-comunes" class="nav-link" data-scroll-target="#errores-comunes"><span class="header-section-number">2.4</span> Errores comunes</a></li>
+  <li><a href="#recursos" id="toc-recursos" class="nav-link" data-scroll-target="#recursos"><span class="header-section-number">2.5</span> Recursos</a></li>
+  <li><a href="#si-algo-falla" id="toc-si-algo-falla" class="nav-link" data-scroll-target="#si-algo-falla"><span class="header-section-number">2.6</span> Si algo falla</a></li>
+  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias"><span class="header-section-number">2.7</span> Referencias</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-fundamentos-y-tecnologias.html">Antes de tocar los datos</a></li><li class="breadcrumb-item"><a href="./02-diseno-experimental.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Diseño experimental</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span id="sec-s02" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Diseño experimental</span></span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- ANDAMIO GENERADO. No edites la portada, el objetivo ni las tablas de
+     esta seccion a mano: salen de docs/planeacion/sesiones.yml, que a su
+     vez sale del plan operativo en Word. Para cambiarlos, edita el .docx
+     y vuelve a correr scripts/python/06-extraer-plan.py y 07-generar-sesiones.py.
+     El contenido de las diapositivas SI se escribe a mano, debajo. -->
+<p><strong>Sesión 02 · Jueves 20 de agosto de 2026</strong> · sesión teórico-práctica, 120 minutos Imparten: Yalbi Itzel Balderas Martínez (90 min) y Luis Alberto Meza Cova (30 min)</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Objetivo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Diseñar un experimento de célula única que permita separar el efecto biológico del efecto técnico, aplicando los conceptos de réplica biológica, unidad de análisis, confusión entre variables y potencia estadística; y reconocer los diseños en los que ninguna corrección posterior puede rescatar el experimento.</p>
+</div>
+</div>
+<section id="cómo-se-desarrolla-la-sesión" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="cómo-se-desarrolla-la-sesión"><span class="header-section-number">2.1</span> Cómo se desarrolla la sesión</h2>
+<p>Clase teórico-práctica. Réplica biológica frente a réplica técnica, y por qué la célula no es la unidad de réplica: introducción a la agregación por muestra (pseudobulk) y al problema de la pseudorreplicación. Confusión entre lote y condición, con el caso límite en que el diseño es irrecuperable. Nociones de potencia: cuántas células y cuánta profundidad por célula. Estrategias de multiplexado (marcaje con anticuerpos, oligonucleótidos de multiplexado y demultiplexado genético) y qué problema resuelve cada una. Actividad: a cada equipo se le entrega un diseño experimental defectuoso, distinto para cada uno, que debe diagnosticar, rediseñar y defender ante el grupo.</p>
+<ul>
+<li><strong>6 bloques</strong> de trabajo en 120 minutos, con descansos entre ellos</li>
+<li>Se alterna explicación y trabajo propio</li>
+</ul>
+</section>
+<section id="caso-de-aplicación" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="caso-de-aplicación"><span class="header-section-number">2.2</span> Caso de aplicación</h2>
+<p>Caso de aplicación: el estudio que no se pudo salvar: un diseño en el que todos los casos se procesaron en una corrida y todos los controles en otra. El efecto de lote y el efecto de enfermedad son matemáticamente indistinguibles: no existe método de corrección que los separe, porque no hay ninguna observación que comparta lote y difiera en condición. Es el ejemplo más útil del curso porque demuestra que hay errores que el análisis no arregla, y que el momento de evitarlos es antes de secuenciar. Este mismo conjunto de datos es el que se retoma el 15 de septiembre para trabajar efecto de lote, de modo que los estudiantes comprueban en la práctica lo que predijeron en agosto.</p>
+</section>
+<section id="desarrollo" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="desarrollo"><span class="header-section-number">2.3</span> Desarrollo</h2>
+<section id="el-experimento-que-no-se-pudo-salvar" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="el-experimento-que-no-se-pudo-salvar"><span class="header-section-number">2.3.1</span> El experimento que no se pudo salvar</h3>
+<p>Seis pacientes y seis controles. Todos los pacientes se procesaron en una corrida; todos los controles, en otra. El resto del estudio está bien hecho: buena calidad, buena profundidad, análisis cuidadoso.</p>
+<p>No se puede concluir nada.</p>
+<p>La razón es estructural. Para separar el efecto de la enfermedad del efecto de la corrida haría falta al menos una observación que <strong>comparta corrida y difiera en condición</strong> —un control procesado junto a los pacientes, o al revés—. No existe. Los dos efectos están superpuestos punto por punto: cualquier diferencia entre grupos es compatible con «la enfermedad cambió la expresión» y con «las dos corridas difieren», sin que nada en los datos permita distinguirlas.</p>
+<p>Esto es lo que significa que dos variables estén <strong>confundidas</strong>: no que sea difícil separarlas, sino que la información necesaria para hacerlo nunca se midió. Ninguna herramienta de corrección de lote la puede inventar.</p>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>El momento de evitar este error es <strong>antes de secuenciar</strong>. Es el argumento central de la sesión y la razón por la que el diseño experimental va antes que cualquier método de análisis.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="réplica-biológica-réplica-técnica-y-la-trampa-de-la-célula" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="réplica-biológica-réplica-técnica-y-la-trampa-de-la-célula"><span class="header-section-number">2.3.2</span> Réplica biológica, réplica técnica y la trampa de la célula</h3>
+<p>Una <strong>réplica biológica</strong> es una unidad experimental independiente: otro donante, otro ratón, otro cultivo iniciado por separado. Una <strong>réplica técnica</strong> es la misma unidad medida dos veces: dos alícuotas del mismo tejido, dos corridas de la misma biblioteca.</p>
+<p>La distinción importa porque solo las réplicas biológicas informan sobre la variabilidad de la población, que es la que permite generalizar.</p>
+<p>En <em>single-cell</em> aparece una tercera figura que no existe en <em>bulk</em>: <strong>la célula</strong>. La matriz tiene una célula por columna, y la tentación de tratar cada columna como una observación independiente es casi irresistible. No lo son: todas las células de un donante comparten su genotipo, su edad, su tratamiento, su tiempo de isquemia y su lote de procesamiento.</p>
+<p>Tratarlas como independientes es <strong>pseudorreplicación</strong>, y su consecuencia es inmediata: el tamaño de muestra pasa de seis donantes a decenas de miles de células, los errores estándar se hunden y prácticamente cualquier diferencia resulta «significativa». El síntoma clásico es una lista de miles de genes diferenciales con valores de <em>p</em> extraordinariamente pequeños <span class="citation" data-cites="squair2021falsediscoveries">(<a href="99-referencias.html#ref-squair2021falsediscoveries" role="doc-biblioref">Squair et&nbsp;al., 2021</a>)</span>.</p>
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>Una sola muestra con 10 000 células sigue siendo n = 1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ese experimento describe a <strong>una persona</strong>. No hay análisis que convierta la variabilidad entre células de un individuo en variabilidad entre individuos.</p>
+</div>
+</div>
+</section>
+<section id="qué-se-hace-en-su-lugar" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="qué-se-hace-en-su-lugar"><span class="header-section-number">2.3.3</span> Qué se hace en su lugar</h3>
+<p>Dos abordajes, según la pregunta:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Estrategia</th>
+<th>Qué hace</th>
+<th>Cuándo se usa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Pseudobulk</strong></td>
+<td>suma las cuentas de todas las células de una muestra —por tipo celular— y compara muestras entre sí</td>
+<td>opción predeterminada para comparar condiciones</td>
+</tr>
+<tr class="even">
+<td><strong>Modelos mixtos</strong></td>
+<td>modela al donante como efecto aleatorio y conserva las células como observaciones anidadas</td>
+<td>cuando interesa la variabilidad dentro de la población</td>
+</tr>
+</tbody>
+</table>
+<p>El pseudobulk provoca una objeción razonable: si se van a sumar las células, ¿para qué se hizo <em>single-cell</em>? La respuesta es que la resolución de célula única se usó para <strong>decidir qué se está comparando</strong>. El pseudobulk se calcula por tipo celular, de modo que la comparación es «linfocitos T de pacientes contra linfocitos T de controles» y no «tejido contra tejido». Eso es exactamente lo que el RNA-seq <em>bulk</em> no permite hacer, y es la misma lección del <a href="01-fundamentos-y-tecnologias.html" class="quarto-xref"><span>Capítulo 1</span></a>: lo que cambió en aquel caso fue la composición, no la regulación.</p>
+</section>
+<section id="confusión-entre-variables" class="level3" data-number="2.3.4">
+<h3 data-number="2.3.4" class="anchored" data-anchor-id="confusión-entre-variables"><span class="header-section-number">2.3.4</span> Confusión entre variables</h3>
+<p>Un diseño está confundido cuando el efecto de interés y un efecto técnico varían juntos. El caso del inicio es el extremo, pero hay grados:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Diseño</th>
+<th>Lote 1</th>
+<th>Lote 2</th>
+<th>¿Se pueden separar?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Confundido por completo</td>
+<td>6 pacientes</td>
+<td>6 controles</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>Equilibrado</td>
+<td>3 pacientes + 3 controles</td>
+<td>3 pacientes + 3 controles</td>
+<td>sí</td>
+</tr>
+<tr class="odd">
+<td>Parcialmente confundido</td>
+<td>5 pacientes + 1 control</td>
+<td>1 paciente + 5 controles</td>
+<td>mal, pero es posible</td>
+</tr>
+</tbody>
+</table>
+<p>La prevención es sencilla de enunciar y fácil de olvidar: <strong>repartir las condiciones entre los lotes desde el diseño</strong>. Si el experimento ya se corrió confundido, lo que corresponde es reportar la limitación, no aplicar una corrección que aparenta resolverla.</p>
+<p>Hay una señal de alarma que conviene interiorizar: cuando el análisis de componentes principales muestra una <strong>separación perfecta</strong> entre los grupos, el primer impulso es celebrar. Un resultado demasiado limpio es indistinguible de un artefacto de lote total, y la primera pregunta debería ser cómo se repartieron las muestras entre corridas.</p>
+<p>Lo mismo aplica a las covariables que no son de interés. El sexo, la edad, el sitio de colecta y el tiempo entre extracción y procesamiento deben <strong>registrarse desde el inicio</strong>, aunque no se planee usarlos: no se pueden añadir después, y sin ellos un efecto inesperado queda sin explicación posible.</p>
+</section>
+<section id="potencia-tres-cosas-que-compiten-por-el-mismo-presupuesto" class="level3" data-number="2.3.5">
+<h3 data-number="2.3.5" class="anchored" data-anchor-id="potencia-tres-cosas-que-compiten-por-el-mismo-presupuesto"><span class="header-section-number">2.3.5</span> Potencia: tres cosas que compiten por el mismo presupuesto</h3>
+<p>Detectar un cambio en una población celular exige tres condiciones simultáneas: muestras suficientes para tener potencia estadística, células suficientes de esa población para que aparezca representada, y profundidad suficiente por célula para que el gen se detecte.</p>
+<p>Con presupuesto fijo, las tres compiten:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Si se aumenta…</th>
+<th>se paga con…</th>
+<th>y se pierde</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>número de muestras</td>
+<td>células por muestra</td>
+<td>poblaciones poco frecuentes</td>
+</tr>
+<tr class="even">
+<td>células por muestra</td>
+<td>profundidad por célula</td>
+<td>genes de expresión baja</td>
+</tr>
+<tr class="odd">
+<td>profundidad por célula</td>
+<td>número de muestras</td>
+<td>potencia estadística</td>
+</tr>
+</tbody>
+</table>
+<p>La regla práctica, contraintuitiva para quien viene de pensar en términos de «más células es mejor»: <strong>si el presupuesto no alcanza, se recorta el número de células antes que el número de muestras</strong>. Tres réplicas biológicas por condición es el mínimo practicable.</p>
+<p>Vale la pena hacer la aritmética de una población poco frecuente. Si la población de interés representa el <strong>5 %</strong> del tejido, de 1 000 células capturadas se esperan unas 50; de 10 000, unas 500. Y eso por muestra. Con una población del 1 %, los mismos números se dividen entre cinco. La población rara se queda sin células mucho antes de lo que la intuición sugiere.</p>
+<p>El tratamiento formal de este cálculo —qué tamaño de efecto se quiere detectar, con qué frecuencia esperada y con qué potencia— está en <span class="citation" data-cites="svensson2017power">Svensson et&nbsp;al. (<a href="99-referencias.html#ref-svensson2017power" role="doc-biblioref">2017</a>)</span>.</p>
+<section id="el-cálculo-con-scpower" class="level4" data-number="2.3.5.1">
+<h4 data-number="2.3.5.1" class="anchored" data-anchor-id="el-cálculo-con-scpower"><span class="header-section-number">2.3.5.1</span> El cálculo con <code>scPower</code></h4>
+<p>La aritmética anterior dice <strong>cuántas células</strong> salen de una población del 5 %. No dice si esas células <strong>alcanzan para detectar el cambio</strong>, que es otra pregunta y depende de tres cosas más: el tamaño del efecto que se quiere ver, la profundidad por célula y la potencia con la que uno se conforma.</p>
+<p><code>scPower</code> <span class="citation" data-cites="schmid2021scpower">(<a href="99-referencias.html#ref-schmid2021scpower" role="doc-biblioref">Schmid et&nbsp;al., 2021</a>)</span> resuelve esa pregunta para estudios de varias muestras. Su utilidad real no es el número que devuelve, sino que <strong>obliga a escribir los supuestos</strong>: sin declarar frecuencia esperada de la población, tamaño de efecto, profundidad y número de muestras, no hay resultado.</p>
+<p>Ahí está el punto que conviene retener:</p>
+<blockquote class="blockquote">
+<p>Un número de células <strong>sin sus supuestos</strong> no se puede discutir ni defender. Es lo mismo que copiar un umbral de un tutorial.</p>
+</blockquote>
+<p>Dos personas con supuestos distintos obtienen números distintos del mismo programa, y <strong>las dos tienen razón</strong>. Lo que distingue un diseño defendible de uno improvisado no es haber corrido <code>scPower</code>: es poder decir de dónde salió cada supuesto que se le metió.</p>
+<p>Por eso, en el rediseño que se entrega como tarea, cualquier número de células que se proponga va acompañado de los supuestos que lo producen. No se evalúa acertar el número; se evalúa que el número sea rastreable.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Cómo se ve en la práctica
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>scPower</code> está fijado en el archivo de entorno del curso, así que se puede ejecutar, pero <strong>no hace falta instalarlo para entender el argumento</strong>. La demostración en vivo se retiró de la sesión del 20 de agosto por falta de tiempo; lo que importa —que el número depende de supuestos declarados— se sostiene sin correr una sola línea.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>El diseño y la química son una sola decisión
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La plataforma elegida en el <a href="01-fundamentos-y-tecnologias.html" class="quarto-xref"><span>Capítulo 1</span></a> ya fijó el rango posible de células y de profundidad, y el tipo de preparación fijó qué poblaciones se pueden recuperar. No es «primero el diseño y luego la plataforma»: son dos caras de la misma decisión.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="multiplexado" class="level3" data-number="2.3.6">
+<h3 data-number="2.3.6" class="anchored" data-anchor-id="multiplexado"><span class="header-section-number">2.3.6</span> Multiplexado</h3>
+<p>Multiplexar es procesar <strong>varias muestras en la misma corrida</strong>, etiquetadas de forma que después se puedan separar.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Estrategia</th>
+<th>Cómo etiqueta</th>
+<th>Qué requiere</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Marcaje con anticuerpos</td>
+<td>anticuerpos con código de barras contra proteínas de superficie</td>
+<td>que los anticuerpos reconozcan el tejido</td>
+</tr>
+<tr class="even">
+<td>Oligonucleótidos de multiplexado</td>
+<td>oligonucleótidos con código anclados a la membrana</td>
+<td>que la membrana los admita</td>
+</tr>
+<tr class="odd">
+<td>Demultiplexado genético</td>
+<td>los propios polimorfismos de cada donante</td>
+<td>donantes genéticamente distintos</td>
+</tr>
+</tbody>
+</table>
+<p>Lo que resuelve es preciso y vale la pena enunciarlo con cuidado:</p>
+<ul>
+<li>Permite poner <strong>varias condiciones en el mismo lote</strong>, con lo que el diseño deja de estar confundido por construcción.</li>
+<li>Reduce el número de corridas necesarias, de modo que el mismo presupuesto alcanza para <strong>más muestras</strong>.</li>
+<li>Hace <strong>detectables</strong> los dobletes formados entre muestras distintas, porque llevan dos etiquetas.</li>
+</ul>
+<p>Y lo que no resuelve:</p>
+<ul>
+<li><strong>No crea réplicas biológicas.</strong> Un diseño con una sola muestra por condición sigue siendo inservible aunque se multiplexe.</li>
+<li>El demultiplexado genético <strong>no separa muestras del mismo donante</strong> —dos tiempos, dos tratamientos sobre las mismas células—, porque genéticamente son idénticas.</li>
+</ul>
+<p>Cada estrategia introduce además un supuesto nuevo. Que exista una técnica no obliga a usarla: un diseño que argumenta por qué no la necesita está tan bien defendido como uno que la adopta.</p>
+</section>
+</section>
+<section id="errores-comunes" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="errores-comunes"><span class="header-section-number">2.4</span> Errores comunes</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Error</th>
+<th>Cómo se detecta</th>
+<th>Cómo se resuelve</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tratar cada célula como una réplica independiente</td>
+<td>Valores de p absurdamente pequeños; miles de genes “significativos”</td>
+<td>Agregar por muestra (pseudobulk) antes de comparar condiciones, o usar modelos mixtos. La réplica es el donante, no la célula.</td>
+</tr>
+<tr class="even">
+<td>Confundir lote con condición</td>
+<td>Separación perfecta entre grupos en el PCA, que parece un gran resultado</td>
+<td>Distribuir las condiciones entre lotes desde el diseño. Si ya ocurrió, se reporta la limitación; no se corrige.</td>
+</tr>
+<tr class="odd">
+<td>Una sola muestra por condición</td>
+<td>Resultados no generalizables; se está describiendo a dos individuos</td>
+<td>Mínimo tres réplicas biológicas por condición. Si el presupuesto no alcanza, se reduce el número de células por muestra antes que el número de muestras.</td>
+</tr>
+<tr class="even">
+<td>Ignorar el sexo, la edad o el sitio de colecta</td>
+<td>Efectos que aparecen después y no se pueden atribuir</td>
+<td>Registrar todas las covariables desde el inicio, aunque no se vayan a usar. Añadirlas después es imposible.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="recursos" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="recursos"><span class="header-section-number">2.5</span> Recursos</h2>
+<p>Presentación; fichas con los diseños experimentales defectuosos; scPower en demostración para el cálculo de potencia; ejemplos de diseños publicados, acertados y fallidos; pizarra.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>En línea
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Modalidad en línea Los diseños defectuosos se reparten como tarjetas en Miro, un marco por equipo. Veinte minutos en salas simultáneas para rediseñar. La plenaria ocurre sobre el tablero: los tres equipos que exponen mueven sus propias tarjetas, de modo que la discusión sea visible y no solo hablada.</p>
+</div>
+</div>
+</section>
+<section id="si-algo-falla" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="si-algo-falla"><span class="header-section-number">2.6</span> Si algo falla</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Si falla</th>
+<th>Plan B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Falla la demostración de scPower</td>
+<td>Capturas de pantalla del resultado, preparadas el 19 de agosto. La demostración dura diez minutos y no vale la pena defenderla en vivo.</td>
+</tr>
+<tr class="even">
+<td>La plenaria se alarga</td>
+<td>Exponen solo tres equipos; los otros entregan por escrito y reciben devolución.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="referencias" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="referencias"><span class="header-section-number">2.7</span> Referencias</h2>
+<ul>
+<li>Pseudorréplica y falsos descubrimientos en expresión diferencial de célula única: <span class="citation" data-cites="squair2021falsediscoveries">Squair et&nbsp;al. (<a href="99-referencias.html#ref-squair2021falsediscoveries" role="doc-biblioref">2021</a>)</span>. Es la lectura central de esta sesión.</li>
+<li>Número de células, profundidad y potencia: <span class="citation" data-cites="svensson2017power">Svensson et&nbsp;al. (<a href="99-referencias.html#ref-svensson2017power" role="doc-biblioref">2017</a>)</span>.</li>
+<li>Panorama general de decisiones del flujo: <span class="citation" data-cites="luecken2019bestpractices">Luecken &amp; Theis (<a href="99-referencias.html#ref-luecken2019bestpractices" role="doc-biblioref">2019</a>)</span>.</li>
+</ul>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>El arco hasta el 15 de septiembre
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La predicción que cada equipo escribe hoy se reabre en el sesión 07, con los datos de ese mismo diseño. El razonamiento de por qué el conjunto de datos es el mismo está en <code>okf/analyses/decision-dataset-unico.md</code>.</p>
+</div>
+</div>
+
+
+<!-- -->
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-luecken2019bestpractices" class="csl-entry" role="listitem">
+Luecken, M. D., &amp; Theis, F. J. (2019). Current best practices in single-cell <span>RNA</span>-seq analysis: a tutorial. <em>Molecular Systems Biology</em>, <em>15</em>(6), e8746. <a href="https://doi.org/10.15252/msb.20188746">https://doi.org/10.15252/msb.20188746</a>
+</div>
+<div id="ref-schmid2021scpower" class="csl-entry" role="listitem">
+Schmid, K. T., Höllbacher, B., Cruceanu, C., Böttcher, A., Lickert, H., Binder, E. B., Theis, F. J., &amp; Heinig, M. (2021). <span>scPower</span> accelerates and optimizes the design of multi-sample single cell transcriptomic studies. <em>Nature Communications</em>, <em>12</em>, 6625. <a href="https://doi.org/10.1038/s41467-021-26779-7">https://doi.org/10.1038/s41467-021-26779-7</a>
+</div>
+<div id="ref-squair2021falsediscoveries" class="csl-entry" role="listitem">
+Squair, J. W., Gautier, M., Kathe, C., Anderson, M. A., James, N. D., Hutson, T. H., Hudelle, R., Qaiser, T., Matson, K. J. E., Barraud, Q., Levine, A. J., La Manno, G., Skinnider, M. A., &amp; Courtine, G. (2021). Confronting false discoveries in single-cell differential expression. <em>Nature Communications</em>, <em>12</em>, 5692. <a href="https://doi.org/10.1038/s41467-021-25960-2">https://doi.org/10.1038/s41467-021-25960-2</a>
+</div>
+<div id="ref-svensson2017power" class="csl-entry" role="listitem">
+Svensson, V., Natarajan, K. N., Ly, L.-H., Miragaia, R. J., Labalette, C., Macaulay, I. C., Cvejic, A., &amp; Teichmann, S. A. (2017). Power analysis of single-cell <span>RNA</span>-sequencing experiments. <em>Nature Methods</em>, <em>14</em>(4), 381-387. <a href="https://doi.org/10.1038/nmeth.4220">https://doi.org/10.1038/nmeth.4220</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./01-fundamentos-y-tecnologias.html" class="pagination-link" aria-label="Fundamentos de single-cell. Tecnologías y plataformas">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Fundamentos de single-cell. Tecnologías y plataformas</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./03-de-fastq-a-matriz.html" class="pagination-link" aria-label="De FASTQ a matriz">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">De FASTQ a matriz</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Diseño experimental {#sec-s02}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ANDAMIO GENERADO. No edites la portada, el objetivo ni las tablas de</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">     esta seccion a mano: salen de docs/planeacion/sesiones.yml, que a su</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">     vez sale del plan operativo en Word. Para cambiarlos, edita el .docx</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">     y vuelve a correr scripts/python/06-extraer-plan.py y 07-generar-sesiones.py.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">     El contenido de las diapositivas SI se escribe a mano, debajo. --&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>**Sesión 02 · Jueves 20 de agosto de 2026** · sesión teórico-práctica, 120 minutos</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Imparten: Yalbi Itzel Balderas Martínez (90 min) y Luis Alberto Meza Cova (30 min)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Objetivo</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>Diseñar un experimento de célula única que permita separar el efecto biológico del efecto técnico, aplicando los conceptos de réplica biológica, unidad de análisis, confusión entre variables y potencia estadística; y reconocer los diseños en los que ninguna corrección posterior puede rescatar el experimento.</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cómo se desarrolla la sesión</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>Clase teórico-práctica. Réplica biológica frente a réplica técnica, y por qué la célula no es la unidad de réplica: introducción a la agregación por muestra (pseudobulk) y al problema de la pseudorreplicación. Confusión entre lote y condición, con el caso límite en que el diseño es irrecuperable. Nociones de potencia: cuántas células y cuánta profundidad por célula. Estrategias de multiplexado (marcaje con anticuerpos, oligonucleótidos de multiplexado y demultiplexado genético) y qué problema resuelve cada una. Actividad: a cada equipo se le entrega un diseño experimental defectuoso, distinto para cada uno, que debe diagnosticar, rediseñar y defender ante el grupo.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**6 bloques** de trabajo en 120 minutos, con descansos entre ellos</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Se alterna explicación y trabajo propio</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## Caso de aplicación</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>Caso de aplicación: el estudio que no se pudo salvar: un diseño en el que todos los casos se procesaron en una corrida y todos los controles en otra. El efecto de lote y el efecto de enfermedad son matemáticamente indistinguibles: no existe método de corrección que los separe, porque no hay ninguna observación que comparta lote y difiera en condición. Es el ejemplo más útil del curso porque demuestra que hay errores que el análisis no arregla, y que el momento de evitarlos es antes de secuenciar. Este mismo conjunto de datos es el que se retoma el 15 de septiembre para trabajar efecto de lote, de modo que los estudiantes comprueban en la práctica lo que predijeron en agosto.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Desarrollo</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">### El experimento que no se pudo salvar</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>Seis pacientes y seis controles. Todos los pacientes se procesaron en una</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>corrida; todos los controles, en otra. El resto del estudio está bien hecho:</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>buena calidad, buena profundidad, análisis cuidadoso.</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>No se puede concluir nada.</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>La razón es estructural. Para separar el efecto de la enfermedad del efecto de</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>la corrida haría falta al menos una observación que **comparta corrida y difiera</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>en condición** —un control procesado junto a los pacientes, o al revés—. No</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>existe. Los dos efectos están superpuestos punto por punto: cualquier diferencia</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>entre grupos es compatible con «la enfermedad cambió la expresión» y con «las dos</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>corridas difieren», sin que nada en los datos permita distinguirlas.</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>Esto es lo que significa que dos variables estén **confundidas**: no que sea</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>difícil separarlas, sino que la información necesaria para hacerlo nunca se</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>midió. Ninguna herramienta de corrección de lote la puede inventar.</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>El momento de evitar este error es **antes de secuenciar**. Es el argumento</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>central de la sesión y la razón por la que el diseño experimental va antes que</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>cualquier método de análisis.</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="fu">### Réplica biológica, réplica técnica y la trampa de la célula</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>Una **réplica biológica** es una unidad experimental independiente: otro donante,</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>otro ratón, otro cultivo iniciado por separado. Una **réplica técnica** es la</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>misma unidad medida dos veces: dos alícuotas del mismo tejido, dos corridas de la</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>misma biblioteca.</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>La distinción importa porque solo las réplicas biológicas informan sobre la</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>variabilidad de la población, que es la que permite generalizar.</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>En *single-cell* aparece una tercera figura que no existe en *bulk*: **la célula**.</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>La matriz tiene una célula por columna, y la tentación de tratar cada columna</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>como una observación independiente es casi irresistible. No lo son: todas las</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>células de un donante comparten su genotipo, su edad, su tratamiento, su tiempo</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>de isquemia y su lote de procesamiento.</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>Tratarlas como independientes es **pseudorreplicación**, y su consecuencia es</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>inmediata: el tamaño de muestra pasa de seis donantes a decenas de miles de</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>células, los errores estándar se hunden y prácticamente cualquier diferencia</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>resulta «significativa». El síntoma clásico es una lista de miles de genes</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>diferenciales con valores de *p* extraordinariamente pequeños</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">@squair2021falsediscoveries</span><span class="co">]</span>.</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## Una sola muestra con 10 000 células sigue siendo n = 1</span></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>Ese experimento describe a **una persona**. No hay análisis que convierta la</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>variabilidad entre células de un individuo en variabilidad entre individuos.</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="fu">### Qué se hace en su lugar</span></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>Dos abordajes, según la pregunta:</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Estrategia <span class="pp">|</span> Qué hace <span class="pp">|</span> Cuándo se usa <span class="pp">|</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **Pseudobulk** <span class="pp">|</span> suma las cuentas de todas las células de una muestra —por tipo celular— y compara muestras entre sí <span class="pp">|</span> opción predeterminada para comparar condiciones <span class="pp">|</span></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **Modelos mixtos** <span class="pp">|</span> modela al donante como efecto aleatorio y conserva las células como observaciones anidadas <span class="pp">|</span> cuando interesa la variabilidad dentro de la población <span class="pp">|</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>El pseudobulk provoca una objeción razonable: si se van a sumar las células,</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>¿para qué se hizo *single-cell*? La respuesta es que la resolución de célula única</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>se usó para **decidir qué se está comparando**. El pseudobulk se calcula por tipo</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>celular, de modo que la comparación es «linfocitos T de pacientes contra</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>linfocitos T de controles» y no «tejido contra tejido». Eso es exactamente lo que</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>el RNA-seq *bulk* no permite hacer, y es la misma lección del @sec-s01: lo</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>que cambió en aquel caso fue la composición, no la regulación.</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="fu">### Confusión entre variables</span></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>Un diseño está confundido cuando el efecto de interés y un efecto técnico varían</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>juntos. El caso del inicio es el extremo, pero hay grados:</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Diseño <span class="pp">|</span> Lote 1 <span class="pp">|</span> Lote 2 <span class="pp">|</span> ¿Se pueden separar? <span class="pp">|</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|---|</span></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Confundido por completo <span class="pp">|</span> 6 pacientes <span class="pp">|</span> 6 controles <span class="pp">|</span> no <span class="pp">|</span></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Equilibrado <span class="pp">|</span> 3 pacientes + 3 controles <span class="pp">|</span> 3 pacientes + 3 controles <span class="pp">|</span> sí <span class="pp">|</span></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Parcialmente confundido <span class="pp">|</span> 5 pacientes + 1 control <span class="pp">|</span> 1 paciente + 5 controles <span class="pp">|</span> mal, pero es posible <span class="pp">|</span></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>La prevención es sencilla de enunciar y fácil de olvidar: **repartir las</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>condiciones entre los lotes desde el diseño**. Si el experimento ya se corrió</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>confundido, lo que corresponde es reportar la limitación, no aplicar una</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>corrección que aparenta resolverla.</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>Hay una señal de alarma que conviene interiorizar: cuando el análisis de</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>componentes principales muestra una **separación perfecta** entre los grupos, el</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>primer impulso es celebrar. Un resultado demasiado limpio es indistinguible de un</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>artefacto de lote total, y la primera pregunta debería ser cómo se repartieron</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>las muestras entre corridas.</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>Lo mismo aplica a las covariables que no son de interés. El sexo, la edad, el</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>sitio de colecta y el tiempo entre extracción y procesamiento deben **registrarse</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>desde el inicio**, aunque no se planee usarlos: no se pueden añadir después, y</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>sin ellos un efecto inesperado queda sin explicación posible.</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a><span class="fu">### Potencia: tres cosas que compiten por el mismo presupuesto</span></span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>Detectar un cambio en una población celular exige tres condiciones simultáneas:</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>muestras suficientes para tener potencia estadística, células suficientes de esa</span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>población para que aparezca representada, y profundidad suficiente por célula</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>para que el gen se detecte.</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>Con presupuesto fijo, las tres compiten:</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Si se aumenta… <span class="pp">|</span> se paga con… <span class="pp">|</span> y se pierde <span class="pp">|</span></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> número de muestras <span class="pp">|</span> células por muestra <span class="pp">|</span> poblaciones poco frecuentes <span class="pp">|</span></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> células por muestra <span class="pp">|</span> profundidad por célula <span class="pp">|</span> genes de expresión baja <span class="pp">|</span></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> profundidad por célula <span class="pp">|</span> número de muestras <span class="pp">|</span> potencia estadística <span class="pp">|</span></span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>La regla práctica, contraintuitiva para quien viene de pensar en términos de</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>«más células es mejor»: **si el presupuesto no alcanza, se recorta el número de</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>células antes que el número de muestras**. Tres réplicas biológicas por condición</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>es el mínimo practicable.</span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>Vale la pena hacer la aritmética de una población poco frecuente. Si la población</span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>de interés representa el **5 %** del tejido, de 1 000 células capturadas se</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>esperan unas 50; de 10 000, unas 500. Y eso por muestra. Con una población del</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>1 %, los mismos números se dividen entre cinco. La población rara se queda sin</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>células mucho antes de lo que la intuición sugiere.</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>El tratamiento formal de este cálculo —qué tamaño de efecto se quiere detectar,</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>con qué frecuencia esperada y con qué potencia— está en @svensson2017power.</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="fu">#### El cálculo con `scPower`</span></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>La aritmética anterior dice **cuántas células** salen de una población del 5 %.</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>No dice si esas células **alcanzan para detectar el cambio**, que es otra</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>pregunta y depende de tres cosas más: el tamaño del efecto que se quiere ver, la</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>profundidad por célula y la potencia con la que uno se conforma.</span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="in">`scPower`</span> <span class="co">[</span><span class="ot">@schmid2021scpower</span><span class="co">]</span> resuelve esa pregunta para estudios de varias</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>muestras. Su utilidad real no es el número que devuelve, sino que **obliga a</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>escribir los supuestos**: sin declarar frecuencia esperada de la población,</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>tamaño de efecto, profundidad y número de muestras, no hay resultado.</span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>Ahí está el punto que conviene retener:</span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Un número de células **sin sus supuestos** no se puede discutir ni defender. Es</span></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; lo mismo que copiar un umbral de un tutorial.</span></span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>Dos personas con supuestos distintos obtienen números distintos del mismo</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>programa, y **las dos tienen razón**. Lo que distingue un diseño defendible de</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>uno improvisado no es haber corrido <span class="in">`scPower`</span>: es poder decir de dónde salió cada</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>supuesto que se le metió.</span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>Por eso, en el rediseño que se entrega como tarea, cualquier número de células</span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>que se proponga va acompañado de los supuestos que lo producen. No se evalúa</span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>acertar el número; se evalúa que el número sea rastreable.</span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cómo se ve en la práctica</span></span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a><span class="in">`scPower`</span> está fijado en el archivo de entorno del curso, así que se puede</span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>ejecutar, pero **no hace falta instalarlo para entender el argumento**. La</span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>demostración en vivo se retiró de la sesión del 20 de agosto por falta de tiempo;</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>lo que importa —que el número depende de supuestos declarados— se sostiene sin</span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>correr una sola línea.</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a><span class="fu">## El diseño y la química son una sola decisión</span></span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>La plataforma elegida en el @sec-s01 ya fijó el rango posible de células y de</span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>profundidad, y el tipo de preparación fijó qué poblaciones se pueden recuperar.</span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>No es «primero el diseño y luego la plataforma»: son dos caras de la misma</span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>decisión.</span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a><span class="fu">### Multiplexado</span></span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>Multiplexar es procesar **varias muestras en la misma corrida**, etiquetadas de</span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>forma que después se puedan separar.</span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Estrategia <span class="pp">|</span> Cómo etiqueta <span class="pp">|</span> Qué requiere <span class="pp">|</span></span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Marcaje con anticuerpos <span class="pp">|</span> anticuerpos con código de barras contra proteínas de superficie <span class="pp">|</span> que los anticuerpos reconozcan el tejido <span class="pp">|</span></span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Oligonucleótidos de multiplexado <span class="pp">|</span> oligonucleótidos con código anclados a la membrana <span class="pp">|</span> que la membrana los admita <span class="pp">|</span></span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Demultiplexado genético <span class="pp">|</span> los propios polimorfismos de cada donante <span class="pp">|</span> donantes genéticamente distintos <span class="pp">|</span></span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>Lo que resuelve es preciso y vale la pena enunciarlo con cuidado:</span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Permite poner **varias condiciones en el mismo lote**, con lo que el diseño</span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>  deja de estar confundido por construcción.</span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Reduce el número de corridas necesarias, de modo que el mismo presupuesto</span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>  alcanza para **más muestras**.</span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Hace **detectables** los dobletes formados entre muestras distintas, porque</span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>  llevan dos etiquetas.</span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>Y lo que no resuelve:</span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No crea réplicas biológicas.** Un diseño con una sola muestra por condición</span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>  sigue siendo inservible aunque se multiplexe.</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>El demultiplexado genético **no separa muestras del mismo donante** —dos</span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>  tiempos, dos tratamientos sobre las mismas células—, porque genéticamente son</span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>  idénticas.</span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>Cada estrategia introduce además un supuesto nuevo. Que exista una técnica no</span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>obliga a usarla: un diseño que argumenta por qué no la necesita está tan bien</span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>defendido como uno que la adopta.</span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a><span class="fu">## Errores comunes</span></span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Error <span class="pp">|</span> Cómo se detecta <span class="pp">|</span> Cómo se resuelve <span class="pp">|</span></span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Tratar cada célula como una réplica independiente <span class="pp">|</span> Valores de p absurdamente pequeños; miles de genes "significativos" <span class="pp">|</span> Agregar por muestra (pseudobulk) antes de comparar condiciones, o usar modelos mixtos. La réplica es el donante, no la célula. <span class="pp">|</span></span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Confundir lote con condición <span class="pp">|</span> Separación perfecta entre grupos en el PCA, que parece un gran resultado <span class="pp">|</span> Distribuir las condiciones entre lotes desde el diseño. Si ya ocurrió, se reporta la limitación; no se corrige. <span class="pp">|</span></span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Una sola muestra por condición <span class="pp">|</span> Resultados no generalizables; se está describiendo a dos individuos <span class="pp">|</span> Mínimo tres réplicas biológicas por condición. Si el presupuesto no alcanza, se reduce el número de células por muestra antes que el número de muestras. <span class="pp">|</span></span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Ignorar el sexo, la edad o el sitio de colecta <span class="pp">|</span> Efectos que aparecen después y no se pueden atribuir <span class="pp">|</span> Registrar todas las covariables desde el inicio, aunque no se vayan a usar. Añadirlas después es imposible. <span class="pp">|</span></span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a><span class="fu">## Recursos</span></span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>Presentación; fichas con los diseños experimentales defectuosos; scPower en demostración para el cálculo de potencia; ejemplos de diseños publicados, acertados y fallidos; pizarra.</span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a><span class="fu">## En línea</span></span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>Modalidad en línea Los diseños defectuosos se reparten como tarjetas en Miro, un marco por equipo. Veinte minutos en salas simultáneas para rediseñar. La plenaria ocurre sobre el tablero: los tres equipos que exponen mueven sus propias tarjetas, de modo que la discusión sea visible y no solo hablada.</span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a><span class="fu">## Si algo falla</span></span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Si falla <span class="pp">|</span> Plan B <span class="pp">|</span></span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Falla la demostración de scPower <span class="pp">|</span> Capturas de pantalla del resultado, preparadas el 19 de agosto. La demostración dura diez minutos y no vale la pena defenderla en vivo. <span class="pp">|</span></span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> La plenaria se alarga <span class="pp">|</span> Exponen solo tres equipos; los otros entregan por escrito y reciben devolución. <span class="pp">|</span></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referencias</span></span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pseudorréplica y falsos descubrimientos en expresión diferencial de célula</span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>  única: @squair2021falsediscoveries. Es la lectura central de esta sesión.</span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Número de células, profundidad y potencia: @svensson2017power.</span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Panorama general de decisiones del flujo: @luecken2019bestpractices.</span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a><span class="fu">## El arco hasta el 15 de septiembre</span></span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>La predicción que cada equipo escribe hoy se reabre en el sesión 07, con los datos</span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>de ese mismo diseño. El razonamiento de por qué el conjunto de datos es el mismo</span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>está en <span class="in">`okf/analyses/decision-dataset-unico.md`</span>.</span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Bioinformática y Estadística 3 · LCG-UNAM · LABBIC-INER · <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.es">CC BY-NC 4.0</a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Hecho con <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

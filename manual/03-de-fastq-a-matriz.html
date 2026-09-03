@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; De FASTQ a matriz – Análisis de single-cell RNA-seq</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./04-de-matriz-a-objeto.html" rel="next">
+<link href="./02-diseno-experimental.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-95e7826f4813621490ae0bbac6a5e5e5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-10f5dae605ba7ed116c0e84354baeedf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-de-fastq-a-matriz.html">Del FASTQ a un objeto en el que se puede confiar</a></li><li class="breadcrumb-item"><a href="./03-de-fastq-a-matriz.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">De FASTQ a matriz</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Análisis de single-cell RNA-seq</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Presentación</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Antes de tocar los datos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-fundamentos-y-tecnologias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Fundamentos de single-cell. Tecnologías y plataformas</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-diseno-experimental.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Diseño experimental</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Del FASTQ a un objeto en el que se puede confiar</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-de-fastq-a-matriz.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">De FASTQ a matriz</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-de-matriz-a-objeto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">De matriz a objeto listo. Rutas de importación y estructuras de datos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-control-de-calidad.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Control de calidad: del experimento a los datos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Autonomía y cierre</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-practica-integradora.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Práctica integradora y arranque del proyecto</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Anexos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./90-anexo-entornos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: entornos de trabajo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./91-anexo-glosario.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: glosario</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./92-anexo-rutas-de-importacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: rutas de importación y estructuras de datos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./93-anexo-replicas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo: ¿réplica biológica o técnica?</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./99-referencias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">En este capítulo</h2>
+   
+  <ul>
+  <li><a href="#cómo-se-desarrolla-la-sesión" id="toc-cómo-se-desarrolla-la-sesión" class="nav-link active" data-scroll-target="#cómo-se-desarrolla-la-sesión"><span class="header-section-number">3.1</span> Cómo se desarrolla la sesión</a></li>
+  <li><a href="#caso-de-aplicación" id="toc-caso-de-aplicación" class="nav-link" data-scroll-target="#caso-de-aplicación"><span class="header-section-number">3.2</span> Caso de aplicación</a></li>
+  <li><a href="#desarrollo" id="toc-desarrollo" class="nav-link" data-scroll-target="#desarrollo"><span class="header-section-number">3.3</span> Desarrollo</a>
+  <ul class="collapse">
+  <li><a href="#de-dónde-sale-un-número-de-la-matriz" id="toc-de-dónde-sale-un-número-de-la-matriz" class="nav-link" data-scroll-target="#de-dónde-sale-un-número-de-la-matriz"><span class="header-section-number">3.3.1</span> De dónde sale un número de la matriz</a></li>
+  <li><a href="#qué-hace-un-cuantificador" id="toc-qué-hace-un-cuantificador" class="nav-link" data-scroll-target="#qué-hace-un-cuantificador"><span class="header-section-number">3.3.2</span> Qué hace un cuantificador</a></li>
+  <li><a href="#los-archivos-que-llegan-de-la-secuenciación" id="toc-los-archivos-que-llegan-de-la-secuenciación" class="nav-link" data-scroll-target="#los-archivos-que-llegan-de-la-secuenciación"><span class="header-section-number">3.3.3</span> Los archivos que llegan de la secuenciación</a></li>
+  <li><a href="#trabajar-en-un-clúster-enviar-y-esperar" id="toc-trabajar-en-un-clúster-enviar-y-esperar" class="nav-link" data-scroll-target="#trabajar-en-un-clúster-enviar-y-esperar"><span class="header-section-number">3.3.4</span> Trabajar en un clúster: enviar y esperar</a></li>
+  <li><a href="#sec-comandos-s03" id="toc-sec-comandos-s03" class="nav-link" data-scroll-target="#sec-comandos-s03"><span class="header-section-number">3.3.5</span> Los comandos, de principio a fin</a></li>
+  <li><a href="#cuatro-cuantificadores-y-por-qué-no-dan-lo-mismo" id="toc-cuatro-cuantificadores-y-por-qué-no-dan-lo-mismo" class="nav-link" data-scroll-target="#cuatro-cuantificadores-y-por-qué-no-dan-lo-mismo"><span class="header-section-number">3.3.6</span> Cuatro cuantificadores y por qué no dan lo mismo</a></li>
+  </ul></li>
+  <li><a href="#errores-comunes" id="toc-errores-comunes" class="nav-link" data-scroll-target="#errores-comunes"><span class="header-section-number">3.4</span> Errores comunes</a></li>
+  <li><a href="#recursos" id="toc-recursos" class="nav-link" data-scroll-target="#recursos"><span class="header-section-number">3.5</span> Recursos</a></li>
+  <li><a href="#si-algo-falla" id="toc-si-algo-falla" class="nav-link" data-scroll-target="#si-algo-falla"><span class="header-section-number">3.6</span> Si algo falla</a></li>
+  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias"><span class="header-section-number">3.7</span> Referencias</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-de-fastq-a-matriz.html">Del FASTQ a un objeto en el que se puede confiar</a></li><li class="breadcrumb-item"><a href="./03-de-fastq-a-matriz.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">De FASTQ a matriz</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span id="sec-s03" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">De FASTQ a matriz</span></span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- ANDAMIO GENERADO. No edites la portada, el objetivo ni las tablas de
+     esta seccion a mano: salen de docs/planeacion/sesiones.yml, que a su
+     vez sale del plan operativo en Word. Para cambiarlos, edita el .docx
+     y vuelve a correr scripts/python/06-extraer-plan.py y 07-generar-sesiones.py.
+     El contenido de las diapositivas SI se escribe a mano, debajo. -->
+<p><strong>Sesión 03 · Martes 25 de agosto de 2026</strong> · sesión práctica (bloque continuo, día 1), 120 minutos Imparten: Luis Alberto Meza Cova (30 min) y José Antonio Ovando Ricárdez (90 min), con Yalbi Itzel Balderas Martínez en los comandos y el acceso al clúster</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Objetivo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Reconstruir el camino que va de las lecturas crudas a la matriz de cuentas, comprendiendo qué hace un cuantificador y por qué contar moléculas no es contar lecturas; y ejecutar ese proceso en un entorno de cómputo de alto rendimiento siguiendo buenas prácticas.</p>
+</div>
+</div>
+<section id="cómo-se-desarrolla-la-sesión" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="cómo-se-desarrolla-la-sesión"><span class="header-section-number">3.1</span> Cómo se desarrolla la sesión</h2>
+<p>Clase teórico-práctica en el clúster, con envío de trabajos al gestor de colas. Puesta a punto del acceso. Inspección de las lecturas crudas desde la línea de comandos: localizar el código de barras de célula y el identificador molecular único, y estimar la profundidad de secuenciación. Qué hace un cuantificador: alineamiento o pseudoalineamiento, corrección de códigos de barras y deduplicación por identificador molecular. Panorama comparado de cuantificadores (Cell Ranger, STARsolo, alevin-fry y kallisto | bustools): qué supone cada uno y en qué difieren sus matrices. Actividad: enviar un trabajo real de cuantificación sobre un subconjunto de las lecturas e interpretar la salida del gestor de colas.</p>
+<ul>
+<li><strong>7 bloques</strong> de trabajo en 120 minutos, con descansos entre ellos</li>
+<li>Se alterna explicación y trabajo propio</li>
+</ul>
+</section>
+<section id="caso-de-aplicación" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="caso-de-aplicación"><span class="header-section-number">3.2</span> Caso de aplicación</h2>
+<p>Caso de aplicación: el trabajo que tarda ocho horas: la cuantificación completa de una corrida de 10x con Cell Ranger tarda horas y consume decenas de gigabytes de memoria. Esta sesión se diseño alrededor de ese hecho, no a pesar de el: el trabajo se envia al gestor de colas en el minuto 60 y se recoge en la sesión siguiente. Los estudiantes aprenden así el patrón real de trabajo en un clúster, que es enviar y esperar, en lugar del patrón de escritorio, que es ejecutar y mirar. De paso se práctica leer la salida del gestor de colas, que es donde aparecen los errores de memoria y de tiempo excedido.</p>
+</section>
+<section id="desarrollo" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="desarrollo"><span class="header-section-number">3.3</span> Desarrollo</h2>
+<section id="de-dónde-sale-un-número-de-la-matriz" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="de-dónde-sale-un-número-de-la-matriz"><span class="header-section-number">3.3.1</span> De dónde sale un número de la matriz</h3>
+<p>Toda la sesión cabe en una pregunta sobre una matriz de cuentas ya hecha: en la fila de <em>CD3E</em> y la columna de una célula hay un <strong>7</strong>. ¿De dónde salió?</p>
+<p>La respuesta corta es que ese 7 no son siete lecturas: son <strong>siete moléculas distintas</strong> de <em>CD3E</em> que había en esa célula. Detrás pudo haber cientos de lecturas, porque la PCR amplifica. Entre las lecturas crudas y ese número hay una cadena de decisiones que conviene conocer, porque todo el análisis posterior del módulo se apoya en esa matriz.</p>
+</section>
+<section id="qué-hace-un-cuantificador" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="qué-hace-un-cuantificador"><span class="header-section-number">3.3.2</span> Qué hace un cuantificador</h3>
+<p>Cualquier cuantificador de célula única resuelve cuatro problemas, en este orden:</p>
+<ol type="1">
+<li><strong>Ubicar la lectura</strong> en el genoma o el transcriptoma, por alineamiento o por pseudoalineamiento. Esto define la <strong>fila</strong> de la matriz.</li>
+<li><strong>Corregir el código de barras de célula</strong>, para saber de qué gota vino. Define la <strong>columna</strong>.</li>
+<li><strong>Deduplicar por identificador molecular único (UMI)</strong>, para contar moléculas y no copias de PCR.</li>
+<li><strong>Contar</strong>, y escribir la matriz.</li>
+</ol>
+<p>Los cuatro pasos están en todas las herramientas. Lo que cambia entre ellas es cómo resuelve cada una, y ahí es donde aparecen las diferencias entre matrices.</p>
+<section id="alinear-o-pseudoalinear" class="level4" data-number="3.3.2.1">
+<h4 data-number="3.3.2.1" class="anchored" data-anchor-id="alinear-o-pseudoalinear"><span class="header-section-number">3.3.2.1</span> Alinear o pseudoalinear</h4>
+<p>El alineamiento busca la posición exacta de la lectura en el genoma; el pseudoalineamiento se conforma con saber a qué transcritos es compatible.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Alineamiento</th>
+<th>Pseudoalineamiento</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Herramientas</td>
+<td>Cell Ranger, STARsolo <span class="citation" data-cites="dobin2013 kaminow2021">(<a href="99-referencias.html#ref-dobin2013" role="doc-biblioref">Dobin et&nbsp;al., 2013</a>; <a href="99-referencias.html#ref-kaminow2021" role="doc-biblioref">Kaminow et&nbsp;al., 2021</a>)</span></td>
+<td>alevin-fry <span class="citation" data-cites="he2022">(<a href="99-referencias.html#ref-he2022" role="doc-biblioref">He et&nbsp;al., 2022</a>)</span>, kallisto | bustools <span class="citation" data-cites="melsted2021">(<a href="99-referencias.html#ref-melsted2021" role="doc-biblioref">Melsted et&nbsp;al., 2021</a>)</span></td>
+</tr>
+<tr class="even">
+<td>Costo</td>
+<td>más tiempo y memoria</td>
+<td>mucho más rápido</td>
+</tr>
+<tr class="odd">
+<td>Permite</td>
+<td>variantes, splicing, intrones</td>
+<td>conteo por gen</td>
+</tr>
+</tbody>
+</table>
+<p>Para el conteo por gen, que es lo que necesita este módulo, los resultados son muy parecidos. Las diferencias se concentran en familias de genes parálogos y en los bordes de los transcritos.</p>
+</section>
+<section id="corregir-el-código-de-barras" class="level4" data-number="3.3.2.2">
+<h4 data-number="3.3.2.2" class="anchored" data-anchor-id="corregir-el-código-de-barras"><span class="header-section-number">3.3.2.2</span> Corregir el código de barras</h4>
+<p>La secuenciación comete errores. Un código de barras leído con una base cambiada parece una gota nueva que nunca existió, y sin corrección aparecerían miles de «células» falsas con muy pocas cuentas cada una.</p>
+<p>La corrección compara cada código observado contra la <strong>lista de códigos posibles</strong> de la química empleada: si difiere en una base de uno abundante, se corrige hacia él; si no se parece a ninguno, se descarta. Este paso es la razón de que el número de códigos de barras observados y el número de células reales no coincidan, algo que se vuelve central en el <a href="04-de-matriz-a-objeto.html" class="quarto-xref"><span>Capítulo 4</span></a>.</p>
+</section>
+<section id="contar-moléculas-no-lecturas" class="level4" data-number="3.3.2.3">
+<h4 data-number="3.3.2.3" class="anchored" data-anchor-id="contar-moléculas-no-lecturas"><span class="header-section-number">3.3.2.3</span> Contar moléculas, no lecturas</h4>
+<p>Aquí está la idea que da nombre a la sesión. Dos lecturas que comparten <strong>el mismo código de barras, el mismo UMI y el mismo gen</strong> provienen de la misma molécula original: una fue amplificada a partir de la otra. Se colapsan a una sola cuenta.</p>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Sin deduplicación, los genes muy amplificados quedarían sistemáticamente sobrestimados, y la magnitud del sesgo dependería de cuántos ciclos de PCR se hicieron —es decir, de un detalle técnico y no de la biología.</p>
+</div>
+</div>
+</div>
+<p>Esto explica también por qué un conjunto de datos <strong>sin UMI</strong> —Smart-seq2, por ejemplo— se interpreta distinto: ahí lo que se cuenta son lecturas, y la normalización tiene que corregir además por la longitud del transcrito.</p>
+</section>
+</section>
+<section id="los-archivos-que-llegan-de-la-secuenciación" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="los-archivos-que-llegan-de-la-secuenciación"><span class="header-section-number">3.3.3</span> Los archivos que llegan de la secuenciación</h3>
+<p>Una corrida de 10x entrega los datos repartidos en archivos con una convención de nombres que <strong>el cuantificador usa para saber cuál es cuál</strong>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Archivo</th>
+<th>Qué contiene</th>
+<th>Para qué sirve</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>..._R1_...fastq.gz</code></td>
+<td>código de barras de célula + UMI</td>
+<td>columna de la matriz y deduplicación</td>
+</tr>
+<tr class="even">
+<td><code>..._R2_...fastq.gz</code></td>
+<td>el inserto, la secuencia del transcrito</td>
+<td>fila de la matriz</td>
+</tr>
+<tr class="odd">
+<td><code>..._I1_...fastq.gz</code></td>
+<td>índice de muestra, si viene</td>
+<td>demultiplexado entre muestras</td>
+</tr>
+</tbody>
+</table>
+<p>La lectura 1 es notablemente más corta que la lectura 2, y esa asimetría es la misma que se dibujó sobre papel en el <a href="01-fundamentos-y-tecnologias.html" class="quarto-xref"><span>Capítulo 1</span></a>: el código de barras y el UMI ocupan unas decenas de bases, mientras que el inserto ocupa el resto.</p>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Renombrar un FASTQ «para ordenar» rompe la corrida. Los sufijos <code>R1</code>, <code>R2</code> e <code>I1</code> no son decorativos.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="trabajar-en-un-clúster-enviar-y-esperar" class="level3" data-number="3.3.4">
+<h3 data-number="3.3.4" class="anchored" data-anchor-id="trabajar-en-un-clúster-enviar-y-esperar"><span class="header-section-number">3.3.4</span> Trabajar en un clúster: enviar y esperar</h3>
+<p>La cuantificación completa de una corrida de 10x tarda horas y consume decenas de gigabytes de memoria. La sesión está diseñada alrededor de ese hecho: el trabajo se envía al gestor de colas y se recoge en la sesión siguiente.</p>
+<p>Eso no es una limitación del curso, es <strong>el patrón real de trabajo</strong> en cómputo de alto rendimiento. En un escritorio uno ejecuta y mira; en un clúster uno envía y espera, y mientras tanto hace otra cosa.</p>
+<p>Tres reglas que conviene interiorizar desde el primer día:</p>
+<ul>
+<li><strong>Siempre <code>sbatch</code>, nunca en el nodo de acceso.</strong> Correr una cuantificación en el nodo de acceso lo satura para todo el mundo. Es una norma de convivencia antes que una buena práctica técnica.</li>
+<li><strong>Pedir margen de memoria y de tiempo.</strong> Si la memoria se queda corta, el trabajo muere sin una explicación clara varias horas después. La causa real queda registrada en el archivo de salida del gestor, que es el primer lugar donde hay que mirar.</li>
+<li><strong>Anotar el identificador del trabajo.</strong> Es lo que permite consultarlo después, y sin él no se sabe cuál de los trabajos en cola es el propio.</li>
+</ul>
+</section>
+<section id="sec-comandos-s03" class="level3" data-number="3.3.5">
+<h3 data-number="3.3.5" class="anchored" data-anchor-id="sec-comandos-s03"><span class="header-section-number">3.3.5</span> Los comandos, de principio a fin</h3>
+<p>Esto es lo que se ejecuta en la práctica, en orden. Está aquí y no solo en la libreta para que quede en el material de consulta: quien repita la sesión meses después no va a abrir el notebook, va a abrir el manual.</p>
+<p><strong>1. Cargar el entorno.</strong> Una sola línea, cada vez que se entra al clúster.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> /mnt/data/bioinfo3/compartido/setup-curso.sh</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Define <code>$REFERENCIA</code> —la referencia GRCh38— y <code>$DATOS</code>. Conviene ver qué es <code>$DATOS</code> exactamente antes de usarlo:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$DATOS</span><span class="st">"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="st">"</span><span class="va">$DATOS</span><span class="st">"</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>$DATOS</code> apunta <strong>ya</strong> a la carpeta del conjunto de datos, no al directorio que la contiene. Dentro están las dos bibliotecas —<code>gex_1</code> y <code>gex_2</code>— con su <code>CHECKSUMS.md5</code> y su <code>PROCEDENCIA.md</code>.</p>
+<p><strong>2. Mirar los archivos antes de cuantificar.</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">BIBLIOTECA</span><span class="op">=</span><span class="va">$DATOS</span>/manual_5k_pbmc_NGSC3_ch5_gex_1</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">TRABAJO</span><span class="op">=</span>/mnt/data/bioinfo3/<span class="va">$USER</span>/sesion03</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$TRABAJO</span><span class="st">"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">"</span><span class="va">$TRABAJO</span><span class="st">"</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Deben aparecer seis archivos —<code>R1</code>, <code>R2</code> e <code>I1</code> por cada uno de los dos carriles, <code>L001</code> y <code>L002</code>—, unos 7.7 GB en total. Si la lista sale vacía o da un error de directorio, hay que parar ahí: nada de lo que sigue va a funcionar.</p>
+<div class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Importante</span>El directorio de trabajo no es <code>$HOME</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La cuota de <code>$HOME</code> es de 5 GB y la salida de Cell Ranger no cabe. Por eso <code>$TRABAJO</code> apunta a <code>/mnt/data/bioinfo3/$USER/</code>, que es el espacio propio de cada quien dentro del volumen del curso.</p>
+</div>
+</div>
+<p><strong>3. Escribir el guion del trabajo.</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;</span> cuantificar.sh <span class="op">&lt;&lt;'FIN'</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">#!/usr/bin/env bash</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --job-name=cuant-pbmc</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --cpus-per-task=8</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --mem=32G</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --time=04:00:00</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --output=cuant-%j.out</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --error=cuant-%j.err</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">set -euo pipefail</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="st">source /mnt/data/bioinfo3/compartido/setup-curso.sh</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="st">cd /mnt/data/bioinfo3/$USER/sesion03</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="st">cellranger count --id=pbmc_5k --transcriptome=$REFERENCIA --fastqs=$DATOS/manual_5k_pbmc_NGSC3_ch5_gex_1,$DATOS/manual_5k_pbmc_NGSC3_ch5_gex_2 --sample=manual_5k_pbmc_NGSC3_ch5_gex_1,manual_5k_pbmc_NGSC3_ch5_gex_2 --create-bam=false --localcores=8 --localmem=30</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="op">FIN</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>El trabajo arranca en una máquina limpia
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ésta es la trampa que costó la práctica del 25 de agosto de 2026 a casi todo el grupo, y no dio ningún error entendible.</p>
+<p><code>sbatch</code> no hereda las variables de la terminal desde la que se envía. Dentro del guion <strong>solo existen</strong> las que él mismo define y las que trae <code>setup-curso.sh</code> —por eso esa línea está también aquí dentro, y no es una repetición descuidada—.</p>
+<p>Una variable que no existe se expande a la cadena vacía, sin avisar. Si el guion dijera <code>--fastqs=$FASTQS/..._gex_1</code> y <code>$FASTQS</code> se hubiera definido fuera, Cell Ranger recibiría <code>--fastqs=/..._gex_1</code>: una ruta absoluta inexistente, con una barra inicial como única pista. El trabajo muere horas después, o de inmediato, con un mensaje sobre un directorio que nadie escribió.</p>
+<p><strong>La regla:</strong> dentro del guion, rutas completas o variables de <code>setup-curso.sh</code>. Nunca variables de la sesión de fuera.</p>
+</div>
+</div>
+<p><strong>4. Enviarlo y seguirle la pista.</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> cuantificar.sh      <span class="co"># imprime el identificador del trabajo: anótalo</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="st">"</span><span class="va">$USER</span><span class="st">"</span>          <span class="co"># en qué va</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Cuando termine, la salida queda en <code>$TRABAJO/pbmc_5k/outs/</code>, y los mensajes del trabajo en <code>cuant-&lt;identificador&gt;.out</code> y <code>.err</code>. <strong>El archivo <code>.err</code> se lee aunque todo haya salido bien:</strong> ahí aparecen los avisos que no detienen la corrida pero cambian cómo se interpreta.</p>
+<p>Esa carpeta <code>outs/</code> es con lo que abre el <a href="04-de-matriz-a-objeto.html" class="quarto-xref"><span>Capítulo 4</span></a>.</p>
+</section>
+<section id="cuatro-cuantificadores-y-por-qué-no-dan-lo-mismo" class="level3" data-number="3.3.6">
+<h3 data-number="3.3.6" class="anchored" data-anchor-id="cuatro-cuantificadores-y-por-qué-no-dan-lo-mismo"><span class="header-section-number">3.3.6</span> Cuatro cuantificadores y por qué no dan lo mismo</h3>
+<p>En clase se corre uno y se comparan los cuatro sobre resultados ya calculados. Lo que interesa no es cuál es «el mejor», sino qué supone cada uno:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Herramienta</th>
+<th>Enfoque</th>
+<th>Qué hay que saber</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cell Ranger</td>
+<td>alineamiento, flujo cerrado de 10x</td>
+<td>es el de referencia para datos de 10x; poco configurable</td>
+</tr>
+<tr class="even">
+<td>STARsolo</td>
+<td>alineamiento con STAR</td>
+<td>reproduce a Cell Ranger y es más rápido y configurable</td>
+</tr>
+<tr class="odd">
+<td>alevin-fry</td>
+<td>pseudoalineamiento selectivo</td>
+<td>muy eficiente en memoria; decisiones explícitas sobre el conteo</td>
+</tr>
+<tr class="even">
+<td>kallisto | bustools</td>
+<td>pseudoalineamiento</td>
+<td>el más rápido; formato intermedio propio</td>
+</tr>
+</tbody>
+</table>
+<p>Las matrices resultantes <strong>no tienen las mismas dimensiones</strong>, y la razón principal no es el alineamiento sino el paso de decidir qué código de barras corresponde a una célula real. Esa decisión —el llamado de células— es precisamente el tema del <a href="04-de-matriz-a-objeto.html" class="quarto-xref"><span>Capítulo 4</span></a>.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>La conclusión de la sesión
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Elegir un cuantificador es aceptar sus supuestos. La matriz no es un dato objetivo que estaba ahí esperando: es el resultado de una cadena de decisiones, y conviene poder nombrarlas cuando alguien pregunte de dónde salió un número.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="errores-comunes" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="errores-comunes"><span class="header-section-number">3.4</span> Errores comunes</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Error</th>
+<th>Cómo se detecta</th>
+<th>Cómo se resuelve</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Usar una referencia que no corresponde al organismo o a la versión de anotación</td>
+<td>Porcentaje de mapeo bajísimo, o genes que no existen</td>
+<td>Verificar la referencia antes de correr. El resumen web de Cell Ranger reporta el porcentaje de lecturas mapeadas: si está muy por debajo de lo esperado, se detiene y se revisa.</td>
+</tr>
+<tr class="even">
+<td>Correr el trabajo en el nodo de acceso en lugar de enviarlo a la cola</td>
+<td>El nodo de acceso se satura y afecta a todo el clúster</td>
+<td>Siempre sbatch. Es además la norma de convivencia del clúster, no solo una buena práctica técnica.</td>
+</tr>
+<tr class="odd">
+<td>Pedir muy poca memoria al gestor de colas</td>
+<td>El trabajo muere sin explicación clara horas después</td>
+<td>Estimar la memoria antes y pedir margen. Leer el archivo de salida del gestor, que registra la causa real de la muerte del proceso.</td>
+</tr>
+<tr class="even">
+<td>Confundir lecturas con moléculas</td>
+<td>Sobrestimación de la expresión de genes muy amplificados</td>
+<td>La deduplicación por identificador molecular único existe precisamente por esto. Si el conjunto de datos no tiene UMI (Smart-seq2), el conteo se interpreta distinto.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="recursos" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="recursos"><span class="header-section-number">3.5</span> Recursos</h2>
+<p>Clúster institucional con gestor de colas; Cell Ranger con referencia humana GRCh38; STARsolo, alevin-fry y kb-python; seqkit, FastQC y MultiQC; lecturas crudas de PBMC en el directorio compartido; guía de acceso al clúster; guion en Quarto provisto.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>En línea
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Modalidad en línea Sala principal para la teoría y salas simultáneas para el acceso al clúster, con un instructor por sala. Requisito previo obligatorio: cada estudiante debe haber entrado al clúster y subido una captura antes del 25 de agosto. En línea no se puede asomar uno a la pantalla del que se atoró, así que el acceso se resuelve antes, no durante.</p>
+</div>
+</div>
+</section>
+<section id="si-algo-falla" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="si-algo-falla"><span class="header-section-number">3.6</span> Si algo falla</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Si falla</th>
+<th>Plan B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Un estudiante no logra entrar por SSH</td>
+<td>Que trabaje en pareja. Su acceso se resuelve fuera del horario de clase, no en vivo.</td>
+</tr>
+<tr class="even">
+<td>El entorno de R y Python no está instalado</td>
+<td>No hay plan B. Por eso la fecha límite del técnico es el lunes 24 de agosto.</td>
+</tr>
+<tr class="odd">
+<td>El clúster está saturado y el trabajo no arranca</td>
+<td>Reservación de partición para el horario de clase, solicitada al técnico. Si aún así falla, se usan las matrices precalculadas y la práctica se convierte en lectura de la salida de un trabajo ya corrido.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="referencias" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="referencias"><span class="header-section-number">3.7</span> Referencias</h2>
+<ul>
+<li>Plataforma de gota, códigos de barras y UMI: <span class="citation" data-cites="zheng201710x">Zheng et&nbsp;al. (<a href="99-referencias.html#ref-zheng201710x" role="doc-biblioref">2017</a>)</span>.</li>
+<li>STAR y su modo de célula única: <span class="citation" data-cites="dobin2013">Dobin et&nbsp;al. (<a href="99-referencias.html#ref-dobin2013" role="doc-biblioref">2013</a>)</span>, <span class="citation" data-cites="kaminow2021">Kaminow et&nbsp;al. (<a href="99-referencias.html#ref-kaminow2021" role="doc-biblioref">2021</a>)</span>.</li>
+<li>alevin-fry: <span class="citation" data-cites="he2022">He et&nbsp;al. (<a href="99-referencias.html#ref-he2022" role="doc-biblioref">2022</a>)</span>.</li>
+<li>kallisto | bustools: <span class="citation" data-cites="melsted2021">Melsted et&nbsp;al. (<a href="99-referencias.html#ref-melsted2021" role="doc-biblioref">2021</a>)</span>.</li>
+<li>Panorama general del flujo y sus decisiones: <span class="citation" data-cites="luecken2019bestpractices">Luecken &amp; Theis (<a href="99-referencias.html#ref-luecken2019bestpractices" role="doc-biblioref">2019</a>)</span>.</li>
+</ul>
+<p>El texto de referencia del módulo, con las rutas de Bioconductor que se usan a partir del <a href="04-de-matriz-a-objeto.html" class="quarto-xref"><span>Capítulo 4</span></a>, es <span class="citation" data-cites="amezquita2020osca">Amezquita et&nbsp;al. (<a href="99-referencias.html#ref-amezquita2020osca" role="doc-biblioref">2020</a>)</span>.</p>
+
+
+<!-- -->
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-amezquita2020osca" class="csl-entry" role="listitem">
+Amezquita, R. A., Lun, A. T. L., Becht, E., Carey, V. J., Carpp, L. N., Geistlinger, L., Marini, F., Rue-Albrecht, K., Risso, D., Soneson, C., Waldron, L., Pagès, H., Smith, M. L., Huber, W., Morgan, M., Gottardo, R., &amp; Hicks, S. C. (2020). Orchestrating single-cell analysis with <span>Bioconductor</span>. <em>Nature Methods</em>, <em>17</em>(2), 137-145. <a href="https://doi.org/10.1038/s41592-019-0654-x">https://doi.org/10.1038/s41592-019-0654-x</a>
+</div>
+<div id="ref-dobin2013" class="csl-entry" role="listitem">
+Dobin, A., Davis, C. A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M., &amp; Gingeras, T. R. (2013). <span>STAR</span>: ultrafast universal <span>RNA</span>-seq aligner. <em>Bioinformatics</em>, <em>29</em>, 15-21. <a href="https://doi.org/10.1093/bioinformatics/bts635">https://doi.org/10.1093/bioinformatics/bts635</a>
+</div>
+<div id="ref-he2022" class="csl-entry" role="listitem">
+He, D., Zakeri, M., Sarkar, H., Soneson, C., Srivastava, A., &amp; Patro, R. (2022). <span>Alevin-fry</span> unlocks rapid, accurate and memory-frugal quantification of single-cell <span>RNA</span>-seq data. <em>Nature Methods</em>, <em>19</em>, 316-322. <a href="https://doi.org/10.1038/s41592-022-01408-3">https://doi.org/10.1038/s41592-022-01408-3</a>
+</div>
+<div id="ref-kaminow2021" class="csl-entry" role="listitem">
+Kaminow, B., Yunusov, D., &amp; Dobin, A. (2021). <em><span>STARsolo</span>: accurate, fast and versatile mapping/quantification of single-cell and single-nucleus <span>RNA</span>-seq data</em>. bioRxiv. <a href="https://doi.org/10.1101/2021.05.05.442755">https://doi.org/10.1101/2021.05.05.442755</a>
+</div>
+<div id="ref-luecken2019bestpractices" class="csl-entry" role="listitem">
+Luecken, M. D., &amp; Theis, F. J. (2019). Current best practices in single-cell <span>RNA</span>-seq analysis: a tutorial. <em>Molecular Systems Biology</em>, <em>15</em>(6), e8746. <a href="https://doi.org/10.15252/msb.20188746">https://doi.org/10.15252/msb.20188746</a>
+</div>
+<div id="ref-melsted2021" class="csl-entry" role="listitem">
+Melsted, P., Booeshaghi, A. S., Liu, L., Gao, F., Lu, L., Min, K. H., Veiga Beltrame, E. da, Hjörleifsson, K. E., Gehring, J., &amp; Pachter, L. (2021). <span>Modular</span>, efficient and constant-memory single-cell <span>RNA</span>-seq preprocessing. <em>Nature Biotechnology</em>, <em>39</em>, 813-818. <a href="https://doi.org/10.1038/s41587-021-00870-2">https://doi.org/10.1038/s41587-021-00870-2</a>
+</div>
+<div id="ref-zheng201710x" class="csl-entry" role="listitem">
+Zheng, G. X. Y., Terry, J. M., Belgrader, P., Ryvkin, P., Bent, Z. W., Wilson, R., Ziraldo, S. B., Wheeler, T. D., McDermott, G. P., Zhu, J., Gregory, M. T., Shuga, J., Montesclaros, L., Underwood, J. G., Masquelier, D. A., Nishimura, S. Y., Schnall-Levin, M., Wyatt, P. W., Hindson, C. M., … Bielas, J. H. (2017). Massively parallel digital transcriptional profiling of single cells. <em>Nature Communications</em>, <em>8</em>, 14049. <a href="https://doi.org/10.1038/ncomms14049">https://doi.org/10.1038/ncomms14049</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./02-diseno-experimental.html" class="pagination-link" aria-label="Diseño experimental">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Diseño experimental</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./04-de-matriz-a-objeto.html" class="pagination-link" aria-label="De matriz a objeto listo. Rutas de importación y estructuras de datos">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">De matriz a objeto listo. Rutas de importación y estructuras de datos</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># De FASTQ a matriz {#sec-s03}</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- ANDAMIO GENERADO. No edites la portada, el objetivo ni las tablas de</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">     esta seccion a mano: salen de docs/planeacion/sesiones.yml, que a su</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">     vez sale del plan operativo en Word. Para cambiarlos, edita el .docx</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">     y vuelve a correr scripts/python/06-extraer-plan.py y 07-generar-sesiones.py.</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">     El contenido de las diapositivas SI se escribe a mano, debajo. --&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>**Sesión 03 · Martes 25 de agosto de 2026** · sesión práctica (bloque continuo, día 1), 120 minutos</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>Imparten: Luis Alberto Meza Cova (30 min) y José Antonio Ovando Ricárdez (90 min), con Yalbi Itzel Balderas Martínez en los comandos y el acceso al clúster</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Objetivo</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>Reconstruir el camino que va de las lecturas crudas a la matriz de cuentas, comprendiendo qué hace un cuantificador y por qué contar moléculas no es contar lecturas; y ejecutar ese proceso en un entorno de cómputo de alto rendimiento siguiendo buenas prácticas.</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cómo se desarrolla la sesión</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>Clase teórico-práctica en el clúster, con envío de trabajos al gestor de colas. Puesta a punto del acceso. Inspección de las lecturas crudas desde la línea de comandos: localizar el código de barras de célula y el identificador molecular único, y estimar la profundidad de secuenciación. Qué hace un cuantificador: alineamiento o pseudoalineamiento, corrección de códigos de barras y deduplicación por identificador molecular. Panorama comparado de cuantificadores (Cell Ranger, STARsolo, alevin-fry y kallisto | bustools): qué supone cada uno y en qué difieren sus matrices. Actividad: enviar un trabajo real de cuantificación sobre un subconjunto de las lecturas e interpretar la salida del gestor de colas.</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**7 bloques** de trabajo en 120 minutos, con descansos entre ellos</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Se alterna explicación y trabajo propio</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## Caso de aplicación</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>Caso de aplicación: el trabajo que tarda ocho horas: la cuantificación completa de una corrida de 10x con Cell Ranger tarda horas y consume decenas de gigabytes de memoria. Esta sesión se diseño alrededor de ese hecho, no a pesar de el: el trabajo se envia al gestor de colas en el minuto 60 y se recoge en la sesión siguiente. Los estudiantes aprenden así el patrón real de trabajo en un clúster, que es enviar y esperar, en lugar del patrón de escritorio, que es ejecutar y mirar. De paso se práctica leer la salida del gestor de colas, que es donde aparecen los errores de memoria y de tiempo excedido.</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Desarrollo</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="fu">### De dónde sale un número de la matriz</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>Toda la sesión cabe en una pregunta sobre una matriz de cuentas ya hecha: en la</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>fila de *CD3E* y la columna de una célula hay un **7**. ¿De dónde salió?</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>La respuesta corta es que ese 7 no son siete lecturas: son **siete moléculas</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>distintas** de *CD3E* que había en esa célula. Detrás pudo haber cientos de</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>lecturas, porque la PCR amplifica. Entre las lecturas crudas y ese número hay una</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>cadena de decisiones que conviene conocer, porque todo el análisis posterior del</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>módulo se apoya en esa matriz.</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="fu">### Qué hace un cuantificador</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>Cualquier cuantificador de célula única resuelve cuatro problemas, en este orden:</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Ubicar la lectura** en el genoma o el transcriptoma, por alineamiento o por</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>   pseudoalineamiento. Esto define la **fila** de la matriz.</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Corregir el código de barras de célula**, para saber de qué gota vino.</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>   Define la **columna**.</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Deduplicar por identificador molecular único (UMI)**, para contar moléculas</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>   y no copias de PCR.</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Contar**, y escribir la matriz.</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>Los cuatro pasos están en todas las herramientas. Lo que cambia entre ellas es</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>cómo resuelve cada una, y ahí es donde aparecen las diferencias entre matrices.</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Alinear o pseudoalinear</span></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>El alineamiento busca la posición exacta de la lectura en el genoma; el</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>pseudoalineamiento se conforma con saber a qué transcritos es compatible.</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="pp">|</span> Alineamiento <span class="pp">|</span> Pseudoalineamiento <span class="pp">|</span></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Herramientas <span class="pp">|</span> Cell Ranger, STARsolo <span class="co">[</span><span class="ot">@dobin2013; @kaminow2021</span><span class="co">]</span> <span class="pp">|</span> alevin-fry <span class="co">[</span><span class="ot">@he2022</span><span class="co">]</span>, kallisto <span class="sc">\|</span> bustools <span class="co">[</span><span class="ot">@melsted2021</span><span class="co">]</span> <span class="pp">|</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Costo <span class="pp">|</span> más tiempo y memoria <span class="pp">|</span> mucho más rápido <span class="pp">|</span></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Permite <span class="pp">|</span> variantes, splicing, intrones <span class="pp">|</span> conteo por gen <span class="pp">|</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>Para el conteo por gen, que es lo que necesita este módulo, los resultados son</span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>muy parecidos. Las diferencias se concentran en familias de genes parálogos y en</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>los bordes de los transcritos.</span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Corregir el código de barras</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>La secuenciación comete errores. Un código de barras leído con una base cambiada</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>parece una gota nueva que nunca existió, y sin corrección aparecerían miles de</span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>«células» falsas con muy pocas cuentas cada una.</span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>La corrección compara cada código observado contra la **lista de códigos</span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>posibles** de la química empleada: si difiere en una base de uno abundante, se</span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>corrige hacia él; si no se parece a ninguno, se descarta. Este paso es la razón</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>de que el número de códigos de barras observados y el número de células reales</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>no coincidan, algo que se vuelve central en el @sec-s04.</span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Contar moléculas, no lecturas</span></span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>Aquí está la idea que da nombre a la sesión. Dos lecturas que comparten **el</span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>mismo código de barras, el mismo UMI y el mismo gen** provienen de la misma</span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>molécula original: una fue amplificada a partir de la otra. Se colapsan a una</span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>sola cuenta.</span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>Sin deduplicación, los genes muy amplificados quedarían sistemáticamente</span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>sobrestimados, y la magnitud del sesgo dependería de cuántos ciclos de PCR se</span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>hicieron —es decir, de un detalle técnico y no de la biología.</span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a>Esto explica también por qué un conjunto de datos **sin UMI** —Smart-seq2, por</span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>ejemplo— se interpreta distinto: ahí lo que se cuenta son lecturas, y la</span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a>normalización tiene que corregir además por la longitud del transcrito.</span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a><span class="fu">### Los archivos que llegan de la secuenciación</span></span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a>Una corrida de 10x entrega los datos repartidos en archivos con una convención de</span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>nombres que **el cuantificador usa para saber cuál es cuál**:</span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Archivo <span class="pp">|</span> Qué contiene <span class="pp">|</span> Para qué sirve <span class="pp">|</span></span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`..._R1_...fastq.gz`</span> <span class="pp">|</span> código de barras de célula + UMI <span class="pp">|</span> columna de la matriz y deduplicación <span class="pp">|</span></span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`..._R2_...fastq.gz`</span> <span class="pp">|</span> el inserto, la secuencia del transcrito <span class="pp">|</span> fila de la matriz <span class="pp">|</span></span>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`..._I1_...fastq.gz`</span> <span class="pp">|</span> índice de muestra, si viene <span class="pp">|</span> demultiplexado entre muestras <span class="pp">|</span></span>
+<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>La lectura 1 es notablemente más corta que la lectura 2, y esa asimetría es la</span>
+<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a>misma que se dibujó sobre papel en el @sec-s01: el código de barras y el UMI</span>
+<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a>ocupan unas decenas de bases, mientras que el inserto ocupa el resto.</span>
+<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a>Renombrar un FASTQ «para ordenar» rompe la corrida. Los sufijos <span class="in">`R1`</span>, <span class="in">`R2`</span> e <span class="in">`I1`</span></span>
+<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a>no son decorativos.</span>
+<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a><span class="fu">### Trabajar en un clúster: enviar y esperar</span></span>
+<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a>La cuantificación completa de una corrida de 10x tarda horas y consume decenas de</span>
+<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a>gigabytes de memoria. La sesión está diseñada alrededor de ese hecho: el trabajo</span>
+<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a>se envía al gestor de colas y se recoge en la sesión siguiente.</span>
+<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a>Eso no es una limitación del curso, es **el patrón real de trabajo** en cómputo</span>
+<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a>de alto rendimiento. En un escritorio uno ejecuta y mira; en un clúster uno envía</span>
+<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a>y espera, y mientras tanto hace otra cosa.</span>
+<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a>Tres reglas que conviene interiorizar desde el primer día:</span>
+<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Siempre `sbatch`, nunca en el nodo de acceso.** Correr una cuantificación en</span>
+<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a>  el nodo de acceso lo satura para todo el mundo. Es una norma de convivencia</span>
+<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a>  antes que una buena práctica técnica.</span>
+<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Pedir margen de memoria y de tiempo.** Si la memoria se queda corta, el</span>
+<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a>  trabajo muere sin una explicación clara varias horas después. La causa real</span>
+<span id="cb6-138"><a href="#cb6-138" aria-hidden="true" tabindex="-1"></a>  queda registrada en el archivo de salida del gestor, que es el primer lugar</span>
+<span id="cb6-139"><a href="#cb6-139" aria-hidden="true" tabindex="-1"></a>  donde hay que mirar.</span>
+<span id="cb6-140"><a href="#cb6-140" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Anotar el identificador del trabajo.** Es lo que permite consultarlo después,</span>
+<span id="cb6-141"><a href="#cb6-141" aria-hidden="true" tabindex="-1"></a>  y sin él no se sabe cuál de los trabajos en cola es el propio.</span>
+<span id="cb6-142"><a href="#cb6-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-143"><a href="#cb6-143" aria-hidden="true" tabindex="-1"></a><span class="fu">### Los comandos, de principio a fin {#sec-comandos-s03}</span></span>
+<span id="cb6-144"><a href="#cb6-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-145"><a href="#cb6-145" aria-hidden="true" tabindex="-1"></a>Esto es lo que se ejecuta en la práctica, en orden. Está aquí y no solo en la</span>
+<span id="cb6-146"><a href="#cb6-146" aria-hidden="true" tabindex="-1"></a>libreta para que quede en el material de consulta: quien repita la sesión meses</span>
+<span id="cb6-147"><a href="#cb6-147" aria-hidden="true" tabindex="-1"></a>después no va a abrir el notebook, va a abrir el manual.</span>
+<span id="cb6-148"><a href="#cb6-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a>**1. Cargar el entorno.** Una sola línea, cada vez que se entra al clúster.</span>
+<span id="cb6-150"><a href="#cb6-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-151"><a href="#cb6-151" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb6-152"><a href="#cb6-152" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> /mnt/data/bioinfo3/compartido/setup-curso.sh</span>
+<span id="cb6-153"><a href="#cb6-153" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-154"><a href="#cb6-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-155"><a href="#cb6-155" aria-hidden="true" tabindex="-1"></a>Define <span class="in">`$REFERENCIA`</span> —la referencia GRCh38— y <span class="in">`$DATOS`</span>. Conviene ver qué es</span>
+<span id="cb6-156"><a href="#cb6-156" aria-hidden="true" tabindex="-1"></a><span class="in">`$DATOS`</span> exactamente antes de usarlo:</span>
+<span id="cb6-157"><a href="#cb6-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-158"><a href="#cb6-158" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb6-159"><a href="#cb6-159" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$DATOS</span><span class="st">"</span></span>
+<span id="cb6-160"><a href="#cb6-160" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="st">"</span><span class="va">$DATOS</span><span class="st">"</span></span>
+<span id="cb6-161"><a href="#cb6-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-162"><a href="#cb6-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-163"><a href="#cb6-163" aria-hidden="true" tabindex="-1"></a><span class="in">`$DATOS`</span> apunta **ya** a la carpeta del conjunto de datos, no al directorio que</span>
+<span id="cb6-164"><a href="#cb6-164" aria-hidden="true" tabindex="-1"></a>la contiene. Dentro están las dos bibliotecas —<span class="in">`gex_1`</span> y <span class="in">`gex_2`</span>— con su</span>
+<span id="cb6-165"><a href="#cb6-165" aria-hidden="true" tabindex="-1"></a><span class="in">`CHECKSUMS.md5`</span> y su <span class="in">`PROCEDENCIA.md`</span>.</span>
+<span id="cb6-166"><a href="#cb6-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-167"><a href="#cb6-167" aria-hidden="true" tabindex="-1"></a>**2. Mirar los archivos antes de cuantificar.**</span>
+<span id="cb6-168"><a href="#cb6-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-169"><a href="#cb6-169" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb6-170"><a href="#cb6-170" aria-hidden="true" tabindex="-1"></a><span class="va">BIBLIOTECA</span><span class="op">=</span><span class="va">$DATOS</span>/manual_5k_pbmc_NGSC3_ch5_gex_1</span>
+<span id="cb6-171"><a href="#cb6-171" aria-hidden="true" tabindex="-1"></a><span class="va">TRABAJO</span><span class="op">=</span>/mnt/data/bioinfo3/<span class="va">$USER</span>/sesion03</span>
+<span id="cb6-172"><a href="#cb6-172" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$TRABAJO</span><span class="st">"</span></span>
+<span id="cb6-173"><a href="#cb6-173" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">"</span><span class="va">$TRABAJO</span><span class="st">"</span></span>
+<span id="cb6-174"><a href="#cb6-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-175"><a href="#cb6-175" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span></span>
+<span id="cb6-176"><a href="#cb6-176" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-177"><a href="#cb6-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-178"><a href="#cb6-178" aria-hidden="true" tabindex="-1"></a>Deben aparecer seis archivos —<span class="in">`R1`</span>, <span class="in">`R2`</span> e <span class="in">`I1`</span> por cada uno de los dos</span>
+<span id="cb6-179"><a href="#cb6-179" aria-hidden="true" tabindex="-1"></a>carriles, <span class="in">`L001`</span> y <span class="in">`L002`</span>—, unos 7.7 GB en total. Si la lista sale vacía o da un</span>
+<span id="cb6-180"><a href="#cb6-180" aria-hidden="true" tabindex="-1"></a>error de directorio, hay que parar ahí: nada de lo que sigue va a funcionar.</span>
+<span id="cb6-181"><a href="#cb6-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-182"><a href="#cb6-182" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb6-183"><a href="#cb6-183" aria-hidden="true" tabindex="-1"></a><span class="fu">## El directorio de trabajo no es `$HOME`</span></span>
+<span id="cb6-184"><a href="#cb6-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-185"><a href="#cb6-185" aria-hidden="true" tabindex="-1"></a>La cuota de <span class="in">`$HOME`</span> es de 5 GB y la salida de Cell Ranger no cabe. Por eso</span>
+<span id="cb6-186"><a href="#cb6-186" aria-hidden="true" tabindex="-1"></a><span class="in">`$TRABAJO`</span> apunta a <span class="in">`/mnt/data/bioinfo3/$USER/`</span>, que es el espacio propio de cada</span>
+<span id="cb6-187"><a href="#cb6-187" aria-hidden="true" tabindex="-1"></a>quien dentro del volumen del curso.</span>
+<span id="cb6-188"><a href="#cb6-188" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-189"><a href="#cb6-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-190"><a href="#cb6-190" aria-hidden="true" tabindex="-1"></a>**3. Escribir el guion del trabajo.**</span>
+<span id="cb6-191"><a href="#cb6-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-192"><a href="#cb6-192" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb6-193"><a href="#cb6-193" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;</span> cuantificar.sh <span class="op">&lt;&lt;'FIN'</span></span>
+<span id="cb6-194"><a href="#cb6-194" aria-hidden="true" tabindex="-1"></a><span class="st">#!/usr/bin/env bash</span></span>
+<span id="cb6-195"><a href="#cb6-195" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --job-name=cuant-pbmc</span></span>
+<span id="cb6-196"><a href="#cb6-196" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --cpus-per-task=8</span></span>
+<span id="cb6-197"><a href="#cb6-197" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --mem=32G</span></span>
+<span id="cb6-198"><a href="#cb6-198" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --time=04:00:00</span></span>
+<span id="cb6-199"><a href="#cb6-199" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --output=cuant-%j.out</span></span>
+<span id="cb6-200"><a href="#cb6-200" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --error=cuant-%j.err</span></span>
+<span id="cb6-201"><a href="#cb6-201" aria-hidden="true" tabindex="-1"></a><span class="st">set -euo pipefail</span></span>
+<span id="cb6-202"><a href="#cb6-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-203"><a href="#cb6-203" aria-hidden="true" tabindex="-1"></a><span class="st">source /mnt/data/bioinfo3/compartido/setup-curso.sh</span></span>
+<span id="cb6-204"><a href="#cb6-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-205"><a href="#cb6-205" aria-hidden="true" tabindex="-1"></a><span class="st">cd /mnt/data/bioinfo3/$USER/sesion03</span></span>
+<span id="cb6-206"><a href="#cb6-206" aria-hidden="true" tabindex="-1"></a><span class="st">cellranger count --id=pbmc_5k --transcriptome=$REFERENCIA --fastqs=$DATOS/manual_5k_pbmc_NGSC3_ch5_gex_1,$DATOS/manual_5k_pbmc_NGSC3_ch5_gex_2 --sample=manual_5k_pbmc_NGSC3_ch5_gex_1,manual_5k_pbmc_NGSC3_ch5_gex_2 --create-bam=false --localcores=8 --localmem=30</span></span>
+<span id="cb6-207"><a href="#cb6-207" aria-hidden="true" tabindex="-1"></a><span class="op">FIN</span></span>
+<span id="cb6-208"><a href="#cb6-208" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-209"><a href="#cb6-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-210"><a href="#cb6-210" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb6-211"><a href="#cb6-211" aria-hidden="true" tabindex="-1"></a><span class="fu">## El trabajo arranca en una máquina limpia</span></span>
+<span id="cb6-212"><a href="#cb6-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-213"><a href="#cb6-213" aria-hidden="true" tabindex="-1"></a>Ésta es la trampa que costó la práctica del 25 de agosto de 2026 a casi todo el</span>
+<span id="cb6-214"><a href="#cb6-214" aria-hidden="true" tabindex="-1"></a>grupo, y no dio ningún error entendible.</span>
+<span id="cb6-215"><a href="#cb6-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-216"><a href="#cb6-216" aria-hidden="true" tabindex="-1"></a><span class="in">`sbatch`</span> no hereda las variables de la terminal desde la que se envía. Dentro del</span>
+<span id="cb6-217"><a href="#cb6-217" aria-hidden="true" tabindex="-1"></a>guion **solo existen** las que él mismo define y las que trae</span>
+<span id="cb6-218"><a href="#cb6-218" aria-hidden="true" tabindex="-1"></a><span class="in">`setup-curso.sh`</span> —por eso esa línea está también aquí dentro, y no es una</span>
+<span id="cb6-219"><a href="#cb6-219" aria-hidden="true" tabindex="-1"></a>repetición descuidada—.</span>
+<span id="cb6-220"><a href="#cb6-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-221"><a href="#cb6-221" aria-hidden="true" tabindex="-1"></a>Una variable que no existe se expande a la cadena vacía, sin avisar. Si el guion</span>
+<span id="cb6-222"><a href="#cb6-222" aria-hidden="true" tabindex="-1"></a>dijera <span class="in">`--fastqs=$FASTQS/..._gex_1`</span> y <span class="in">`$FASTQS`</span> se hubiera definido fuera, Cell</span>
+<span id="cb6-223"><a href="#cb6-223" aria-hidden="true" tabindex="-1"></a>Ranger recibiría <span class="in">`--fastqs=/..._gex_1`</span>: una ruta absoluta inexistente, con una</span>
+<span id="cb6-224"><a href="#cb6-224" aria-hidden="true" tabindex="-1"></a>barra inicial como única pista. El trabajo muere horas después, o de inmediato,</span>
+<span id="cb6-225"><a href="#cb6-225" aria-hidden="true" tabindex="-1"></a>con un mensaje sobre un directorio que nadie escribió.</span>
+<span id="cb6-226"><a href="#cb6-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-227"><a href="#cb6-227" aria-hidden="true" tabindex="-1"></a>**La regla:** dentro del guion, rutas completas o variables de</span>
+<span id="cb6-228"><a href="#cb6-228" aria-hidden="true" tabindex="-1"></a><span class="in">`setup-curso.sh`</span>. Nunca variables de la sesión de fuera.</span>
+<span id="cb6-229"><a href="#cb6-229" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-230"><a href="#cb6-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-231"><a href="#cb6-231" aria-hidden="true" tabindex="-1"></a>**4. Enviarlo y seguirle la pista.**</span>
+<span id="cb6-232"><a href="#cb6-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-233"><a href="#cb6-233" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb6-234"><a href="#cb6-234" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> cuantificar.sh      <span class="co"># imprime el identificador del trabajo: anótalo</span></span>
+<span id="cb6-235"><a href="#cb6-235" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="st">"</span><span class="va">$USER</span><span class="st">"</span>          <span class="co"># en qué va</span></span>
+<span id="cb6-236"><a href="#cb6-236" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-237"><a href="#cb6-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-238"><a href="#cb6-238" aria-hidden="true" tabindex="-1"></a>Cuando termine, la salida queda en <span class="in">`$TRABAJO/pbmc_5k/outs/`</span>, y los mensajes del</span>
+<span id="cb6-239"><a href="#cb6-239" aria-hidden="true" tabindex="-1"></a>trabajo en <span class="in">`cuant-&lt;identificador&gt;.out`</span> y <span class="in">`.err`</span>. **El archivo <span class="in">`.err`</span> se lee</span>
+<span id="cb6-240"><a href="#cb6-240" aria-hidden="true" tabindex="-1"></a>aunque todo haya salido bien:** ahí aparecen los avisos que no detienen la</span>
+<span id="cb6-241"><a href="#cb6-241" aria-hidden="true" tabindex="-1"></a>corrida pero cambian cómo se interpreta.</span>
+<span id="cb6-242"><a href="#cb6-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-243"><a href="#cb6-243" aria-hidden="true" tabindex="-1"></a>Esa carpeta <span class="in">`outs/`</span> es con lo que abre el @sec-s04.</span>
+<span id="cb6-244"><a href="#cb6-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-245"><a href="#cb6-245" aria-hidden="true" tabindex="-1"></a><span class="fu">### Cuatro cuantificadores y por qué no dan lo mismo</span></span>
+<span id="cb6-246"><a href="#cb6-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-247"><a href="#cb6-247" aria-hidden="true" tabindex="-1"></a>En clase se corre uno y se comparan los cuatro sobre resultados ya calculados.</span>
+<span id="cb6-248"><a href="#cb6-248" aria-hidden="true" tabindex="-1"></a>Lo que interesa no es cuál es «el mejor», sino qué supone cada uno:</span>
+<span id="cb6-249"><a href="#cb6-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-250"><a href="#cb6-250" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Herramienta <span class="pp">|</span> Enfoque <span class="pp">|</span> Qué hay que saber <span class="pp">|</span></span>
+<span id="cb6-251"><a href="#cb6-251" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb6-252"><a href="#cb6-252" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Cell Ranger <span class="pp">|</span> alineamiento, flujo cerrado de 10x <span class="pp">|</span> es el de referencia para datos de 10x; poco configurable <span class="pp">|</span></span>
+<span id="cb6-253"><a href="#cb6-253" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> STARsolo <span class="pp">|</span> alineamiento con STAR <span class="pp">|</span> reproduce a Cell Ranger y es más rápido y configurable <span class="pp">|</span></span>
+<span id="cb6-254"><a href="#cb6-254" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> alevin-fry <span class="pp">|</span> pseudoalineamiento selectivo <span class="pp">|</span> muy eficiente en memoria; decisiones explícitas sobre el conteo <span class="pp">|</span></span>
+<span id="cb6-255"><a href="#cb6-255" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> kallisto <span class="sc">\|</span> bustools <span class="pp">|</span> pseudoalineamiento <span class="pp">|</span> el más rápido; formato intermedio propio <span class="pp">|</span></span>
+<span id="cb6-256"><a href="#cb6-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-257"><a href="#cb6-257" aria-hidden="true" tabindex="-1"></a>Las matrices resultantes **no tienen las mismas dimensiones**, y la razón</span>
+<span id="cb6-258"><a href="#cb6-258" aria-hidden="true" tabindex="-1"></a>principal no es el alineamiento sino el paso de decidir qué código de barras</span>
+<span id="cb6-259"><a href="#cb6-259" aria-hidden="true" tabindex="-1"></a>corresponde a una célula real. Esa decisión —el llamado de células— es</span>
+<span id="cb6-260"><a href="#cb6-260" aria-hidden="true" tabindex="-1"></a>precisamente el tema del @sec-s04.</span>
+<span id="cb6-261"><a href="#cb6-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-262"><a href="#cb6-262" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb6-263"><a href="#cb6-263" aria-hidden="true" tabindex="-1"></a><span class="fu">## La conclusión de la sesión</span></span>
+<span id="cb6-264"><a href="#cb6-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-265"><a href="#cb6-265" aria-hidden="true" tabindex="-1"></a>Elegir un cuantificador es aceptar sus supuestos. La matriz no es un dato</span>
+<span id="cb6-266"><a href="#cb6-266" aria-hidden="true" tabindex="-1"></a>objetivo que estaba ahí esperando: es el resultado de una cadena de decisiones,</span>
+<span id="cb6-267"><a href="#cb6-267" aria-hidden="true" tabindex="-1"></a>y conviene poder nombrarlas cuando alguien pregunte de dónde salió un número.</span>
+<span id="cb6-268"><a href="#cb6-268" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-269"><a href="#cb6-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-270"><a href="#cb6-270" aria-hidden="true" tabindex="-1"></a><span class="fu">## Errores comunes</span></span>
+<span id="cb6-271"><a href="#cb6-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-272"><a href="#cb6-272" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Error <span class="pp">|</span> Cómo se detecta <span class="pp">|</span> Cómo se resuelve <span class="pp">|</span></span>
+<span id="cb6-273"><a href="#cb6-273" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb6-274"><a href="#cb6-274" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Usar una referencia que no corresponde al organismo o a la versión de anotación <span class="pp">|</span> Porcentaje de mapeo bajísimo, o genes que no existen <span class="pp">|</span> Verificar la referencia antes de correr. El resumen web de Cell Ranger reporta el porcentaje de lecturas mapeadas: si está muy por debajo de lo esperado, se detiene y se revisa. <span class="pp">|</span></span>
+<span id="cb6-275"><a href="#cb6-275" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Correr el trabajo en el nodo de acceso en lugar de enviarlo a la cola <span class="pp">|</span> El nodo de acceso se satura y afecta a todo el clúster <span class="pp">|</span> Siempre sbatch. Es además la norma de convivencia del clúster, no solo una buena práctica técnica. <span class="pp">|</span></span>
+<span id="cb6-276"><a href="#cb6-276" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Pedir muy poca memoria al gestor de colas <span class="pp">|</span> El trabajo muere sin explicación clara horas después <span class="pp">|</span> Estimar la memoria antes y pedir margen. Leer el archivo de salida del gestor, que registra la causa real de la muerte del proceso. <span class="pp">|</span></span>
+<span id="cb6-277"><a href="#cb6-277" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Confundir lecturas con moléculas <span class="pp">|</span> Sobrestimación de la expresión de genes muy amplificados <span class="pp">|</span> La deduplicación por identificador molecular único existe precisamente por esto. Si el conjunto de datos no tiene UMI (Smart-seq2), el conteo se interpreta distinto. <span class="pp">|</span></span>
+<span id="cb6-278"><a href="#cb6-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-279"><a href="#cb6-279" aria-hidden="true" tabindex="-1"></a><span class="fu">## Recursos</span></span>
+<span id="cb6-280"><a href="#cb6-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-281"><a href="#cb6-281" aria-hidden="true" tabindex="-1"></a>Clúster institucional con gestor de colas; Cell Ranger con referencia humana GRCh38; STARsolo, alevin-fry y kb-python; seqkit, FastQC y MultiQC; lecturas crudas de PBMC en el directorio compartido; guía de acceso al clúster; guion en Quarto provisto.</span>
+<span id="cb6-282"><a href="#cb6-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-283"><a href="#cb6-283" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb6-284"><a href="#cb6-284" aria-hidden="true" tabindex="-1"></a><span class="fu">## En línea</span></span>
+<span id="cb6-285"><a href="#cb6-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-286"><a href="#cb6-286" aria-hidden="true" tabindex="-1"></a>Modalidad en línea Sala principal para la teoría y salas simultáneas para el acceso al clúster, con un instructor por sala. Requisito previo obligatorio: cada estudiante debe haber entrado al clúster y subido una captura antes del 25 de agosto. En línea no se puede asomar uno a la pantalla del que se atoró, así que el acceso se resuelve antes, no durante.</span>
+<span id="cb6-287"><a href="#cb6-287" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-288"><a href="#cb6-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-289"><a href="#cb6-289" aria-hidden="true" tabindex="-1"></a><span class="fu">## Si algo falla</span></span>
+<span id="cb6-290"><a href="#cb6-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-291"><a href="#cb6-291" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Si falla <span class="pp">|</span> Plan B <span class="pp">|</span></span>
+<span id="cb6-292"><a href="#cb6-292" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
+<span id="cb6-293"><a href="#cb6-293" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Un estudiante no logra entrar por SSH <span class="pp">|</span> Que trabaje en pareja. Su acceso se resuelve fuera del horario de clase, no en vivo. <span class="pp">|</span></span>
+<span id="cb6-294"><a href="#cb6-294" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El entorno de R y Python no está instalado <span class="pp">|</span> No hay plan B. Por eso la fecha límite del técnico es el lunes 24 de agosto. <span class="pp">|</span></span>
+<span id="cb6-295"><a href="#cb6-295" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> El clúster está saturado y el trabajo no arranca <span class="pp">|</span> Reservación de partición para el horario de clase, solicitada al técnico. Si aún así falla, se usan las matrices precalculadas y la práctica se convierte en lectura de la salida de un trabajo ya corrido. <span class="pp">|</span></span>
+<span id="cb6-296"><a href="#cb6-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-297"><a href="#cb6-297" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referencias</span></span>
+<span id="cb6-298"><a href="#cb6-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-299"><a href="#cb6-299" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Plataforma de gota, códigos de barras y UMI: @zheng201710x.</span>
+<span id="cb6-300"><a href="#cb6-300" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>STAR y su modo de célula única: @dobin2013, @kaminow2021.</span>
+<span id="cb6-301"><a href="#cb6-301" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>alevin-fry: @he2022.</span>
+<span id="cb6-302"><a href="#cb6-302" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>kallisto <span class="sc">\|</span> bustools: @melsted2021.</span>
+<span id="cb6-303"><a href="#cb6-303" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Panorama general del flujo y sus decisiones: @luecken2019bestpractices.</span>
+<span id="cb6-304"><a href="#cb6-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-305"><a href="#cb6-305" aria-hidden="true" tabindex="-1"></a>El texto de referencia del módulo, con las rutas de Bioconductor que se usan a</span>
+<span id="cb6-306"><a href="#cb6-306" aria-hidden="true" tabindex="-1"></a>partir del @sec-s04, es @amezquita2020osca.</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Bioinformática y Estadística 3 · LCG-UNAM · LABBIC-INER · <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.es">CC BY-NC 4.0</a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Hecho con <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

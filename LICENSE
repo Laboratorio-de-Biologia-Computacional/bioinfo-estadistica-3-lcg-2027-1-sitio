@@ -1,0 +1,117 @@
+Creative Commons Atribución-NoComercial 4.0 Internacional (CC BY-NC 4.0)
+========================================================================
+
+Aplica a: TODO el contenido propio de este repositorio, sin distinción de capa.
+Material docente (`slides/`, `manual/`, `notebooks/`, `tareas/`, `docs/`), la
+capa de conocimiento (`okf/`), los scripts de generación y validación
+(`scripts/`), los temas y hojas de estilo, los datos y metadatos propios, y el
+README.
+
+
+QUÉ PERMITE
+-----------
+Compartir: copiar y redistribuir el material en cualquier medio o formato.
+Adaptar: remezclar, transformar y construir a partir del material.
+
+En cualquier medio o formato, para cualquier propósito NO COMERCIAL.
+
+
+BAJO DOS CONDICIONES
+--------------------
+
+1. ATRIBUCIÓN. Hay que dar crédito apropiado, enlazar a la licencia e indicar si
+   se hicieron cambios.
+
+   El crédito se da a QUIENES ESCRIBIERON EL MATERIAL QUE SE REUTILIZA, no solo
+   a la titular del módulo. Este repositorio es obra colectiva: la autoría de
+   cada archivo consta en su historial de git.
+
+   Para saber a quién acreditar:
+
+       git log --follow \
+         --format='%an%n%(trailers:key=Co-authored-by,valueonly)' \
+         -- <ruta/del/archivo> | grep -v '^$' | sort -u
+
+   El segundo campo importa: recoge a las personas acreditadas como coautoras
+   en el mensaje del commit. No todo el mundo commitea su propio trabajo —a
+   veces se dicta una corrección, se revisa en pantalla compartida o se escribe
+   a cuatro manos— y esos casos se registran con un trailer `Co-authored-by`.
+   Cuentan igual que un commit propio.
+
+   La cita formal del conjunto está en `CITATION.cff`. Si se reutiliza una
+   sesión concreta, se acredita además a quien la escribió y a quien la imparte,
+   que constan en la portada de cada `slides/NN-*.qmd`.
+
+2. NO COMERCIAL. No se puede usar el material con fines primordialmente
+   comerciales ni para obtener una ventaja comercial o una compensación
+   monetaria.
+
+   Sí está permitido, y es el uso previsto:
+     - Impartir el curso en una institución pública o privada sin cobrar por
+       este material en particular.
+     - Usarlo en formación interna de un laboratorio o de un grupo de
+       investigación.
+     - Adaptarlo para otro curso, otra universidad u otro idioma.
+     - Reproducir figuras en artículos, tesis y presentaciones académicas.
+
+   NO está permitido sin autorización escrita previa:
+     - Venderlo, o venderlo empaquetado con otra cosa.
+     - Cobrar por un curso, taller o certificación cuyo contenido sea
+       sustancialmente este material.
+     - Incorporarlo a una plataforma de pago o a un producto comercial.
+
+   Para usos comerciales, escribir a la titular del módulo.
+
+Texto legal completo:
+https://creativecommons.org/licenses/by-nc/4.0/legalcode.es
+Resumen: https://creativecommons.org/licenses/by-nc/4.0/deed.es
+
+
+EXCLUSIONES EXPLÍCITAS
+----------------------
+Esta licencia NO cubre:
+
+1. El escudo, el lema y la identidad gráfica de la UNAM, ni los del INER. Son
+   marcas registradas de sus instituciones; su uso se rige por los manuales de
+   identidad institucional correspondientes, no por esta licencia.
+2. Figuras y material de terceros reproducidos con fines didácticos —
+   documentación de 10x Genomics, Bioconductor, Seurat y Scanpy; figuras de
+   artículos; capturas del libro OSCA. Conservan el copyright de su titular y se
+   citan en el punto de uso.
+3. El material de los módulos impartidos por otras personas docentes. Cada
+   módulo conserva la autoría y la licencia que su autor decida; lo que este
+   repositorio versiona es únicamente el módulo de single-cell a cargo de la
+   Dra. Balderas-Martínez y sus instructores invitados.
+4. Los documentos oficiales de `docs/institucional/`, propiedad de la UNAM.
+5. Conjuntos de datos públicos de terceros usados en clase (10x Genomics, GEO,
+   ArrayExpress, Human Cell Atlas, paquetes de Bioconductor como `scRNAseq` o
+   `TENxPBMCData`). Conservan la licencia y los términos de uso de su fuente
+   original; cada uno se documenta en su nodo `okf/datasets/`.
+6. Las dependencias de software declaradas en `envs/` (R, Bioconductor, CRAN,
+   conda). Cada paquete conserva su propia licencia; este repositorio solo fija
+   sus versiones.
+7. Datos de pacientes o de proyectos del laboratorio. NO se versionan aquí.
+8. Datos personales de estudiantes: listas, calificaciones, entregas y
+   evidencias. NO se versionan aquí.
+
+
+UNA NOTA SOBRE LOS SCRIPTS
+--------------------------
+`scripts/` está bajo CC BY-NC como el resto del repositorio, y conviene tener
+presente que tiene un costo: Creative Commons no está diseñada para software —no
+cubre patentes ni distingue código fuente de binario— y la cláusula NoComercial
+hace estos scripts incompatibles con la mayoría de proyectos de código abierto.
+
+La razón de aceptar ese costo es que los generadores y validadores de este
+repositorio no son herramientas de propósito general: codifican las reglas
+pedagógicas y editoriales del módulo, y separarlos del material que producen es
+artificial. El razonamiento está en
+`okf/analyses/decision-licencia-no-comercial.md`.
+
+
+Titular de los derechos: Dra. Yalbi Itzel Balderas-Martínez, Laboratorio de
+Biología Computacional, Instituto Nacional de Enfermedades Respiratorias Ismael
+Cosío Villegas (INER), y las personas coautoras que constan en el historial de
+git de cada archivo.
+
+Copyright (c) 2026

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Una recta numérica con la serie uno, tres, tres, seis, ocho, diez, diez y mil. Los siete primeros valores se agrupan a la izquierda, en azul, y el mil queda muy lejos a la derecha, en rojo, tras una ruptura del eje. Encima, una banda gris ancha marca el criterio de tres desviaciones típicas, que va de menos ochocientos cincuenta y seis a mil ciento diecisiete y por tanto no detecta el mil. Debajo, una banda verde estrecha marca el criterio de tres desviaciones absolutas medianas, que va de menos ocho coma seis a veintidós coma seis y sí lo detecta. Al pie, que el ejemplo es de Leys 2013, con media ciento treinta coma uno y desviación típica trescientos veintiocho coma ocho, frente a mediana siete y desviación absoluta mediana escalada cinco coma diecinueve.">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .cif { font-size:24px; font-weight:700; }
+      .avi { font-size:24px; font-weight:700; fill:#A01B2B; }
+    </style>
+    <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5A6373"/></marker>
+  </defs>
+
+  <text class="t eti" x="30" y="46">Por qué un valor extremo no mueve la mediana absoluta</text>
+  <text class="t cap" x="30" y="82">serie: 1, 3, 3, 6, 8, 10, 10, 1000</text>
+  <line x1="90" y1="250" x2="800" y2="250" stroke="#5A6373" stroke-width="3"/>
+  <line x1="120" y1="244" x2="120" y2="256" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="120" y="284" text-anchor="middle">0</text>
+  <line x1="248" y1="244" x2="248" y2="256" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="248" y="284" text-anchor="middle">5</text>
+  <line x1="376" y1="244" x2="376" y2="256" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="376" y="284" text-anchor="middle">10</text>
+  <line x1="504" y1="244" x2="504" y2="256" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="504" y="284" text-anchor="middle">15</text>
+  <line x1="632" y1="244" x2="632" y2="256" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="632" y="284" text-anchor="middle">20</text>
+  <line x1="760" y1="244" x2="760" y2="256" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="760" y="284" text-anchor="middle">25</text>
+  <path d="M800,236 l14,28" stroke="#5A6373" stroke-width="4" fill="none"/>
+  <path d="M816,236 l14,28" stroke="#5A6373" stroke-width="4" fill="none"/>
+  <line x1="834" y1="250" x2="960" y2="250" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="900" y="284" text-anchor="middle">1000</text>
+  <circle cx="146" cy="250" r="11" fill="#2B3FA8"/>
+  <circle cx="197" cy="250" r="11" fill="#2B3FA8"/>
+  <circle cx="197" cy="250" r="11" fill="#2B3FA8"/>
+  <circle cx="274" cy="250" r="11" fill="#2B3FA8"/>
+  <circle cx="325" cy="250" r="11" fill="#2B3FA8"/>
+  <circle cx="376" cy="250" r="11" fill="#2B3FA8"/>
+  <circle cx="376" cy="250" r="11" fill="#2B3FA8"/>
+  <circle cx="900" cy="250" r="11" fill="#A01B2B"/>
+  <rect x="90" y="150" width="870" height="40" rx="10" fill="#5A6373" opacity="0.25"/>
+  <text class="t eti" x="90" y="138" style="fill:#5A6373">3 desviaciones típicas: de −856 a 1117</text>
+  <text class="t eti" x="750" y="178" style="fill:#A01B2B">no lo detecta</text>
+  <rect x="90" y="322" width="608" height="40" rx="10" fill="#1F7A3D" opacity="0.3"/>
+  <text class="t eti" x="90" y="312" style="fill:#1F7A3D">3 MAD: de −8,6 a 22,6</text>
+  <text class="t eti" x="273" y="350" style="fill:#1F7A3D">sí lo detecta</text>
+  <text class="t cap" x="30" y="404">Leys 2013 · media 130,1 y desviación típica 328,8 · mediana 7 y MAD escalada 5,19</text>
+</svg>

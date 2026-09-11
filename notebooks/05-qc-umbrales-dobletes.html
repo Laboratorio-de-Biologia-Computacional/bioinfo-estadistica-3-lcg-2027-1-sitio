@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>QC: umbrales fijos contra umbrales adaptativos, y dobletes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="05-qc-umbrales-dobletes_files/libs/clipboard/clipboard.min.js"></script>
+<script src="05-qc-umbrales-dobletes_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="05-qc-umbrales-dobletes_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="05-qc-umbrales-dobletes_files/libs/quarto-html/popper.min.js"></script>
+<script src="05-qc-umbrales-dobletes_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="05-qc-umbrales-dobletes_files/libs/quarto-html/anchor.min.js"></script>
+<link href="05-qc-umbrales-dobletes_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="05-qc-umbrales-dobletes_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="05-qc-umbrales-dobletes_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="05-qc-umbrales-dobletes_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="05-qc-umbrales-dobletes_files/libs/bootstrap/bootstrap-138a6193a3bd40baf1e627da441a4734.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#objetivo" id="toc-objetivo" class="nav-link active" data-scroll-target="#objetivo">Objetivo</a></li>
+  <li><a href="#antes-de-empezar" id="toc-antes-de-empezar" class="nav-link" data-scroll-target="#antes-de-empezar">Antes de empezar</a></li>
+  <li><a href="#si-no-tienes-todavía-el-objeto-de-clase" id="toc-si-no-tienes-todavía-el-objeto-de-clase" class="nav-link" data-scroll-target="#si-no-tienes-todavía-el-objeto-de-clase">Si no tienes todavía el objeto de clase</a></li>
+  <li><a href="#desarrollo" id="toc-desarrollo" class="nav-link" data-scroll-target="#desarrollo">Desarrollo</a>
+  <ul class="collapse">
+  <li><a href="#las-métricas-antes-de-cualquier-umbral" id="toc-las-métricas-antes-de-cualquier-umbral" class="nav-link" data-scroll-target="#las-métricas-antes-de-cualquier-umbral">1. Las métricas, antes de cualquier umbral</a></li>
+  <li><a href="#tres-criterios-sobre-los-mismos-datos" id="toc-tres-criterios-sobre-los-mismos-datos" class="nav-link" data-scroll-target="#tres-criterios-sobre-los-mismos-datos">2. Tres criterios sobre los mismos datos</a></li>
+  <li><a href="#lo-que-ningún-umbral-resuelve" id="toc-lo-que-ningún-umbral-resuelve" class="nav-link" data-scroll-target="#lo-que-ningún-umbral-resuelve">3. Lo que ningún umbral resuelve</a></li>
+  <li><a href="#dobletes" id="toc-dobletes" class="nav-link" data-scroll-target="#dobletes">4. Dobletes</a></li>
+  <li><a href="#aplicar-la-decisión" id="toc-aplicar-la-decisión" class="nav-link" data-scroll-target="#aplicar-la-decisión">5. Aplicar la decisión</a></li>
+  </ul></li>
+  <li><a href="#registro-de-sesión" id="toc-registro-de-sesión" class="nav-link" data-scroll-target="#registro-de-sesión">Registro de sesión</a></li>
+  <li><a href="#lo-que-te-llevas" id="toc-lo-que-te-llevas" class="nav-link" data-scroll-target="#lo-que-te-llevas">Lo que te llevas</a></li>
+  <li><a href="#para-pensar" id="toc-para-pensar" class="nav-link" data-scroll-target="#para-pensar">Para pensar</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">QC: umbrales fijos contra umbrales adaptativos, y dobletes</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+<p class="subtitle lead">Sesión 05 · 1 de septiembre de 2026</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="objetivo" class="level2">
+<h2 class="anchored" data-anchor-id="objetivo">Objetivo</h2>
+<p>Comparar qué células pierde cada criterio de filtrado y marcar dobletes.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Costo de esta práctica
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>25 min · &lt; 8 GB de RAM.</strong> Si en tu máquina tarda mucho más, algo está mal: avisa antes de esperar media hora.</p>
+</div>
+</div>
+</section>
+<section id="antes-de-empezar" class="level2">
+<h2 class="anchored" data-anchor-id="antes-de-empezar">Antes de empezar</h2>
+<p>Todas las rutas de datos se declaran aquí y en ningún otro lugar del notebook. Si tu copia de los datos está en otro sitio, cambia solo esta celda.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ruta_datos <span class="ot">&lt;-</span> <span class="st">""</span> <span class="co"># &lt;- ruta al objeto que se repartió en clase</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SingleCellExperiment)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scuttle)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scater)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scDblFinder)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="si-no-tienes-todavía-el-objeto-de-clase" class="level2">
+<h2 class="anchored" data-anchor-id="si-no-tienes-todavía-el-objeto-de-clase">Si no tienes todavía el objeto de clase</h2>
+<p>La siguiente celda construye un <strong>objeto sintético</strong> con dos lotes, para que el notebook corra de arriba a abajo aunque no tengas el objeto de la sesión.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advertencia
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Es un objeto simulado: sirve para practicar el procedimiento, <strong>no</strong> para sacar conclusiones biológicas. Las cifras que se comentan en clase salen del objeto real.</p>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20260901</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nzchar</span>(ruta_datos) <span class="sc">&amp;&amp;</span> <span class="fu">file.exists</span>(ruta_datos)) {</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  sce <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(ruta_datos)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  origen <span class="ot">&lt;-</span> <span class="st">"objeto de clase"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  n_genes <span class="ot">&lt;-</span> <span class="dv">1200</span>; n_A <span class="ot">&lt;-</span> <span class="dv">300</span>; n_B <span class="ot">&lt;-</span> <span class="dv">300</span>; mt <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">40</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  lambda <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(n_genes, <span class="at">shape =</span> <span class="fl">0.4</span>, <span class="at">rate =</span> <span class="dv">2</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Dos lotes que difieren en profundidad Y en dispersión. Lo segundo importa:</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># un lote solo más superficial no engaña al criterio global; uno más disperso</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sí, y es lo que ocurre cuando se procesa en otro día u otra máquina.</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  factor_celula <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rgamma</span>(n_A, <span class="at">shape =</span> <span class="dv">6</span>, <span class="at">rate =</span> <span class="dv">6</span>),</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rgamma</span>(n_B, <span class="at">shape =</span> <span class="dv">3</span>, <span class="at">rate =</span> <span class="dv">3</span>) <span class="sc">*</span> <span class="fl">0.55</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  lote <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="fu">c</span>(n_A, n_B))</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  cuentas <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rpois</span>(n_genes <span class="sc">*</span> (n_A <span class="sc">+</span> n_B), <span class="fu">outer</span>(lambda, factor_celula)),</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">nrow =</span> n_genes,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="fu">paste0</span>(<span class="st">"Gen"</span>, <span class="fu">seq_len</span>(n_genes)),</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">paste0</span>(<span class="st">"Celula"</span>, <span class="fu">seq_len</span>(n_A <span class="sc">+</span> n_B)))</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(cuentas)[mt] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"MT-"</span>, <span class="fu">seq_along</span>(mt))</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 45 células con proporción mitocondrial alta LEGÍTIMA: tejido de alta</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># demanda energética, no células muriéndose.</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  metabolicas <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">which</span>(lote <span class="sc">==</span> <span class="st">"A"</span>), <span class="dv">45</span>)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  cuentas[mt, metabolicas] <span class="ot">&lt;-</span> cuentas[mt, metabolicas] <span class="sc">*</span> <span class="dv">5</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  sce <span class="ot">&lt;-</span> <span class="fu">SingleCellExperiment</span>(<span class="fu">list</span>(<span class="at">counts =</span> <span class="fu">as</span>(cuentas, <span class="st">"dgCMatrix"</span>)))</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  sce<span class="sc">$</span>lote  <span class="ot">&lt;-</span> lote</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  sce<span class="sc">$</span>grupo <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">seq_len</span>(n_A <span class="sc">+</span> n_B) <span class="sc">%in%</span> metabolicas, <span class="st">"metabolico"</span>, <span class="st">"otro"</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  origen <span class="ot">&lt;-</span> <span class="st">"objeto SINTETICO de respaldo"</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Trabajando con el"</span>, origen, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Trabajando con el objeto SINTETICO de respaldo </code></pre>
+</div>
+</div>
+</section>
+<section id="desarrollo" class="level2">
+<h2 class="anchored" data-anchor-id="desarrollo">Desarrollo</h2>
+<section id="las-métricas-antes-de-cualquier-umbral" class="level3">
+<h3 class="anchored" data-anchor-id="las-métricas-antes-de-cualquier-umbral">1. Las métricas, antes de cualquier umbral</h3>
+<p>Ningún criterio se elige sin haber mirado la distribución. <code>addPerCellQCMetrics</code> calcula por célula las cuentas totales, los genes detectados y la proporción de cada subconjunto que se le indique — aquí, el mitocondrial.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mitocondriales <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"^MT-"</span>, <span class="fu">rownames</span>(sce))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">addPerCellQCMetrics</span>(sce, <span class="at">subsets =</span> <span class="fu">list</span>(<span class="at">MT =</span> mitocondriales))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sce<span class="sc">$</span>sum)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   15.0   107.2   167.5   184.3   245.8   676.0 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sce<span class="sc">$</span>subsets_MT_percent)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   1.170   1.911   2.421   2.879  15.581 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plotColData</span>(sce, <span class="at">x =</span> <span class="st">"lote"</span>, <span class="at">y =</span> <span class="st">"sum"</span>) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"cuentas totales (log)"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">plotColData</span>(sce, <span class="at">x =</span> <span class="st">"lote"</span>, <span class="at">y =</span> <span class="st">"subsets_MT_percent"</span>) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"% mitocondrial"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>gridExtra<span class="sc">::</span><span class="fu">grid.arrange</span>(p1, p2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-distribuciones" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-distribuciones-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-qc-umbrales-dobletes_files/figure-html/fig-distribuciones-1.png" class="img-fluid figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-distribuciones-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Cuentas por célula y proporción mitocondrial, separadas por lote.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>La pregunta antes de seguir
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>¿Los dos lotes tienen la misma distribución de cuentas? Si no la tienen, cualquier umbral calculado sobre el conjunto va a tratarlos distinto.</p>
+</div>
+</div>
+</section>
+<section id="tres-criterios-sobre-los-mismos-datos" class="level3">
+<h3 class="anchored" data-anchor-id="tres-criterios-sobre-los-mismos-datos">2. Tres criterios sobre los mismos datos</h3>
+<p>Se aplican los tres al mismo objeto y se comparan <strong>a quién descarta cada uno</strong>. Ese es el ejercicio: no cuál es el bueno, sino qué se pierde con cada uno.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a) Umbral fijo, el que aparece en la mayoría de los tutoriales</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fijo <span class="ot">&lt;-</span> <span class="sc">!</span>(sce<span class="sc">$</span>subsets_MT_percent <span class="sc">&lt;</span> <span class="dv">5</span> <span class="sc">&amp;</span> sce<span class="sc">$</span>detected <span class="sc">&gt;</span> <span class="dv">200</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># b) MAD sobre el conjunto: adaptativo, pero ciego al lote</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>global <span class="ot">&lt;-</span> <span class="fu">perCellQCFilters</span>(sce, <span class="at">sub.fields =</span> <span class="st">"subsets_MT_percent"</span>)<span class="sc">$</span>discard</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># c) MAD por lote: cada lote se compara consigo mismo</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>por_lote <span class="ot">&lt;-</span> <span class="fu">perCellQCFilters</span>(</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  sce, <span class="at">sub.fields =</span> <span class="st">"subsets_MT_percent"</span>, <span class="at">batch =</span> sce<span class="sc">$</span>lote</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>discard</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>es_B <span class="ot">&lt;-</span> sce<span class="sc">$</span>lote <span class="sc">==</span> <span class="st">"B"</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">criterio =</span> <span class="fu">c</span>(<span class="st">"fijo de tutorial"</span>, <span class="st">"MAD global"</span>, <span class="st">"MAD por lote"</span>),</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">descarta =</span> <span class="fu">c</span>(<span class="fu">sum</span>(fijo), <span class="fu">sum</span>(global), <span class="fu">sum</span>(por_lote)),</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">pct_lote_A =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">c</span>(<span class="fu">sum</span>(fijo <span class="sc">&amp;</span> <span class="sc">!</span>es_B), <span class="fu">sum</span>(global <span class="sc">&amp;</span> <span class="sc">!</span>es_B),</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">sum</span>(por_lote <span class="sc">&amp;</span> <span class="sc">!</span>es_B)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="sc">!</span>es_B), <span class="dv">1</span>),</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">pct_lote_B =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">c</span>(<span class="fu">sum</span>(fijo <span class="sc">&amp;</span> es_B), <span class="fu">sum</span>(global <span class="sc">&amp;</span> es_B),</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">sum</span>(por_lote <span class="sc">&amp;</span> es_B)) <span class="sc">/</span> <span class="fu">sum</span>(es_B), <span class="dv">1</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          criterio descarta pct_lote_A pct_lote_B
+1 fijo de tutorial      495       71.0       94.0
+2       MAD global       56       11.7        7.0
+3     MAD por lote       51       12.7        4.3</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Importante</span>Lo que hay que mirar en esa tabla
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El umbral <strong>fijo</strong> descarta casi todo: sus números vienen de otro experimento, con otra profundidad. Es lo que pasa al copiar un umbral sin contrastarlo con los datos propios.</p>
+<p>Entre <strong>global</strong> y <strong>por lote</strong> la diferencia es más sutil y más interesante: el global castiga al lote B mucho más que al A, no porque sus células estén peor, sino porque se comparan contra una mediana que no es la suya.</p>
+</div>
+</div>
+</section>
+<section id="lo-que-ningún-umbral-resuelve" class="level3">
+<h3 class="anchored" data-anchor-id="lo-que-ningún-umbral-resuelve">3. Lo que ningún umbral resuelve</h3>
+<p>Las 45 células con proporción mitocondrial alta son legítimas: tejido de alta demanda energética. Ningún criterio de los tres las distingue de una célula dañada.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="st">"grupo"</span> <span class="sc">%in%</span> <span class="fu">colnames</span>(<span class="fu">colData</span>(sce))) {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  metab <span class="ot">&lt;-</span> sce<span class="sc">$</span>grupo <span class="sc">==</span> <span class="st">"metabolico"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">criterio =</span> <span class="fu">c</span>(<span class="st">"fijo de tutorial"</span>, <span class="st">"MAD global"</span>, <span class="st">"MAD por lote"</span>),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">metabolicas_descartadas =</span> <span class="fu">c</span>(<span class="fu">sum</span>(fijo[metab]), <span class="fu">sum</span>(global[metab]),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                                <span class="fu">sum</span>(por_lote[metab])),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">de_un_total_de =</span> <span class="fu">sum</span>(metab)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          criterio metabolicas_descartadas de_un_total_de
+1 fijo de tutorial                      43             45
+2       MAD global                      35             45
+3     MAD por lote                      35             45</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advertencia
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Los tres las pierden. <strong>La proporción mitocondrial no distingue una célula dañada de una célula metabólicamente activa</strong> — mide lo mismo en ambas. Si el tejido tiene poblaciones así, el umbral hay que fijarlo por tipo celular o declarar explícitamente que esa población se perdió.</p>
+</div>
+</div>
+</section>
+<section id="dobletes" class="level3">
+<h3 class="anchored" data-anchor-id="dobletes">4. Dobletes</h3>
+<p>Un doblete es una gota que capturó dos células. No se detecta por tener muchas cuentas: se detecta porque su perfil parece la mezcla de dos perfiles distintos.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">scDblFinder</span>(sce, <span class="at">samples =</span> <span class="st">"lote"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |                                                                      |   0%</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |===================================                                   |  50%</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |======================================================================| 100%</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(sce<span class="sc">$</span>scDblFinder.class, sce<span class="sc">$</span>lote)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         
+            A   B
+  singlet 287 292
+  doublet  13   8</code></pre>
+</div>
+</div>
+<p>El argumento <code>samples</code> importa: la simulación de dobletes se hace <strong>dentro de cada lote</strong>, porque dos células de lotes distintos nunca compartieron una gota.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotColData</span>(sce, <span class="at">x =</span> <span class="st">"sum"</span>, <span class="at">y =</span> <span class="st">"scDblFinder.score"</span>,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">colour_by =</span> <span class="st">"scDblFinder.class"</span>) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"cuentas totales (log)"</span>, <span class="at">y =</span> <span class="st">"puntuación"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-dobletes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dobletes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-qc-umbrales-dobletes_files/figure-html/fig-dobletes-1.png" class="img-fluid figure-img" width="528">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dobletes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Puntuación de doblete contra cuentas totales.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="aplicar-la-decisión" class="level3">
+<h3 class="anchored" data-anchor-id="aplicar-la-decisión">5. Aplicar la decisión</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>sce<span class="sc">$</span>descartar <span class="ot">&lt;-</span> por_lote <span class="sc">|</span> sce<span class="sc">$</span>scDblFinder.class <span class="sc">==</span> <span class="st">"doublet"</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>sce_filtrado <span class="ot">&lt;-</span> sce[, <span class="sc">!</span>sce<span class="sc">$</span>descartar]</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"antes:"</span>, <span class="fu">ncol</span>(sce), <span class="st">"celulas | despues:"</span>, <span class="fu">ncol</span>(sce_filtrado), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>antes: 600 celulas | despues: 530 </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Esta es una fila de tu tabla de decisiones
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Anótala tal cual: qué criterio elegiste, con qué parámetro, cuántas células perdiste y qué alternativa descartaste. Lo vas a necesitar el 17 de septiembre.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="registro-de-sesión" class="level2">
+<h2 class="anchored" data-anchor-id="registro-de-sesión">Registro de sesión</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.4.3 (2025-02-28)
+Platform: aarch64-apple-darwin20.0.0
+Running under: macOS 26.5.2
+
+Matrix products: default
+BLAS/LAPACK: /Users/yibm/.claude-science/conda/envs/sc-r/lib/libopenblas.0.dylib;  LAPACK version 3.12.0
+
+locale:
+[1] C
+
+time zone: America/Mexico_City
+tzcode source: system (macOS)
+
+attached base packages:
+[1] stats4    stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] scDblFinder_1.23.4          scater_1.34.1              
+ [3] ggplot2_4.0.3               scuttle_1.16.0             
+ [5] SingleCellExperiment_1.28.0 SummarizedExperiment_1.36.0
+ [7] Biobase_2.66.0              GenomicRanges_1.58.0       
+ [9] GenomeInfoDb_1.42.0         IRanges_2.40.0             
+[11] S4Vectors_0.44.0            BiocGenerics_0.52.0        
+[13] MatrixGenerics_1.18.0       matrixStats_1.5.0          
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_1.2.1         viridisLite_0.4.3        dplyr_1.2.1             
+ [4] vipor_0.4.7              farver_2.1.2             viridis_0.6.5           
+ [7] Biostrings_2.74.0        S7_0.2.2                 bitops_1.0-9            
+[10] RCurl_1.98-1.19          fastmap_1.2.0            bluster_1.16.0          
+[13] GenomicAlignments_1.42.0 XML_3.99-0.23            digest_0.6.39           
+[16] rsvd_1.0.5               lifecycle_1.0.5          cluster_2.1.8.3         
+[19] statmod_1.5.2            magrittr_2.0.5           compiler_4.4.3          
+[22] rlang_1.3.0              tools_4.4.3              igraph_2.3.3            
+[25] yaml_2.3.12              data.table_1.18.4        rtracklayer_1.66.0      
+[28] knitr_1.51               labeling_0.4.3           dqrng_0.3.2             
+[31] S4Arrays_1.6.0           htmlwidgets_1.6.4        xgboost_3.4.0.1         
+[34] curl_7.1.0               DelayedArray_0.32.0      RColorBrewer_1.1-3      
+[37] abind_1.4-8              BiocParallel_1.40.0      withr_3.0.3             
+[40] grid_4.4.3               beachmat_2.22.0          edgeR_4.4.0             
+[43] scales_1.4.0             MASS_7.3-66              cli_3.6.6               
+[46] rmarkdown_2.31           crayon_1.5.3             generics_0.1.4          
+[49] metapod_1.14.0           otel_0.2.0               rjson_0.2.23            
+[52] httr_1.4.8               ggbeeswarm_0.7.3         zlibbioc_1.52.0         
+[55] parallel_4.4.3           XVector_0.46.0           restfulr_0.0.16         
+[58] vctrs_0.7.3              Matrix_1.7-6             jsonlite_2.0.0          
+[61] BiocSingular_1.22.0      BiocNeighbors_2.0.0      ggrepel_0.9.8           
+[64] irlba_2.3.7              beeswarm_0.4.0           locfit_1.5-9.12         
+[67] limma_3.62.1             glue_1.8.1               codetools_0.2-20        
+[70] cowplot_1.2.0            gtable_0.3.6             BiocIO_1.16.0           
+[73] UCSC.utils_1.2.0         ScaledMatrix_1.14.0      tibble_3.3.1            
+[76] pillar_1.11.1            htmltools_0.5.9          GenomeInfoDbData_1.2.13 
+[79] R6_2.6.1                 evaluate_1.0.5           lattice_0.22-9          
+[82] Rsamtools_2.22.0         scran_1.34.0             Rcpp_1.1.2              
+[85] gridExtra_2.3.1          SparseArray_1.6.0        xfun_0.60               
+[88] pkgconfig_2.0.3         </code></pre>
+</div>
+</div>
+</section>
+<section id="lo-que-te-llevas" class="level2">
+<h2 class="anchored" data-anchor-id="lo-que-te-llevas">Lo que te llevas</h2>
+<ul>
+<li>Las métricas se miran <strong>antes</strong> de elegir un umbral, no después.</li>
+<li>Un umbral copiado de un tutorial viene de otro experimento con otra profundidad. Casi nunca sirve sin contrastarlo.</li>
+<li><code>perCellQCFilters</code> con <code>batch=</code> compara cada lote consigo mismo. Sin ese argumento, el lote más superficial parece el peor.</li>
+<li>La proporción mitocondrial <strong>no distingue</strong> célula dañada de célula metabólicamente activa.</li>
+<li><code>scDblFinder</code> con <code>samples=</code> simula dobletes dentro de cada lote, que es la única forma en que se producen.</li>
+</ul>
+</section>
+<section id="para-pensar" class="level2">
+<h2 class="anchored" data-anchor-id="para-pensar">Para pensar</h2>
+<p>Filtraste con el criterio por lote y descartaste unas cuantas células. Si el lote B resultara ser todo un tipo celular —porque se procesó una condición distinta ese día— ¿cómo lo notarías? ¿Y qué mirarías <strong>antes</strong> de filtrar para descartar esa posibilidad?</p>
+<!-- -->
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "QC: umbrales fijos contra umbrales adaptativos, y dobletes"</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Sesión 05 · 1 de septiembre de 2026"</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> es</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Objetivo</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>Comparar qué células pierde cada criterio de filtrado y marcar dobletes.</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Costo de esta práctica</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>**25 min · &lt; 8 GB de RAM.** Si en tu máquina tarda mucho más, algo está mal: avisa antes de</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>esperar media hora.</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Antes de empezar</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>Todas las rutas de datos se declaran aquí y en ningún otro lugar del</span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>notebook. Si tu copia de los datos está en otro sitio, cambia solo esta</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>celda.</span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: rutas</span></span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>ruta_datos <span class="ot">&lt;-</span> <span class="st">""</span> <span class="co"># &lt;- ruta al objeto que se repartió en clase</span></span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: paquetes</span></span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SingleCellExperiment)</span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scuttle)</span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scater)</span>
+<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scDblFinder)</span>
+<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## Si no tienes todavía el objeto de clase</span></span>
+<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a>La siguiente celda construye un **objeto sintético** con dos lotes, para que el</span>
+<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a>notebook corra de arriba a abajo aunque no tengas el objeto de la sesión.</span>
+<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a>Es un objeto simulado: sirve para practicar el procedimiento, **no** para sacar</span>
+<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a>conclusiones biológicas. Las cifras que se comentan en clase salen del objeto</span>
+<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a>real.</span>
+<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-63"><a href="#cb25-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: objeto</span></span>
+<span id="cb25-65"><a href="#cb25-65" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20260901</span>)</span>
+<span id="cb25-66"><a href="#cb25-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-67"><a href="#cb25-67" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nzchar</span>(ruta_datos) <span class="sc">&amp;&amp;</span> <span class="fu">file.exists</span>(ruta_datos)) {</span>
+<span id="cb25-68"><a href="#cb25-68" aria-hidden="true" tabindex="-1"></a>  sce <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(ruta_datos)</span>
+<span id="cb25-69"><a href="#cb25-69" aria-hidden="true" tabindex="-1"></a>  origen <span class="ot">&lt;-</span> <span class="st">"objeto de clase"</span></span>
+<span id="cb25-70"><a href="#cb25-70" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb25-71"><a href="#cb25-71" aria-hidden="true" tabindex="-1"></a>  n_genes <span class="ot">&lt;-</span> <span class="dv">1200</span>; n_A <span class="ot">&lt;-</span> <span class="dv">300</span>; n_B <span class="ot">&lt;-</span> <span class="dv">300</span>; mt <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">40</span></span>
+<span id="cb25-72"><a href="#cb25-72" aria-hidden="true" tabindex="-1"></a>  lambda <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(n_genes, <span class="at">shape =</span> <span class="fl">0.4</span>, <span class="at">rate =</span> <span class="dv">2</span>)</span>
+<span id="cb25-73"><a href="#cb25-73" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Dos lotes que difieren en profundidad Y en dispersión. Lo segundo importa:</span></span>
+<span id="cb25-74"><a href="#cb25-74" aria-hidden="true" tabindex="-1"></a>  <span class="co"># un lote solo más superficial no engaña al criterio global; uno más disperso</span></span>
+<span id="cb25-75"><a href="#cb25-75" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sí, y es lo que ocurre cuando se procesa en otro día u otra máquina.</span></span>
+<span id="cb25-76"><a href="#cb25-76" aria-hidden="true" tabindex="-1"></a>  factor_celula <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb25-77"><a href="#cb25-77" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rgamma</span>(n_A, <span class="at">shape =</span> <span class="dv">6</span>, <span class="at">rate =</span> <span class="dv">6</span>),</span>
+<span id="cb25-78"><a href="#cb25-78" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rgamma</span>(n_B, <span class="at">shape =</span> <span class="dv">3</span>, <span class="at">rate =</span> <span class="dv">3</span>) <span class="sc">*</span> <span class="fl">0.55</span></span>
+<span id="cb25-79"><a href="#cb25-79" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-80"><a href="#cb25-80" aria-hidden="true" tabindex="-1"></a>  lote <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="fu">c</span>(n_A, n_B))</span>
+<span id="cb25-81"><a href="#cb25-81" aria-hidden="true" tabindex="-1"></a>  cuentas <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb25-82"><a href="#cb25-82" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rpois</span>(n_genes <span class="sc">*</span> (n_A <span class="sc">+</span> n_B), <span class="fu">outer</span>(lambda, factor_celula)),</span>
+<span id="cb25-83"><a href="#cb25-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">nrow =</span> n_genes,</span>
+<span id="cb25-84"><a href="#cb25-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="fu">paste0</span>(<span class="st">"Gen"</span>, <span class="fu">seq_len</span>(n_genes)),</span>
+<span id="cb25-85"><a href="#cb25-85" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">paste0</span>(<span class="st">"Celula"</span>, <span class="fu">seq_len</span>(n_A <span class="sc">+</span> n_B)))</span>
+<span id="cb25-86"><a href="#cb25-86" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-87"><a href="#cb25-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(cuentas)[mt] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"MT-"</span>, <span class="fu">seq_along</span>(mt))</span>
+<span id="cb25-88"><a href="#cb25-88" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 45 células con proporción mitocondrial alta LEGÍTIMA: tejido de alta</span></span>
+<span id="cb25-89"><a href="#cb25-89" aria-hidden="true" tabindex="-1"></a>  <span class="co"># demanda energética, no células muriéndose.</span></span>
+<span id="cb25-90"><a href="#cb25-90" aria-hidden="true" tabindex="-1"></a>  metabolicas <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">which</span>(lote <span class="sc">==</span> <span class="st">"A"</span>), <span class="dv">45</span>)</span>
+<span id="cb25-91"><a href="#cb25-91" aria-hidden="true" tabindex="-1"></a>  cuentas[mt, metabolicas] <span class="ot">&lt;-</span> cuentas[mt, metabolicas] <span class="sc">*</span> <span class="dv">5</span></span>
+<span id="cb25-92"><a href="#cb25-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-93"><a href="#cb25-93" aria-hidden="true" tabindex="-1"></a>  sce <span class="ot">&lt;-</span> <span class="fu">SingleCellExperiment</span>(<span class="fu">list</span>(<span class="at">counts =</span> <span class="fu">as</span>(cuentas, <span class="st">"dgCMatrix"</span>)))</span>
+<span id="cb25-94"><a href="#cb25-94" aria-hidden="true" tabindex="-1"></a>  sce<span class="sc">$</span>lote  <span class="ot">&lt;-</span> lote</span>
+<span id="cb25-95"><a href="#cb25-95" aria-hidden="true" tabindex="-1"></a>  sce<span class="sc">$</span>grupo <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">seq_len</span>(n_A <span class="sc">+</span> n_B) <span class="sc">%in%</span> metabolicas, <span class="st">"metabolico"</span>, <span class="st">"otro"</span>)</span>
+<span id="cb25-96"><a href="#cb25-96" aria-hidden="true" tabindex="-1"></a>  origen <span class="ot">&lt;-</span> <span class="st">"objeto SINTETICO de respaldo"</span></span>
+<span id="cb25-97"><a href="#cb25-97" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-98"><a href="#cb25-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-99"><a href="#cb25-99" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Trabajando con el"</span>, origen, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb25-100"><a href="#cb25-100" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-101"><a href="#cb25-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-102"><a href="#cb25-102" aria-hidden="true" tabindex="-1"></a><span class="fu">## Desarrollo</span></span>
+<span id="cb25-103"><a href="#cb25-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-104"><a href="#cb25-104" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. Las métricas, antes de cualquier umbral</span></span>
+<span id="cb25-105"><a href="#cb25-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-106"><a href="#cb25-106" aria-hidden="true" tabindex="-1"></a>Ningún criterio se elige sin haber mirado la distribución. <span class="in">`addPerCellQCMetrics`</span></span>
+<span id="cb25-107"><a href="#cb25-107" aria-hidden="true" tabindex="-1"></a>calcula por célula las cuentas totales, los genes detectados y la proporción de</span>
+<span id="cb25-108"><a href="#cb25-108" aria-hidden="true" tabindex="-1"></a>cada subconjunto que se le indique — aquí, el mitocondrial.</span>
+<span id="cb25-109"><a href="#cb25-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-112"><a href="#cb25-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-113"><a href="#cb25-113" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: metricas</span></span>
+<span id="cb25-114"><a href="#cb25-114" aria-hidden="true" tabindex="-1"></a>mitocondriales <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"^MT-"</span>, <span class="fu">rownames</span>(sce))</span>
+<span id="cb25-115"><a href="#cb25-115" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">addPerCellQCMetrics</span>(sce, <span class="at">subsets =</span> <span class="fu">list</span>(<span class="at">MT =</span> mitocondriales))</span>
+<span id="cb25-116"><a href="#cb25-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-117"><a href="#cb25-117" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sce<span class="sc">$</span>sum)</span>
+<span id="cb25-118"><a href="#cb25-118" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sce<span class="sc">$</span>subsets_MT_percent)</span>
+<span id="cb25-119"><a href="#cb25-119" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-120"><a href="#cb25-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-123"><a href="#cb25-123" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-124"><a href="#cb25-124" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-distribuciones</span></span>
+<span id="cb25-125"><a href="#cb25-125" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Cuentas por célula y proporción mitocondrial, separadas por lote."</span></span>
+<span id="cb25-126"><a href="#cb25-126" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 8</span></span>
+<span id="cb25-127"><a href="#cb25-127" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3.4</span></span>
+<span id="cb25-128"><a href="#cb25-128" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plotColData</span>(sce, <span class="at">x =</span> <span class="st">"lote"</span>, <span class="at">y =</span> <span class="st">"sum"</span>) <span class="sc">+</span></span>
+<span id="cb25-129"><a href="#cb25-129" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"cuentas totales (log)"</span>)</span>
+<span id="cb25-130"><a href="#cb25-130" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">plotColData</span>(sce, <span class="at">x =</span> <span class="st">"lote"</span>, <span class="at">y =</span> <span class="st">"subsets_MT_percent"</span>) <span class="sc">+</span></span>
+<span id="cb25-131"><a href="#cb25-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"% mitocondrial"</span>)</span>
+<span id="cb25-132"><a href="#cb25-132" aria-hidden="true" tabindex="-1"></a>gridExtra<span class="sc">::</span><span class="fu">grid.arrange</span>(p1, p2, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb25-133"><a href="#cb25-133" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-134"><a href="#cb25-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-135"><a href="#cb25-135" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb25-136"><a href="#cb25-136" aria-hidden="true" tabindex="-1"></a><span class="fu">## La pregunta antes de seguir</span></span>
+<span id="cb25-137"><a href="#cb25-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-138"><a href="#cb25-138" aria-hidden="true" tabindex="-1"></a>¿Los dos lotes tienen la misma distribución de cuentas? Si no la tienen,</span>
+<span id="cb25-139"><a href="#cb25-139" aria-hidden="true" tabindex="-1"></a>cualquier umbral calculado sobre el conjunto va a tratarlos distinto.</span>
+<span id="cb25-140"><a href="#cb25-140" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-141"><a href="#cb25-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-142"><a href="#cb25-142" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. Tres criterios sobre los mismos datos</span></span>
+<span id="cb25-143"><a href="#cb25-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-144"><a href="#cb25-144" aria-hidden="true" tabindex="-1"></a>Se aplican los tres al mismo objeto y se comparan **a quién descarta cada uno**.</span>
+<span id="cb25-145"><a href="#cb25-145" aria-hidden="true" tabindex="-1"></a>Ese es el ejercicio: no cuál es el bueno, sino qué se pierde con cada uno.</span>
+<span id="cb25-146"><a href="#cb25-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-149"><a href="#cb25-149" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-150"><a href="#cb25-150" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: criterios</span></span>
+<span id="cb25-151"><a href="#cb25-151" aria-hidden="true" tabindex="-1"></a><span class="co"># a) Umbral fijo, el que aparece en la mayoría de los tutoriales</span></span>
+<span id="cb25-152"><a href="#cb25-152" aria-hidden="true" tabindex="-1"></a>fijo <span class="ot">&lt;-</span> <span class="sc">!</span>(sce<span class="sc">$</span>subsets_MT_percent <span class="sc">&lt;</span> <span class="dv">5</span> <span class="sc">&amp;</span> sce<span class="sc">$</span>detected <span class="sc">&gt;</span> <span class="dv">200</span>)</span>
+<span id="cb25-153"><a href="#cb25-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-154"><a href="#cb25-154" aria-hidden="true" tabindex="-1"></a><span class="co"># b) MAD sobre el conjunto: adaptativo, pero ciego al lote</span></span>
+<span id="cb25-155"><a href="#cb25-155" aria-hidden="true" tabindex="-1"></a>global <span class="ot">&lt;-</span> <span class="fu">perCellQCFilters</span>(sce, <span class="at">sub.fields =</span> <span class="st">"subsets_MT_percent"</span>)<span class="sc">$</span>discard</span>
+<span id="cb25-156"><a href="#cb25-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-157"><a href="#cb25-157" aria-hidden="true" tabindex="-1"></a><span class="co"># c) MAD por lote: cada lote se compara consigo mismo</span></span>
+<span id="cb25-158"><a href="#cb25-158" aria-hidden="true" tabindex="-1"></a>por_lote <span class="ot">&lt;-</span> <span class="fu">perCellQCFilters</span>(</span>
+<span id="cb25-159"><a href="#cb25-159" aria-hidden="true" tabindex="-1"></a>  sce, <span class="at">sub.fields =</span> <span class="st">"subsets_MT_percent"</span>, <span class="at">batch =</span> sce<span class="sc">$</span>lote</span>
+<span id="cb25-160"><a href="#cb25-160" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>discard</span>
+<span id="cb25-161"><a href="#cb25-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-162"><a href="#cb25-162" aria-hidden="true" tabindex="-1"></a>es_B <span class="ot">&lt;-</span> sce<span class="sc">$</span>lote <span class="sc">==</span> <span class="st">"B"</span></span>
+<span id="cb25-163"><a href="#cb25-163" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb25-164"><a href="#cb25-164" aria-hidden="true" tabindex="-1"></a>  <span class="at">criterio =</span> <span class="fu">c</span>(<span class="st">"fijo de tutorial"</span>, <span class="st">"MAD global"</span>, <span class="st">"MAD por lote"</span>),</span>
+<span id="cb25-165"><a href="#cb25-165" aria-hidden="true" tabindex="-1"></a>  <span class="at">descarta =</span> <span class="fu">c</span>(<span class="fu">sum</span>(fijo), <span class="fu">sum</span>(global), <span class="fu">sum</span>(por_lote)),</span>
+<span id="cb25-166"><a href="#cb25-166" aria-hidden="true" tabindex="-1"></a>  <span class="at">pct_lote_A =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">c</span>(<span class="fu">sum</span>(fijo <span class="sc">&amp;</span> <span class="sc">!</span>es_B), <span class="fu">sum</span>(global <span class="sc">&amp;</span> <span class="sc">!</span>es_B),</span>
+<span id="cb25-167"><a href="#cb25-167" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">sum</span>(por_lote <span class="sc">&amp;</span> <span class="sc">!</span>es_B)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="sc">!</span>es_B), <span class="dv">1</span>),</span>
+<span id="cb25-168"><a href="#cb25-168" aria-hidden="true" tabindex="-1"></a>  <span class="at">pct_lote_B =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">c</span>(<span class="fu">sum</span>(fijo <span class="sc">&amp;</span> es_B), <span class="fu">sum</span>(global <span class="sc">&amp;</span> es_B),</span>
+<span id="cb25-169"><a href="#cb25-169" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">sum</span>(por_lote <span class="sc">&amp;</span> es_B)) <span class="sc">/</span> <span class="fu">sum</span>(es_B), <span class="dv">1</span>)</span>
+<span id="cb25-170"><a href="#cb25-170" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-171"><a href="#cb25-171" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-172"><a href="#cb25-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-173"><a href="#cb25-173" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb25-174"><a href="#cb25-174" aria-hidden="true" tabindex="-1"></a><span class="fu">## Lo que hay que mirar en esa tabla</span></span>
+<span id="cb25-175"><a href="#cb25-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-176"><a href="#cb25-176" aria-hidden="true" tabindex="-1"></a>El umbral **fijo** descarta casi todo: sus números vienen de otro experimento,</span>
+<span id="cb25-177"><a href="#cb25-177" aria-hidden="true" tabindex="-1"></a>con otra profundidad. Es lo que pasa al copiar un umbral sin contrastarlo con</span>
+<span id="cb25-178"><a href="#cb25-178" aria-hidden="true" tabindex="-1"></a>los datos propios.</span>
+<span id="cb25-179"><a href="#cb25-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-180"><a href="#cb25-180" aria-hidden="true" tabindex="-1"></a>Entre **global** y **por lote** la diferencia es más sutil y más interesante: el</span>
+<span id="cb25-181"><a href="#cb25-181" aria-hidden="true" tabindex="-1"></a>global castiga al lote B mucho más que al A, no porque sus células estén peor,</span>
+<span id="cb25-182"><a href="#cb25-182" aria-hidden="true" tabindex="-1"></a>sino porque se comparan contra una mediana que no es la suya.</span>
+<span id="cb25-183"><a href="#cb25-183" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-184"><a href="#cb25-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-185"><a href="#cb25-185" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. Lo que ningún umbral resuelve</span></span>
+<span id="cb25-186"><a href="#cb25-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-187"><a href="#cb25-187" aria-hidden="true" tabindex="-1"></a>Las 45 células con proporción mitocondrial alta son legítimas: tejido de alta</span>
+<span id="cb25-188"><a href="#cb25-188" aria-hidden="true" tabindex="-1"></a>demanda energética. Ningún criterio de los tres las distingue de una célula</span>
+<span id="cb25-189"><a href="#cb25-189" aria-hidden="true" tabindex="-1"></a>dañada.</span>
+<span id="cb25-190"><a href="#cb25-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-193"><a href="#cb25-193" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-194"><a href="#cb25-194" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: metabolicas</span></span>
+<span id="cb25-195"><a href="#cb25-195" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="st">"grupo"</span> <span class="sc">%in%</span> <span class="fu">colnames</span>(<span class="fu">colData</span>(sce))) {</span>
+<span id="cb25-196"><a href="#cb25-196" aria-hidden="true" tabindex="-1"></a>  metab <span class="ot">&lt;-</span> sce<span class="sc">$</span>grupo <span class="sc">==</span> <span class="st">"metabolico"</span></span>
+<span id="cb25-197"><a href="#cb25-197" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb25-198"><a href="#cb25-198" aria-hidden="true" tabindex="-1"></a>    <span class="at">criterio =</span> <span class="fu">c</span>(<span class="st">"fijo de tutorial"</span>, <span class="st">"MAD global"</span>, <span class="st">"MAD por lote"</span>),</span>
+<span id="cb25-199"><a href="#cb25-199" aria-hidden="true" tabindex="-1"></a>    <span class="at">metabolicas_descartadas =</span> <span class="fu">c</span>(<span class="fu">sum</span>(fijo[metab]), <span class="fu">sum</span>(global[metab]),</span>
+<span id="cb25-200"><a href="#cb25-200" aria-hidden="true" tabindex="-1"></a>                                <span class="fu">sum</span>(por_lote[metab])),</span>
+<span id="cb25-201"><a href="#cb25-201" aria-hidden="true" tabindex="-1"></a>    <span class="at">de_un_total_de =</span> <span class="fu">sum</span>(metab)</span>
+<span id="cb25-202"><a href="#cb25-202" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-203"><a href="#cb25-203" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-204"><a href="#cb25-204" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-205"><a href="#cb25-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-206"><a href="#cb25-206" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb25-207"><a href="#cb25-207" aria-hidden="true" tabindex="-1"></a>Los tres las pierden. **La proporción mitocondrial no distingue una célula</span>
+<span id="cb25-208"><a href="#cb25-208" aria-hidden="true" tabindex="-1"></a>dañada de una célula metabólicamente activa** — mide lo mismo en ambas. Si el</span>
+<span id="cb25-209"><a href="#cb25-209" aria-hidden="true" tabindex="-1"></a>tejido tiene poblaciones así, el umbral hay que fijarlo por tipo celular o</span>
+<span id="cb25-210"><a href="#cb25-210" aria-hidden="true" tabindex="-1"></a>declarar explícitamente que esa población se perdió.</span>
+<span id="cb25-211"><a href="#cb25-211" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-212"><a href="#cb25-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-213"><a href="#cb25-213" aria-hidden="true" tabindex="-1"></a><span class="fu">### 4. Dobletes</span></span>
+<span id="cb25-214"><a href="#cb25-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-215"><a href="#cb25-215" aria-hidden="true" tabindex="-1"></a>Un doblete es una gota que capturó dos células. No se detecta por tener muchas</span>
+<span id="cb25-216"><a href="#cb25-216" aria-hidden="true" tabindex="-1"></a>cuentas: se detecta porque su perfil parece la mezcla de dos perfiles distintos.</span>
+<span id="cb25-217"><a href="#cb25-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-220"><a href="#cb25-220" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-221"><a href="#cb25-221" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: dobletes</span></span>
+<span id="cb25-222"><a href="#cb25-222" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">scDblFinder</span>(sce, <span class="at">samples =</span> <span class="st">"lote"</span>)</span>
+<span id="cb25-223"><a href="#cb25-223" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(sce<span class="sc">$</span>scDblFinder.class, sce<span class="sc">$</span>lote)</span>
+<span id="cb25-224"><a href="#cb25-224" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-225"><a href="#cb25-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-226"><a href="#cb25-226" aria-hidden="true" tabindex="-1"></a>El argumento <span class="in">`samples`</span> importa: la simulación de dobletes se hace **dentro de</span>
+<span id="cb25-227"><a href="#cb25-227" aria-hidden="true" tabindex="-1"></a>cada lote**, porque dos células de lotes distintos nunca compartieron una gota.</span>
+<span id="cb25-228"><a href="#cb25-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-231"><a href="#cb25-231" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-232"><a href="#cb25-232" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-dobletes</span></span>
+<span id="cb25-233"><a href="#cb25-233" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Puntuación de doblete contra cuentas totales."</span></span>
+<span id="cb25-234"><a href="#cb25-234" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 5.5</span></span>
+<span id="cb25-235"><a href="#cb25-235" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 3.4</span></span>
+<span id="cb25-236"><a href="#cb25-236" aria-hidden="true" tabindex="-1"></a><span class="fu">plotColData</span>(sce, <span class="at">x =</span> <span class="st">"sum"</span>, <span class="at">y =</span> <span class="st">"scDblFinder.score"</span>,</span>
+<span id="cb25-237"><a href="#cb25-237" aria-hidden="true" tabindex="-1"></a>            <span class="at">colour_by =</span> <span class="st">"scDblFinder.class"</span>) <span class="sc">+</span></span>
+<span id="cb25-238"><a href="#cb25-238" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"cuentas totales (log)"</span>, <span class="at">y =</span> <span class="st">"puntuación"</span>)</span>
+<span id="cb25-239"><a href="#cb25-239" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-240"><a href="#cb25-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-241"><a href="#cb25-241" aria-hidden="true" tabindex="-1"></a><span class="fu">### 5. Aplicar la decisión</span></span>
+<span id="cb25-242"><a href="#cb25-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-245"><a href="#cb25-245" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-246"><a href="#cb25-246" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: filtrar</span></span>
+<span id="cb25-247"><a href="#cb25-247" aria-hidden="true" tabindex="-1"></a>sce<span class="sc">$</span>descartar <span class="ot">&lt;-</span> por_lote <span class="sc">|</span> sce<span class="sc">$</span>scDblFinder.class <span class="sc">==</span> <span class="st">"doublet"</span></span>
+<span id="cb25-248"><a href="#cb25-248" aria-hidden="true" tabindex="-1"></a>sce_filtrado <span class="ot">&lt;-</span> sce[, <span class="sc">!</span>sce<span class="sc">$</span>descartar]</span>
+<span id="cb25-249"><a href="#cb25-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-250"><a href="#cb25-250" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"antes:"</span>, <span class="fu">ncol</span>(sce), <span class="st">"celulas | despues:"</span>, <span class="fu">ncol</span>(sce_filtrado), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb25-251"><a href="#cb25-251" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-252"><a href="#cb25-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-253"><a href="#cb25-253" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb25-254"><a href="#cb25-254" aria-hidden="true" tabindex="-1"></a><span class="fu">## Esta es una fila de tu tabla de decisiones</span></span>
+<span id="cb25-255"><a href="#cb25-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-256"><a href="#cb25-256" aria-hidden="true" tabindex="-1"></a>Anótala tal cual: qué criterio elegiste, con qué parámetro, cuántas células</span>
+<span id="cb25-257"><a href="#cb25-257" aria-hidden="true" tabindex="-1"></a>perdiste y qué alternativa descartaste. Lo vas a necesitar el 17 de septiembre.</span>
+<span id="cb25-258"><a href="#cb25-258" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb25-259"><a href="#cb25-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-260"><a href="#cb25-260" aria-hidden="true" tabindex="-1"></a><span class="fu">## Registro de sesión</span></span>
+<span id="cb25-261"><a href="#cb25-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-264"><a href="#cb25-264" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb25-265"><a href="#cb25-265" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: sesion</span></span>
+<span id="cb25-266"><a href="#cb25-266" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb25-267"><a href="#cb25-267" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb25-268"><a href="#cb25-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-269"><a href="#cb25-269" aria-hidden="true" tabindex="-1"></a><span class="fu">## Lo que te llevas</span></span>
+<span id="cb25-270"><a href="#cb25-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-271"><a href="#cb25-271" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Las métricas se miran **antes** de elegir un umbral, no después.</span>
+<span id="cb25-272"><a href="#cb25-272" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Un umbral copiado de un tutorial viene de otro experimento con otra</span>
+<span id="cb25-273"><a href="#cb25-273" aria-hidden="true" tabindex="-1"></a>  profundidad. Casi nunca sirve sin contrastarlo.</span>
+<span id="cb25-274"><a href="#cb25-274" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`perCellQCFilters`</span> con <span class="in">`batch=`</span> compara cada lote consigo mismo. Sin ese</span>
+<span id="cb25-275"><a href="#cb25-275" aria-hidden="true" tabindex="-1"></a>  argumento, el lote más superficial parece el peor.</span>
+<span id="cb25-276"><a href="#cb25-276" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>La proporción mitocondrial **no distingue** célula dañada de célula</span>
+<span id="cb25-277"><a href="#cb25-277" aria-hidden="true" tabindex="-1"></a>  metabólicamente activa.</span>
+<span id="cb25-278"><a href="#cb25-278" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`scDblFinder`</span> con <span class="in">`samples=`</span> simula dobletes dentro de cada lote, que es la</span>
+<span id="cb25-279"><a href="#cb25-279" aria-hidden="true" tabindex="-1"></a>  única forma en que se producen.</span>
+<span id="cb25-280"><a href="#cb25-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-281"><a href="#cb25-281" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para pensar</span></span>
+<span id="cb25-282"><a href="#cb25-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-283"><a href="#cb25-283" aria-hidden="true" tabindex="-1"></a>Filtraste con el criterio por lote y descartaste unas cuantas células. Si el</span>
+<span id="cb25-284"><a href="#cb25-284" aria-hidden="true" tabindex="-1"></a>lote B resultara ser todo un tipo celular —porque se procesó una condición</span>
+<span id="cb25-285"><a href="#cb25-285" aria-hidden="true" tabindex="-1"></a>distinta ese día— ¿cómo lo notarías? ¿Y qué mirarías **antes** de filtrar para</span>
+<span id="cb25-286"><a href="#cb25-286" aria-hidden="true" tabindex="-1"></a>descartar esa posibilidad?</span>
+</code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

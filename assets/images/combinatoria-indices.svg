@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Con dos rondas hay nueve mil combinaciones y con tres casi un millón: la escala sale de añadir rondas, no pozos">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cif { font-size:40px; font-weight:800; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+    </style>
+  </defs>
+
+  <!-- ── dos rondas ── -->
+  <text class="t eti" x="30" y="52" fill="#141A4A">Dos rondas</text>
+  <rect x="30" y="70" width="150" height="86" rx="12" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="2"/>
+  <text class="t cif" x="105" y="118" text-anchor="middle" fill="#000977">96</text>
+  <text class="t cap" x="105" y="146" text-anchor="middle">pozos</text>
+  <text class="t cif" x="208" y="120" text-anchor="middle" fill="#5A6373">×</text>
+  <rect x="236" y="70" width="150" height="86" rx="12" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="2"/>
+  <text class="t cif" x="311" y="118" text-anchor="middle" fill="#000977">96</text>
+  <text class="t cap" x="311" y="146" text-anchor="middle">pozos</text>
+  <text class="t cif" x="414" y="120" text-anchor="middle" fill="#5A6373">=</text>
+  <rect x="442" y="70" width="250" height="86" rx="12" fill="#F3EFDD" stroke="#937E00" stroke-width="3"/>
+  <text class="t cif" x="567" y="118" text-anchor="middle" fill="#6E5E00">9 216</text>
+  <text class="t cap" x="567" y="146" text-anchor="middle">combinaciones</text>
+  <text class="t eti" x="720" y="122" fill="#2E9AA6">≈ 1 000 células</text>
+
+  <!-- ── tres rondas ── -->
+  <text class="t eti" x="30" y="222" fill="#141A4A">Tres rondas</text>
+  <rect x="30" y="240" width="150" height="86" rx="12" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="2"/>
+  <text class="t cif" x="105" y="288" text-anchor="middle" fill="#000977">96</text>
+  <text class="t cap" x="105" y="316" text-anchor="middle">pozos</text>
+  <text class="t cif" x="208" y="290" text-anchor="middle" fill="#5A6373">×</text>
+  <rect x="236" y="240" width="150" height="86" rx="12" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="2"/>
+  <text class="t cif" x="311" y="288" text-anchor="middle" fill="#000977">96</text>
+  <text class="t cap" x="311" y="316" text-anchor="middle">pozos</text>
+  <text class="t cif" x="414" y="290" text-anchor="middle" fill="#5A6373">×</text>
+  <rect x="442" y="240" width="150" height="86" rx="12" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="2"/>
+  <text class="t cif" x="517" y="288" text-anchor="middle" fill="#000977">96</text>
+  <text class="t cap" x="517" y="316" text-anchor="middle">pozos</text>
+  <text class="t cif" x="620" y="290" text-anchor="middle" fill="#5A6373">=</text>
+  <rect x="648" y="240" width="290" height="86" rx="12" fill="#F3EFDD" stroke="#937E00" stroke-width="3"/>
+  <text class="t cif" x="793" y="288" text-anchor="middle" fill="#6E5E00">884 736</text>
+  <text class="t cap" x="793" y="316" text-anchor="middle">combinaciones</text>
+  <text class="t eti" x="966" y="292" fill="#2E9AA6">≈ 100 000</text>
+
+  <line x1="30" y1="356" x2="1150" y2="356" stroke="#DDD8C6" stroke-width="2"/>
+  <text class="t eti" x="30" y="396" fill="#000977">La escala sale de añadir rondas, no pozos.</text>
+  <text class="t cap" x="30" y="424">Regla práctica: hacen falta unas diez veces más casillas que células.</text>
+</svg>

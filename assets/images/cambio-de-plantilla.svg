@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Cambio de plantilla en tres pasos">
+  <!-- Altura 430: el tema limita las imagenes a 60vh = 432 px sobre el lienzo.
+       Cada paso ocupa 130 y entre paso y paso hay 18 de aire. Se quito la linea
+       punteada que separaba el 2 del 3: con el espaciado ya no hace falta. -->
+  <defs>
+    <marker id="flechaAzul" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2B3FA8"/>
+    </marker>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .paso{ font-size:26px; font-weight:700; }
+      .num { font-size:24px; font-weight:700; fill:#ffffff; }
+      .eti { font-size:24px; font-weight:600; }
+      .seq { font-family:ui-monospace,"Cascadia Mono",Consolas,monospace; font-size:24px; font-weight:700; }
+      .ext { font-size:24px; font-weight:700; fill:#5A6373; }
+    </style>
+  </defs>
+
+  <!-- ══════════ 1 ══════════ -->
+  <g transform="translate(0,2)">
+    <circle cx="20" cy="14" r="15" fill="#000977"/>
+    <text class="t num" x="20" y="22" text-anchor="middle">1</text>
+    <text class="t paso" x="48" y="22">El oligo de la perla ceba en la cola de poli-A</text>
+
+    <text class="t seq" x="755" y="42" text-anchor="middle" fill="#6E5E00">AAAAAA</text>
+    <text class="t ext" x="152" y="64" text-anchor="end">5′</text>
+    <rect x="165" y="48" width="515" height="16" rx="8" fill="#141A4A"/>
+    <rect x="680" y="48" width="150" height="16" rx="8" fill="#937E00"/>
+    <text class="t ext" x="843" y="64">3′</text>
+
+    <rect x="680" y="88" width="150" height="16" rx="8" fill="#937E00"/>
+    <rect x="836" y="88" width="104" height="16" rx="8" fill="#2E9AA6"/>
+    <rect x="946" y="88" width="150" height="16" rx="8" fill="#000977"/>
+    <text class="t ext" x="665"  y="104" text-anchor="end">3′</text>
+    <text class="t ext" x="1106" y="104">5′</text>
+    <text class="t eti" x="755"  y="126" text-anchor="middle" fill="#6E5E00">poli-dT</text>
+    <text class="t eti" x="888"  y="126" text-anchor="middle" fill="#2E9AA6">UMI</text>
+    <text class="t eti" x="1021" y="126" text-anchor="middle" fill="#000977">código de barras</text>
+  </g>
+
+  <!-- ══════════ 2 ══════════ -->
+  <g transform="translate(0,150)">
+    <circle cx="20" cy="14" r="15" fill="#000977"/>
+    <text class="t num" x="20" y="22" text-anchor="middle">2</text>
+    <text class="t paso" x="48" y="22">MMLV copia hacia atrás y al terminar añade unas C de más</text>
+
+    <rect x="165" y="48" width="515" height="16" rx="8" fill="#141A4A"/>
+    <rect x="680" y="48" width="150" height="16" rx="8" fill="#937E00"/>
+    <text class="t ext" x="843" y="64">3′</text>
+
+    <!-- El cebador NO desaparece al copiarse: el cDNA crece desde su 3' y
+         arrastra consigo poli-dT, UMI y codigo de barras. -->
+    <rect x="236" y="88" width="444" height="16" rx="8" fill="#2B3FA8"/>
+    <rect x="680" y="88" width="150" height="16" rx="8" fill="#937E00"/>
+    <rect x="836" y="88" width="104" height="16" rx="8" fill="#2E9AA6"/>
+    <rect x="946" y="88" width="150" height="16" rx="8" fill="#000977"/>
+    <rect x="170" y="82" width="60" height="28" rx="6" fill="#F3EFDD" stroke="#937E00" stroke-width="2"/>
+    <text class="t seq" x="200" y="104" text-anchor="middle" fill="#6E5E00">CCC</text>
+
+    <line x1="660" y1="124" x2="250" y2="124" stroke="#2B3FA8" stroke-width="3" marker-end="url(#flechaAzul)"/>
+    <text class="t eti" x="670" y="131" fill="#2B3FA8">cDNA</text>
+  </g>
+
+  <!-- ══════════ 3 ══════════ -->
+  <g transform="translate(0,298)">
+    <circle cx="20" cy="14" r="15" fill="#000977"/>
+    <text class="t num" x="20" y="22" text-anchor="middle">3</text>
+    <text class="t paso" x="48" y="22">El TSO termina en GGG, se aparea ahí y la enzima cambia de molde</text>
+
+    <rect x="62" y="48" width="106" height="16" rx="8" fill="#6E5E00"/>
+    <text class="t eti" x="62" y="42" fill="#6E5E00">TSO</text>
+    <rect x="170" y="42" width="60" height="28" rx="6" fill="#F3EFDD" stroke="#937E00" stroke-width="2"/>
+    <text class="t seq" x="200" y="64" text-anchor="middle" fill="#6E5E00">GGG</text>
+
+    <line x1="186" y1="72" x2="186" y2="80" stroke="#937E00" stroke-width="3"/>
+    <line x1="200" y1="72" x2="200" y2="80" stroke="#937E00" stroke-width="3"/>
+    <line x1="214" y1="72" x2="214" y2="80" stroke="#937E00" stroke-width="3"/>
+
+    <rect x="170" y="82" width="60" height="28" rx="6" fill="#F3EFDD" stroke="#937E00" stroke-width="2"/>
+    <text class="t seq" x="200" y="104" text-anchor="middle" fill="#6E5E00">CCC</text>
+    <rect x="236" y="88" width="444" height="16" rx="8" fill="#2B3FA8"/>
+    <rect x="680" y="88" width="150" height="16" rx="8" fill="#937E00"/>
+    <rect x="836" y="88" width="104" height="16" rx="8" fill="#2E9AA6"/>
+    <rect x="946" y="88" width="150" height="16" rx="8" fill="#000977"/>
+
+    <text class="t eti" x="660" y="124" text-anchor="middle" fill="#141A4A">el cDNA queda flanqueado por los dos extremos que hacen falta</text>
+  </g>
+</svg>

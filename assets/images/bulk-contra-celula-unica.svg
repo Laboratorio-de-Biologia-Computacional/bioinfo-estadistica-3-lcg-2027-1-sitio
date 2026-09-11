@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 450" width="1180" height="450" role="img" aria-label="Comparacion entre secuenciacion bulk y de celula unica sobre el mismo tejido.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 25px; font-weight: 700; }
+    .sub { font-size: 16px; fill: #5A6373; }
+    .lab { font-size: 16px; }
+    .via { font-size: 15px; fill: #5A6373; }
+    .num { font-family: "Roboto Mono", Consolas, monospace; font-size: 15px; fill: #141A4A; }
+    .cab { font-family: "Roboto Mono", Consolas, monospace; font-size: 13px; font-weight: 700; }
+    .fle { stroke: #5A6373; stroke-width: 2.2; fill: none; }
+  ]]></style>
+
+  <line x1="596" y1="30" x2="596" y2="420" stroke="#C9D2E8" stroke-width="2" stroke-dasharray="7,6"/>
+
+  <!-- ═════════════ BULK ═════════════ -->
+  <text class="t tit" x="34" y="42" fill="#00053F">Bulk</text>
+  <text class="t sub" x="34" y="66">la unidad es la muestra</text>
+
+  <rect x="34" y="92" width="150" height="118" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="2"/>
+  <g>
+    <circle cx="62"  cy="120" r="11" fill="#000977"/><circle cx="92"  cy="116" r="11" fill="#000977"/>
+    <circle cx="122" cy="122" r="11" fill="#937E00"/><circle cx="154" cy="118" r="11" fill="#000977"/>
+    <circle cx="56"  cy="151" r="11" fill="#937E00"/><circle cx="88"  cy="149" r="11" fill="#000977"/>
+    <circle cx="120" cy="153" r="11" fill="#000977"/><circle cx="152" cy="150" r="11" fill="#000977"/>
+    <circle cx="64"  cy="182" r="11" fill="#000977"/><circle cx="94"  cy="184" r="11" fill="#937E00"/>
+    <circle cx="126" cy="181" r="11" fill="#000977"/><circle cx="156" cy="183" r="11" fill="#000977"/>
+  </g>
+  <text class="t lab" x="34" y="232">Un tejido, dos poblaciones</text>
+
+  <text class="t via" x="223" y="130" text-anchor="middle">se mezcla</text>
+  <path class="fle" d="M 194 152 H 252" marker-end="url(#pt)"/>
+
+  <path d="M 266 106 h 46 v 72 a 23 23 0 0 1 -46 0 z" fill="#E7E9F7" stroke="#000977" stroke-width="2.4"/>
+  <path d="M 266 142 h 46 v 36 a 23 23 0 0 1 -46 0 z" fill="#7C86C4" stroke="none"/>
+  <text class="t lab" x="289" y="216" text-anchor="middle" font-size="15">un solo tubo</text>
+
+  <path class="fle" d="M 330 152 H 382" marker-end="url(#pt)"/>
+
+  <!-- tabla: una columna -->
+  <g>
+    <rect x="392" y="96" width="174" height="126" fill="#ffffff" stroke="#000977" stroke-width="2.4"/>
+    <rect x="392" y="96" width="174" height="30" fill="#E7E9F7" stroke="none"/>
+    <line x1="392" y1="126" x2="566" y2="126" stroke="#000977" stroke-width="2.2"/>
+    <line x1="392" y1="158" x2="566" y2="158" stroke="#C9D2E8" stroke-width="1.4"/>
+    <line x1="392" y1="190" x2="566" y2="190" stroke="#C9D2E8" stroke-width="1.4"/>
+    <line x1="496" y1="96"  x2="496" y2="222" stroke="#C9D2E8" stroke-width="1.4"/>
+    <text class="t cab" x="444" y="117" text-anchor="middle" fill="#00053F">gen</text>
+    <text class="t cab" x="531" y="117" text-anchor="middle" fill="#00053F">muestra</text>
+    <text class="t num" x="444" y="147" text-anchor="middle">A</text><text class="t num" x="531" y="147" text-anchor="middle">12</text>
+    <text class="t num" x="444" y="179" text-anchor="middle">B</text><text class="t num" x="531" y="179" text-anchor="middle">7</text>
+    <text class="t num" x="444" y="211" text-anchor="middle">C</text><text class="t num" x="531" y="211" text-anchor="middle">3</text>
+  </g>
+  <text class="t lab" x="479" y="248" text-anchor="middle" font-weight="700" fill="#00053F">Una columna</text>
+  <text class="t sub" x="479" y="270" text-anchor="middle">un promedio del tejido</text>
+
+  <rect x="34" y="312" width="532" height="98" rx="9" fill="#F3EFDD" stroke="#937E00" stroke-width="2"/>
+  <text class="t lab" x="56" y="342" font-weight="700" fill="#6E5E00">Lo que no se puede saber</text>
+  <text class="t lab" x="56" y="368" fill="#6E5E00">Si un gen sube, no se distingue si cambió la expresión</text>
+  <text class="t lab" x="56" y="390" fill="#6E5E00">o si cambió cuántas células hay de cada tipo.</text>
+
+  <!-- ═════════════ CÉLULA ÚNICA ═════════════ -->
+  <text class="t tit" x="626" y="42" fill="#1d6d76">Célula única</text>
+  <text class="t sub" x="626" y="66">la unidad es la célula</text>
+
+  <rect x="626" y="92" width="150" height="118" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="2"/>
+  <g>
+    <circle cx="654" cy="120" r="11" fill="#000977"/><circle cx="684" cy="116" r="11" fill="#000977"/>
+    <circle cx="714" cy="122" r="11" fill="#937E00"/><circle cx="746" cy="118" r="11" fill="#000977"/>
+    <circle cx="648" cy="151" r="11" fill="#937E00"/><circle cx="680" cy="149" r="11" fill="#000977"/>
+    <circle cx="712" cy="153" r="11" fill="#000977"/><circle cx="744" cy="150" r="11" fill="#000977"/>
+    <circle cx="656" cy="182" r="11" fill="#000977"/><circle cx="686" cy="184" r="11" fill="#937E00"/>
+    <circle cx="718" cy="181" r="11" fill="#000977"/><circle cx="748" cy="183" r="11" fill="#000977"/>
+  </g>
+  <text class="t lab" x="626" y="232">El mismo tejido</text>
+
+  <text class="t via" x="817" y="130" text-anchor="middle">se disocia</text>
+  <path class="fle" d="M 788 152 H 846" marker-end="url(#pt)"/>
+
+  <g fill="none" stroke="#2E9AA6" stroke-width="2">
+    <circle cx="878" cy="110" r="16"/><circle cx="918" cy="110" r="16"/>
+    <circle cx="878" cy="152" r="16"/><circle cx="918" cy="152" r="16"/>
+    <circle cx="878" cy="194" r="16"/><circle cx="918" cy="194" r="16"/>
+  </g>
+  <circle cx="878" cy="110" r="8" fill="#000977"/><circle cx="918" cy="110" r="8" fill="#937E00"/>
+  <circle cx="878" cy="152" r="8" fill="#000977"/><circle cx="918" cy="152" r="8" fill="#000977"/>
+  <circle cx="878" cy="194" r="8" fill="#937E00"/><circle cx="918" cy="194" r="8" fill="#000977"/>
+  <text class="t lab" x="898" y="232" text-anchor="middle" font-size="15">una por una</text>
+
+  <path class="fle" d="M 948 152 H 1000" marker-end="url(#pt)"/>
+
+  <!-- tabla: muchas columnas -->
+  <g>
+    <rect x="1010" y="96" width="146" height="126" fill="#ffffff" stroke="#2E9AA6" stroke-width="2.4"/>
+    <rect x="1010" y="96" width="146" height="30" fill="#EEF8F9" stroke="none"/>
+    <line x1="1010" y1="126" x2="1156" y2="126" stroke="#2E9AA6" stroke-width="2.2"/>
+    <line x1="1010" y1="158" x2="1156" y2="158" stroke="#BFE3E7" stroke-width="1.4"/>
+    <line x1="1010" y1="190" x2="1156" y2="190" stroke="#BFE3E7" stroke-width="1.4"/>
+    <line x1="1046" y1="96"  x2="1046" y2="222" stroke="#2E9AA6" stroke-width="2.2"/>
+    <line x1="1083" y1="96"  x2="1083" y2="222" stroke="#BFE3E7" stroke-width="1.4"/>
+    <line x1="1120" y1="96"  x2="1120" y2="222" stroke="#BFE3E7" stroke-width="1.4"/>
+    <text class="t cab" x="1028" y="117" text-anchor="middle" fill="#1d6d76">gen</text>
+    <text class="t cab" x="1064" y="117" text-anchor="middle" fill="#1d6d76">c1</text>
+    <text class="t cab" x="1101" y="117" text-anchor="middle" fill="#1d6d76">c2</text>
+    <text class="t cab" x="1138" y="117" text-anchor="middle" fill="#1d6d76">c3</text>
+    <text class="t num" x="1028" y="147" text-anchor="middle">A</text>
+    <text class="t num" x="1064" y="147" text-anchor="middle">9</text><text class="t num" x="1101" y="147" text-anchor="middle">14</text><text class="t num" x="1138" y="147" text-anchor="middle">0</text>
+    <text class="t num" x="1028" y="179" text-anchor="middle">B</text>
+    <text class="t num" x="1064" y="179" text-anchor="middle">0</text><text class="t num" x="1101" y="179" text-anchor="middle">1</text><text class="t num" x="1138" y="179" text-anchor="middle">11</text>
+    <text class="t num" x="1028" y="211" text-anchor="middle">C</text>
+    <text class="t num" x="1064" y="211" text-anchor="middle">2</text><text class="t num" x="1101" y="211" text-anchor="middle">3</text><text class="t num" x="1138" y="211" text-anchor="middle">4</text>
+  </g>
+  <text class="t lab" x="1083" y="248" text-anchor="middle" font-weight="700" fill="#1d6d76">Muchas columnas</text>
+  <text class="t sub" x="1068" y="270" text-anchor="middle">una distribución entre células</text>
+
+  <rect x="626" y="312" width="530" height="98" rx="9" fill="#EEF8F9" stroke="#2E9AA6" stroke-width="2"/>
+  <text class="t lab" x="648" y="342" font-weight="700" fill="#1d6d76">Lo que sí se puede separar</text>
+  <text class="t lab" x="648" y="368" fill="#1d6d76">Cuánto expresa cada célula, y cuántas células hay de cada</text>
+  <text class="t lab" x="648" y="390" fill="#1d6d76">tipo. Son dos preguntas, y ahora son dos datos.</text>
+
+  <defs>
+    <marker id="pt" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#5A6373"/>
+    </marker>
+  </defs>
+</svg>

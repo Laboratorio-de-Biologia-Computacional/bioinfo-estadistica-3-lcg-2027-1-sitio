@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Cuatro fichas en fila, una por publicación, con su año, sus autores y su revista. Dos mil diecisiete, van den Brink, Nature Methods: la disociación enciende genes de estrés. Dos mil diecisiete, Adam y Potter, Development: en frío casi no pasa, de treinta y siete mil quinientos cuarenta a noventa y seis. Dos mil diecinueve, O'Flanagan, Genome Biology: quinientos doce genes, y también en tumor humano. Dos mil veinte, Denisenko, Genome Biology: riñón de ratón, que es el conjunto de datos de hoy. Debajo, que se ha publicado más de una vez como un estado celular nuevo y que no lo es, y en rojo, que no se quita filtrando porque esas células están vivas y sus métricas son buenas.">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .tit { font-size:32px; font-weight:700; fill:#000977; }
+      .anio{ font-size:36px; font-weight:700; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .avi { font-size:24px; font-weight:700; fill:#A01B2B; }
+    </style>
+  </defs>
+
+  <text class="t tit" x="30" y="52">Un tipo celular que resultó ser el protocolo</text>
+  <rect x="30" y="92" width="268" height="196" rx="12" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="3"/>
+  <text class="t anio" x="52" y="140" style="fill:#2B3FA8">2017</text>
+  <text class="t eti" x="52" y="176">van den Brink</text>
+  <text class="t cap" x="52" y="206">Nature Methods</text>
+  <text class="t cap" x="52" y="246">Disociar enciende</text>
+  <text class="t cap" x="52" y="276">genes de estrés.</text>
+  <rect x="318" y="92" width="268" height="196" rx="12" fill="#E4F3F4" stroke="#2E9AA6" stroke-width="3"/>
+  <text class="t anio" x="340" y="140" style="fill:#2E9AA6">2017</text>
+  <text class="t eti" x="340" y="176">Adam, Potter</text>
+  <text class="t cap" x="340" y="206">Development</text>
+  <text class="t cap" x="340" y="246">En frío casi no pasa:</text>
+  <text class="t cap" x="340" y="276">de 37 540 a 96.</text>
+  <rect x="606" y="92" width="268" height="196" rx="12" fill="#F3EFDD" stroke="#937E00" stroke-width="3"/>
+  <text class="t anio" x="628" y="140" style="fill:#937E00">2019</text>
+  <text class="t eti" x="628" y="176">O’Flanagan</text>
+  <text class="t cap" x="628" y="206">Genome Biology</text>
+  <text class="t cap" x="628" y="246">512 genes, y también</text>
+  <text class="t cap" x="628" y="276">en tumor humano.</text>
+  <rect x="894" y="92" width="268" height="196" rx="12" fill="#FDF3F4" stroke="#A01B2B" stroke-width="3"/>
+  <text class="t anio" x="916" y="140" style="fill:#A01B2B">2020</text>
+  <text class="t eti" x="916" y="176">Denisenko</text>
+  <text class="t cap" x="916" y="206">Genome Biology</text>
+  <text class="t cap" x="916" y="246">Riñón de ratón: es</text>
+  <text class="t cap" x="916" y="276">el conjunto de hoy.</text>
+  <text class="t eti" x="30" y="344" style="fill:#000977">Se ha publicado más de una vez como un estado celular nuevo. No lo es.</text>
+  <text class="t avi" x="30" y="392">Y no se quita filtrando: esas células están vivas y sus métricas son buenas.</text>
+</svg>

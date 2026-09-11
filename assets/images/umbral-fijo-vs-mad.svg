@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Siete líneas, una por muestra y una global, sobre un eje de contenido mitocondrial de cero a cien por ciento. En cada línea, un punto azul marca la mediana de la muestra, entre veinticuatro y treinta y seis por ciento, y un punto dorado marca el corte calculado por desviación absoluta mediana, entre setenta y uno y setenta y seis. Una banda roja estrecha a la izquierda marca el umbral fijo del cinco por ciento del tutorial, que queda muy por debajo de todas las medianas. A la derecha, el porcentaje de células que ese umbral fijo eliminaría en cada muestra: entre noventa y ocho y cien por ciento, y noventa y nueve coma cinco en el conjunto.">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .cif { font-size:24px; font-weight:700; }
+      .avi { font-size:24px; font-weight:700; fill:#A01B2B; }
+    </style>
+  </defs>
+
+  <text class="t eti" x="30" y="36">Contenido mitocondrial por muestra, y dónde caería el corte</text>
+  <rect x="300" y="92" width="33" height="262" fill="#A01B2B" opacity="0.25"/>
+  <line x1="333" y1="92" x2="333" y2="354" stroke="#A01B2B" stroke-width="4"/>
+  <text class="t avi" x="333" y="78" text-anchor="middle">5 %</text>
+  <text class="t cap" x="445" y="78">mediana</text>
+  <text class="t cap" x="722" y="78">corte por 3 MAD</text>
+  <text class="t cap" x="1000" y="78">muere con 5 %</text>
+  <text class="t cap" x="30" y="132" style="fill:#5A6373">BG1 · frío</text>
+  <line x1="300" y1="124" x2="960" y2="124" stroke="#C3C8D4" stroke-width="3"/>
+  <circle cx="490" cy="124" r="10" fill="#2B3FA8"/>
+  <circle cx="796" cy="124" r="10" fill="#937E00"/>
+  <text class="t cap" x="1010" y="132" style="fill:#5A6373">99,4 %</text>
+  <text class="t cap" x="30" y="166" style="fill:#5A6373">BG2 · caliente</text>
+  <line x1="300" y1="158" x2="960" y2="158" stroke="#C3C8D4" stroke-width="3"/>
+  <circle cx="464" cy="158" r="10" fill="#2B3FA8"/>
+  <circle cx="771" cy="158" r="10" fill="#937E00"/>
+  <text class="t cap" x="1010" y="166" style="fill:#5A6373">98,1 %</text>
+  <text class="t cap" x="30" y="200" style="fill:#5A6373">BG3 · frío</text>
+  <line x1="300" y1="192" x2="960" y2="192" stroke="#C3C8D4" stroke-width="3"/>
+  <circle cx="527" cy="192" r="10" fill="#2B3FA8"/>
+  <circle cx="790" cy="192" r="10" fill="#937E00"/>
+  <text class="t cap" x="1010" y="200" style="fill:#5A6373">100 %</text>
+  <text class="t cap" x="30" y="234" style="fill:#5A6373">BG4 · caliente</text>
+  <line x1="300" y1="226" x2="960" y2="226" stroke="#C3C8D4" stroke-width="3"/>
+  <circle cx="513" cy="226" r="10" fill="#2B3FA8"/>
+  <circle cx="800" cy="226" r="10" fill="#937E00"/>
+  <text class="t cap" x="1010" y="234" style="fill:#5A6373">99,8 %</text>
+  <text class="t cap" x="30" y="268" style="fill:#5A6373">BG5 · frío</text>
+  <line x1="300" y1="260" x2="960" y2="260" stroke="#C3C8D4" stroke-width="3"/>
+  <circle cx="538" cy="260" r="10" fill="#2B3FA8"/>
+  <circle cx="772" cy="260" r="10" fill="#937E00"/>
+  <text class="t cap" x="1010" y="268" style="fill:#5A6373">100 %</text>
+  <text class="t cap" x="30" y="302" style="fill:#5A6373">BG6 · caliente</text>
+  <line x1="300" y1="294" x2="960" y2="294" stroke="#C3C8D4" stroke-width="3"/>
+  <circle cx="490" cy="294" r="10" fill="#2B3FA8"/>
+  <circle cx="792" cy="294" r="10" fill="#937E00"/>
+  <text class="t cap" x="1010" y="302" style="fill:#5A6373">98,5 %</text>
+  <line x1="30" y1="318" x2="1150" y2="318" stroke="#C3C8D4" stroke-width="2"/>
+  <text class="t eti" x="30" y="348" style="fill:#000977">global</text>
+  <line x1="300" y1="340" x2="960" y2="340" stroke="#C3C8D4" stroke-width="3"/>
+  <circle cx="513" cy="340" r="10" fill="#2B3FA8"/>
+  <circle cx="798" cy="340" r="10" fill="#937E00"/>
+  <text class="t cif" x="1010" y="348" style="fill:#A01B2B">99,5 %</text>
+  <text class="t avi" x="30" y="412">Un corte fijo del 5 %% se lleva el 99,5 %% del riñón. El adaptativo cae en 71–76 %%.</text>
+</svg>

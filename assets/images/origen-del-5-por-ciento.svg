@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Tres pasos encadenados. Primero, en dos mil once, Mercer y colaboradores publican RNA-seq masivo de dieciséis tejidos y describen que las mitocondrias aportan un límite inferior de alrededor del cinco por ciento en tejidos de poca demanda energética. Después, los tutoriales escriben la línea percent punto mt menor que cinco, sin ninguna justificación al lado. Hoy, la costumbre descarta células por pasar del cinco por ciento, convertido en un techo para filtrar. Abajo, en rojo, que un piso descriptivo de tejido sano se convirtió en un techo para descartar células, y que el artículo de Mercer no menciona control de calidad ni una sola vez.">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .cif { font-size:24px; font-weight:700; }
+      .avi { font-size:24px; font-weight:700; fill:#A01B2B; }
+    </style>
+    <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5A6373"/></marker>
+  </defs>
+
+  <text class="t eti" x="30" y="46">De dónde salió el 5 %</text>
+  <rect x="30" y="76" width="360" height="240" rx="12" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="3"/>
+  <text class="t cap" x="52" y="110">2011</text>
+  <text class="t eti" x="52" y="146" style="fill:#2B3FA8">Mercer y colaboradores</text>
+  <text class="t cap" x="52" y="190">RNA-seq masivo de 16 tejidos.</text>
+  <text class="t cap" x="52" y="222">Las mitocondrias aportan un</text>
+  <text class="t cap" x="52" y="254">LÍMITE INFERIOR de ~5 %</text>
+  <text class="t cap" x="52" y="286">en tejidos de poca demanda.</text>
+  <rect x="410" y="76" width="360" height="240" rx="12" fill="#F3EFDD" stroke="#937E00" stroke-width="3"/>
+  <text class="t cap" x="432" y="110">después</text>
+  <text class="t eti" x="432" y="146" style="fill:#937E00">Los tutoriales</text>
+  <text class="t cap" x="432" y="190">percent.mt &lt; 5</text>
+  <text class="t cap" x="432" y="254">Sin ninguna justificación</text>
+  <text class="t cap" x="432" y="286">escrita al lado.</text>
+  <rect x="790" y="76" width="360" height="240" rx="12" fill="#FDF3F4" stroke="#A01B2B" stroke-width="3"/>
+  <text class="t cap" x="812" y="110">hoy</text>
+  <text class="t eti" x="812" y="146" style="fill:#A01B2B">La costumbre</text>
+  <text class="t cap" x="812" y="190">Se descartan células por</text>
+  <text class="t cap" x="812" y="222">pasar de 5 %.</text>
+  <text class="t cap" x="812" y="286">Un TECHO para filtrar.</text>
+  <line x1="390" y1="196" x2="408" y2="196" stroke="#5A6373" stroke-width="4" marker-end="url(#fl)"/>
+  <line x1="770" y1="196" x2="788" y2="196" stroke="#5A6373" stroke-width="4" marker-end="url(#fl)"/>
+  <text class="t avi" x="30" y="358">Un piso descriptivo de tejido sano se convirtió en un techo para descartar células.</text>
+  <text class="t cap" x="30" y="404">Mercer 2011 no menciona control de calidad ni una sola vez en todo el artículo</text>
+</svg>

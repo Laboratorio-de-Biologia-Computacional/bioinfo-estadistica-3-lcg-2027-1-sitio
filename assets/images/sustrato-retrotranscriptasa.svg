@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 420" width="560" height="420" role="img" aria-label="Sobre qué actúa: un híbrido de molde y cebador, y el extremo tres prima donde alarga">
+  <!-- Formato estrecho a proposito: esta figura va en media diapositiva,
+       al lado de la estructura. A 560 de ancho el texto de 24 px sigue
+       cumpliendo el piso de accesibilidad cuando Quarto la escala. -->
+  <defs>
+    <marker id="fAzul" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2B3FA8"/>
+    </marker>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .seq { font-family:ui-monospace,"Cascadia Mono",Consolas,monospace; font-size:24px; font-weight:700; letter-spacing:2px; }
+    </style>
+  </defs>
+
+  <text class="t cap" x="20" y="40">molde · RNA</text>
+  <text class="t seq" x="20" y="96" fill="#6E5E00">3′-UACGGUCAUGCCAUGGUACG-5′</text>
+
+  <g stroke="#8A93A8" stroke-width="3">
+    <line x1="66"  y1="108" x2="66"  y2="136"/><line x1="98"  y1="108" x2="98"  y2="136"/>
+    <line x1="130" y1="108" x2="130" y2="136"/><line x1="162" y1="108" x2="162" y2="136"/>
+    <line x1="194" y1="108" x2="194" y2="136"/><line x1="226" y1="108" x2="226" y2="136"/>
+    <line x1="258" y1="108" x2="258" y2="136"/><line x1="290" y1="108" x2="290" y2="136"/>
+    <line x1="322" y1="108" x2="322" y2="136"/><line x1="354" y1="108" x2="354" y2="136"/>
+  </g>
+
+  <text class="t seq" x="20" y="164" fill="#2B3FA8">5′-ATGCCAGTACGG</text>
+  <text class="t seq" x="378" y="164" fill="#A01B2B">OH-3′</text>
+  <text class="t cap" x="20" y="204">cebador · DNA</text>
+
+  <line x1="420" y1="230" x2="420" y2="180" stroke="#2B3FA8" stroke-width="4" marker-end="url(#fAzul)"/>
+  <text class="t eti" x="300" y="258" fill="#2B3FA8">aquí alarga</text>
+
+  <line x1="20" y1="292" x2="540" y2="292" stroke="#DDD8C6" stroke-width="2"/>
+
+  <text class="t eti" x="20" y="336" fill="#141A4A">No lee una secuencia:</text>
+  <text class="t eti" x="20" y="368" fill="#141A4A">lee un extremo 3′ libre</text>
+  <text class="t cap" x="20" y="404">y copia lo que dicte el molde</text>
+</svg>

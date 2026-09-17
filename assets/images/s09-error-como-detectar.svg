@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 456" width="1180" height="456" role="img" aria-label="Cómo saber si la expresión diferencial se hizo con valores corregidos, en tres paneles. Primero, revisar qué entra a la prueba: una tabla de genes por células con decimales y valores negativos en rojo, que no son cuentas; las cuentas son enteros mayores o iguales a cero. Segundo, comparar con la ruta correcta: con cuentas y el lote en el modelo salen 120 genes significativos y con valores corregidos 480, muchos más, lo que es sospechoso. Tercero, barajar las etiquetas de condición dentro de cada lote: con la ruta correcta salen 3 genes y con valores corregidos 350, cuando sin efecto real debería salir casi cero. Al pie: barajar significa repartir al azar control y tratamiento dentro de cada lote; si aun así salen cientos de genes, la ruta infla los valores p. Las cifras son ilustrativas.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 22px; font-weight: 700; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .pie { font-size: 18px; }
+  ]]></style>
+<rect x="40" y="84" width="353" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="216" y="70" fill="#00053F" text-anchor="middle">1. Revisar qué entra a la prueba</text>
+<rect x="413" y="84" width="353" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="590" y="70" fill="#00053F" text-anchor="middle">2. Comparar con la ruta correcta</text>
+<rect x="786" y="84" width="353" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="962" y="70" fill="#00053F" text-anchor="middle">3. Barajar las etiquetas</text>
+<text class="t neg" x="100" y="146" fill="#141A4A" text-anchor="start"></text>
+<text class="t neg" x="172" y="146" fill="#141A4A" text-anchor="middle">cél. 1</text>
+<text class="t neg" x="244" y="146" fill="#141A4A" text-anchor="middle">cél. 2</text>
+<text class="t neg" x="316" y="146" fill="#141A4A" text-anchor="middle">cél. 3</text>
+<text class="t neg" x="100" y="182" fill="#141A4A" text-anchor="start">gen A</text>
+<text class="t lab" x="172" y="182" fill="#141A4A" text-anchor="middle">2.31</text>
+<text class="t neg" x="244" y="182" fill="#B3261E" text-anchor="middle">−0.84</text>
+<text class="t lab" x="316" y="182" fill="#141A4A" text-anchor="middle">0.07</text>
+<text class="t neg" x="100" y="218" fill="#141A4A" text-anchor="start">gen B</text>
+<text class="t neg" x="172" y="218" fill="#B3261E" text-anchor="middle">−1.52</text>
+<text class="t lab" x="244" y="218" fill="#141A4A" text-anchor="middle">3.90</text>
+<text class="t neg" x="316" y="218" fill="#B3261E" text-anchor="middle">−0.33</text>
+<text class="t neg" x="100" y="254" fill="#141A4A" text-anchor="start">gen C</text>
+<text class="t lab" x="172" y="254" fill="#141A4A" text-anchor="middle">0.61</text>
+<text class="t neg" x="244" y="254" fill="#B3261E" text-anchor="middle">−2.18</text>
+<text class="t lab" x="316" y="254" fill="#141A4A" text-anchor="middle">1.44</text>
+<text class="t lab" x="216" y="306" fill="#141A4A" text-anchor="middle">decimales y negativos:</text>
+<text class="t neg" x="216" y="330" fill="#B3261E" text-anchor="middle">esto no son cuentas</text>
+<text class="t lab" x="216" y="369" fill="#5A6373" text-anchor="middle">las cuentas son enteros ≥ 0</text>
+<rect x="483" y="269" width="80" height="35" fill="#00053F"/>
+<text class="t neg" x="523" y="259" fill="#00053F" text-anchor="middle">120</text>
+<text class="t lab" x="523" y="326" fill="#141A4A" text-anchor="middle">cuentas</text>
+<text class="t lab" x="523" y="346" fill="#141A4A" text-anchor="middle">+ lote</text>
+<rect x="613" y="164" width="80" height="140" fill="#B3261E"/>
+<text class="t neg" x="653" y="154" fill="#B3261E" text-anchor="middle">480</text>
+<text class="t lab" x="653" y="326" fill="#141A4A" text-anchor="middle">valores</text>
+<text class="t lab" x="653" y="346" fill="#141A4A" text-anchor="middle">corregidos</text>
+<line x1="463" y1="304" x2="713" y2="304" stroke="#141A4A" stroke-width="1.6"/>
+<text class="t lab" x="590" y="124" fill="#5A6373" text-anchor="middle">genes «significativos»</text>
+<text class="t neg" x="590" y="369" fill="#B3261E" text-anchor="middle">muchos más genes: sospecha</text>
+<rect x="856" y="303" width="80" height="2" fill="#00053F"/>
+<text class="t neg" x="896" y="293" fill="#00053F" text-anchor="middle">3</text>
+<text class="t lab" x="896" y="326" fill="#141A4A" text-anchor="middle">cuentas</text>
+<text class="t lab" x="896" y="346" fill="#141A4A" text-anchor="middle">+ lote</text>
+<rect x="986" y="202" width="80" height="102" fill="#B3261E"/>
+<text class="t neg" x="1026" y="192" fill="#B3261E" text-anchor="middle">350</text>
+<text class="t lab" x="1026" y="326" fill="#141A4A" text-anchor="middle">valores</text>
+<text class="t lab" x="1026" y="346" fill="#141A4A" text-anchor="middle">corregidos</text>
+<line x1="836" y1="304" x2="1086" y2="304" stroke="#141A4A" stroke-width="1.6"/>
+<text class="t lab" x="962" y="124" fill="#5A6373" text-anchor="middle">genes «significativos»</text>
+<text class="t neg" x="962" y="369" fill="#B3261E" text-anchor="middle">sin efecto real debería dar casi 0</text>
+<text class="t pie" x="590" y="416" fill="#00053F" text-anchor="middle">Barajar = repartir al azar «control» y «tratamiento» dentro de cada lote: ya no hay diferencia real.</text>
+<text class="t pie" x="590" y="442" fill="#00053F" text-anchor="middle">Si aun así salen cientos de genes, la ruta infla los valores p. (Cifras ilustrativas.)</text>
+</svg>

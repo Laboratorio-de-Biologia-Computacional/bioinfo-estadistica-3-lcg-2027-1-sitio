@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 372" width="620" height="372" role="img" aria-label="Las mismas dos poblaciones en otra proporcion, y el promedio que cae.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 25px; font-weight: 700; }
+    .sub { font-size: 16px; fill: #5A6373; }
+    .lab { font-size: 17px; }
+    .via { font-size: 15px; fill: #5A6373; }
+    .fle { stroke: #5A6373; stroke-width: 2.2; fill: none; }
+  ]]></style>
+
+<text class="t tit" x="34" y="52" fill="#00053F" font-size="21">Antes</text>
+<circle cx="44" cy="92" r="14" fill="#000977"/>
+<circle cx="82" cy="92" r="14" fill="#000977"/>
+<circle cx="120" cy="92" r="14" fill="#000977"/>
+<circle cx="158" cy="92" r="14" fill="#000977"/>
+<circle cx="196" cy="92" r="14" fill="#000977"/>
+<circle cx="234" cy="92" r="14" fill="#000977"/>
+<circle cx="272" cy="92" r="14" fill="#000977"/>
+<circle cx="310" cy="92" r="14" fill="#937E00"/>
+<circle cx="348" cy="92" r="14" fill="#937E00"/>
+<circle cx="386" cy="92" r="14" fill="#937E00"/>
+<rect x="452" y="36" width="52" height="96" rx="4" fill="#2B3FA8"/>
+<text class="t via" x="514" y="54" font-size="17">alto</text>
+<text class="t via" x="452" y="151" font-size="15">promedio</text>
+<text class="t tit" x="34" y="174" fill="#00053F" font-size="21">Después</text>
+<circle cx="44" cy="214" r="14" fill="#000977"/>
+<circle cx="82" cy="214" r="14" fill="#000977"/>
+<circle cx="120" cy="214" r="14" fill="#000977"/>
+<circle cx="158" cy="214" r="14" fill="#937E00"/>
+<circle cx="196" cy="214" r="14" fill="#937E00"/>
+<circle cx="234" cy="214" r="14" fill="#937E00"/>
+<circle cx="272" cy="214" r="14" fill="#937E00"/>
+<circle cx="310" cy="214" r="14" fill="#937E00"/>
+<circle cx="348" cy="214" r="14" fill="#937E00"/>
+<circle cx="386" cy="214" r="14" fill="#937E00"/>
+<rect x="452" y="195" width="52" height="59" rx="4" fill="#2B3FA8"/>
+<text class="t via" x="514" y="213" font-size="17">bajo</text>
+<text class="t via" x="452" y="273" font-size="15">promedio</text>
+<line x1="34" y1="288" x2="586" y2="288" stroke="#C9D2E8" stroke-width="2"/>
+<circle cx="46" cy="316" r="12" fill="#000977"/>
+<text class="t lab" x="68" y="322">población A · gen X alto</text>
+<circle cx="330" cy="316" r="12" fill="#937E00"/>
+<text class="t lab" x="352" y="322">población B · gen X bajo</text>
+<text class="t lab" x="34" y="356" fill="#6E5E00">Ninguna cambió su valor. Cambió cuántas hay de cada una.</text>
+</svg>

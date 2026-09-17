@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 200" width="1180" height="200" role="img" aria-label="El mismo tejido medido como un promedio y como una distribucion.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 25px; font-weight: 700; }
+    .sub { font-size: 16px; fill: #5A6373; }
+    .lab { font-size: 17px; }
+    .via { font-size: 15px; fill: #5A6373; }
+    .fle { stroke: #5A6373; stroke-width: 2.2; fill: none; }
+  ]]></style>
+
+<line x1="600" y1="42" x2="600" y2="166" stroke="#5A6373" stroke-width="2" stroke-dasharray="6,5"/>
+<text class="t tit" x="40" y="26" fill="#00053F" font-size="21">Bulk</text>
+<text class="t sub" x="40" y="50">un dato</text>
+<circle cx="600" cy="42" r="13" fill="#2B3FA8"/>
+<text class="t via" x="624" y="48">el promedio del tejido</text>
+<text class="t tit" x="40" y="100" fill="#00053F" font-size="21">Célula única</text>
+<text class="t sub" x="40" y="124">una distribución</text>
+<circle cx="380" cy="148" r="6" fill="#937E00"/>
+<circle cx="380" cy="135" r="6" fill="#937E00"/>
+<circle cx="410" cy="148" r="6" fill="#937E00"/>
+<circle cx="410" cy="135" r="6" fill="#937E00"/>
+<circle cx="410" cy="122" r="6" fill="#937E00"/>
+<circle cx="410" cy="109" r="6" fill="#937E00"/>
+<circle cx="440" cy="148" r="6" fill="#937E00"/>
+<circle cx="440" cy="135" r="6" fill="#937E00"/>
+<circle cx="440" cy="122" r="6" fill="#937E00"/>
+<circle cx="440" cy="109" r="6" fill="#937E00"/>
+<circle cx="440" cy="96" r="6" fill="#937E00"/>
+<circle cx="470" cy="148" r="6" fill="#937E00"/>
+<circle cx="470" cy="135" r="6" fill="#937E00"/>
+<circle cx="470" cy="122" r="6" fill="#937E00"/>
+<circle cx="470" cy="109" r="6" fill="#937E00"/>
+<circle cx="500" cy="148" r="6" fill="#937E00"/>
+<circle cx="500" cy="135" r="6" fill="#937E00"/>
+<circle cx="700" cy="148" r="6" fill="#000977"/>
+<circle cx="700" cy="135" r="6" fill="#000977"/>
+<circle cx="730" cy="148" r="6" fill="#000977"/>
+<circle cx="730" cy="135" r="6" fill="#000977"/>
+<circle cx="730" cy="122" r="6" fill="#000977"/>
+<circle cx="730" cy="109" r="6" fill="#000977"/>
+<circle cx="760" cy="148" r="6" fill="#000977"/>
+<circle cx="760" cy="135" r="6" fill="#000977"/>
+<circle cx="760" cy="122" r="6" fill="#000977"/>
+<circle cx="760" cy="109" r="6" fill="#000977"/>
+<circle cx="760" cy="96" r="6" fill="#000977"/>
+<circle cx="790" cy="148" r="6" fill="#000977"/>
+<circle cx="790" cy="135" r="6" fill="#000977"/>
+<circle cx="790" cy="122" r="6" fill="#000977"/>
+<circle cx="790" cy="109" r="6" fill="#000977"/>
+<circle cx="820" cy="148" r="6" fill="#000977"/>
+<circle cx="820" cy="135" r="6" fill="#000977"/>
+<line x1="330" y1="158" x2="880" y2="158" stroke="#C9D2E8" stroke-width="2"/>
+<text class="t via" x="880" y="180" text-anchor="end" font-size="14">expresión del gen X →</text>
+<text class="t lab" x="40" y="188" fill="#6E5E00">El promedio cae justo donde no hay ninguna célula.</text>
+</svg>

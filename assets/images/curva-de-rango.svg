@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Curva de rango de codigos de barras en ejes logaritmicos. La curva continua tiene tres tramos: una meseta de celulas a la izquierda, un codo nitido, y a la derecha una cola larga de gotas vacias que se asienta a la altura del RNA ambiental. Una segunda curva punteada muestra el mismo experimento con un codo difuso, donde celulas y ambiente no se separan. Dos lineas horizontales marcan las alturas candidatas: el codo y el punto de inflexion.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 24px; font-weight: 700; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .via { font-size: 15px; }
+    .eje { font-size: 14px; }
+  ]]></style>
+
+<text class="t tit" x="86" y="50">La curva de rango de códigos de barras</text>
+<path d="M 132 330.0 L 812 330.0" fill="none" stroke="#C9D2E8" stroke-width="1"/>
+<text class="t eje" x="120" y="335" text-anchor="end" fill="#5A6373">1</text>
+<path d="M 132 268.5 L 812 268.5" fill="none" stroke="#C9D2E8" stroke-width="1"/>
+<text class="t eje" x="120" y="274" text-anchor="end" fill="#5A6373">10¹</text>
+<path d="M 132 207.0 L 812 207.0" fill="none" stroke="#C9D2E8" stroke-width="1"/>
+<text class="t eje" x="120" y="212" text-anchor="end" fill="#5A6373">10²</text>
+<path d="M 132 145.5 L 812 145.5" fill="none" stroke="#C9D2E8" stroke-width="1"/>
+<text class="t eje" x="120" y="150" text-anchor="end" fill="#5A6373">10³</text>
+<path d="M 132 84.0 L 812 84.0" fill="none" stroke="#C9D2E8" stroke-width="1"/>
+<text class="t eje" x="120" y="89" text-anchor="end" fill="#5A6373">10⁴</text>
+<path d="M 132.0 84 L 132.0 330" fill="none" stroke="#C9D2E8" stroke-width="1"/>
+<text class="t eje" x="132" y="352" text-anchor="middle" fill="#5A6373">1</text>
+<path d="M 245.3 84 L 245.3 330" fill="none" stroke="#C9D2E8" stroke-width="1"/>
+<text class="t eje" x="245" y="352" text-anchor="middle" fill="#5A6373">10¹</text>
+<path d="M 358.7 84 L 358.7 330" fill="none" stroke="#C9D2E8" stroke-width="1"/>
+<text class="t eje" x="359" y="352" text-anchor="middle" fill="#5A6373">10²</text>
+<path d="M 472.0 84 L 472.0 330" fill="none" stroke="#C9D2E8" stroke-width="1"/>
+<text class="t eje" x="472" y="352" text-anchor="middle" fill="#5A6373">10³</text>
+<path d="M 585.3 84 L 585.3 330" fill="none" stroke="#C9D2E8" stroke-width="1"/>
+<text class="t eje" x="585" y="352" text-anchor="middle" fill="#5A6373">10⁴</text>
+<path d="M 698.7 84 L 698.7 330" fill="none" stroke="#C9D2E8" stroke-width="1"/>
+<text class="t eje" x="699" y="352" text-anchor="middle" fill="#5A6373">10⁵</text>
+<path d="M 812.0 84 L 812.0 330" fill="none" stroke="#C9D2E8" stroke-width="1"/>
+<text class="t eje" x="812" y="352" text-anchor="middle" fill="#5A6373">10⁶</text>
+<text class="t via" x="472" y="376" text-anchor="middle" fill="#5A6373">Rango del código de barras, ordenado de más a menos cuentas</text>
+<text class="t via" x="72" y="207" fill="#5A6373" text-anchor="middle" transform="rotate(-90 72 207)">Total de cuentas</text>
+<path d="M 132 140.6 L 812 140.6" fill="none" stroke="#000977" stroke-width="1.8" stroke-dasharray="7 5"/>
+<text class="t via" x="806" y="133" text-anchor="end" fill="#000977">codo</text>
+<path d="M 132 204.5 L 812 204.5" fill="none" stroke="#937E00" stroke-width="1.8" stroke-dasharray="7 5"/>
+<text class="t via" x="806" y="196" text-anchor="end" fill="#937E00">punto de inflexión</text>
+<path d="M 132.0 116.0 L 134.8 116.0 L 137.7 116.0 L 140.5 116.0 L 143.3 116.0 L 146.2 116.0 L 149.0 116.0 L 151.8 116.0 L 154.7 116.0 L 157.5 116.0 L 160.3 116.0 L 163.2 116.0 L 166.0 116.0 L 168.8 116.0 L 171.7 116.0 L 174.5 116.0 L 177.3 116.0 L 180.2 116.0 L 183.0 116.0 L 185.8 116.0 L 188.7 116.0 L 191.5 116.0 L 194.3 116.0 L 197.2 116.0 L 200.0 116.0 L 202.8 116.0 L 205.7 116.0 L 208.5 116.0 L 211.3 116.0 L 214.2 116.0 L 217.0 116.0 L 219.8 116.0 L 222.7 116.0 L 225.5 116.0 L 228.3 116.0 L 231.2 116.0 L 234.0 116.0 L 236.8 116.0 L 239.7 116.0 L 242.5 116.0 L 245.3 116.0 L 248.2 116.0 L 251.0 116.0 L 253.8 116.0 L 256.7 116.0 L 259.5 116.0 L 262.3 116.0 L 265.2 116.0 L 268.0 116.0 L 270.8 116.0 L 273.7 116.0 L 276.5 116.0 L 279.3 116.0 L 282.2 116.0 L 285.0 116.0 L 287.8 116.0 L 290.7 116.0 L 293.5 116.0 L 296.3 116.0 L 299.2 116.0 L 302.0 116.0 L 304.8 116.0 L 307.7 116.0 L 310.5 116.0 L 313.3 116.0 L 316.2 116.0 L 319.0 116.0 L 321.8 116.0 L 324.7 116.0 L 327.5 116.0 L 330.3 116.0 L 333.2 116.0 L 336.0 116.0 L 338.8 116.0 L 341.7 116.0 L 344.5 116.0 L 347.3 116.0 L 350.2 116.0 L 353.0 116.0 L 355.8 116.1 L 358.7 116.1 L 361.5 116.1 L 364.3 116.1 L 367.2 116.1 L 370.0 116.1 L 372.8 116.1 L 375.7 116.1 L 378.5 116.1 L 381.3 116.1 L 384.2 116.1 L 387.0 116.1 L 389.8 116.2 L 392.7 116.2 L 395.5 116.2 L 398.3 116.2 L 401.2 116.2 L 404.0 116.3 L 406.8 116.3 L 409.7 116.3 L 412.5 116.3 L 415.3 116.4 L 418.2 116.4 L 421.0 116.5 L 423.8 116.5 L 426.7 116.6 L 429.5 116.6 L 432.3 116.7 L 435.2 116.8 L 438.0 116.9 L 440.8 117.0 L 443.7 117.1 L 446.5 117.2 L 449.3 117.4 L 452.2 117.5 L 455.0 117.7 L 457.8 117.9 L 460.7 118.1 L 463.5 118.3 L 466.3 118.5 L 469.2 118.8 L 472.0 119.1 L 474.8 119.5 L 477.7 119.8 L 480.5 120.2 L 483.3 120.7 L 486.2 121.2 L 489.0 121.7 L 491.8 122.3 L 494.7 122.9 L 497.5 123.6 L 500.3 124.4 L 503.2 125.2 L 506.0 126.1 L 508.8 127.0 L 511.7 128.0 L 514.5 129.1 L 517.3 130.3 L 520.2 131.5 L 523.0 132.9 L 525.8 134.3 L 528.7 135.7 L 531.5 137.3 L 534.3 138.9 L 537.2 140.6 L 540.0 142.4 L 542.8 144.3 L 545.7 146.2 L 548.5 148.2 L 551.3 150.2 L 554.2 152.3 L 557.0 154.5 L 559.8 156.7 L 562.7 159.0 L 565.5 161.3 L 568.3 163.6 L 571.2 166.0 L 574.0 168.4 L 576.8 170.9 L 579.7 173.3 L 582.5 175.8 L 585.3 178.3 L 588.2 180.8 L 591.0 183.4 L 593.8 185.9 L 596.7 188.4 L 599.5 190.9 L 602.3 193.4 L 605.2 195.9 L 608.0 198.4 L 610.8 200.9 L 613.7 203.3 L 616.5 205.8 L 619.3 208.1 L 622.2 210.5 L 625.0 212.8 L 627.8 215.1 L 630.7 217.3 L 633.5 219.5 L 636.3 221.6 L 639.2 223.6 L 642.0 225.6 L 644.8 227.6 L 647.7 229.4 L 650.5 231.2 L 653.3 232.9 L 656.2 234.6 L 659.0 236.1 L 661.8 237.6 L 664.7 239.0 L 667.5 240.3 L 670.3 241.6 L 673.2 242.7 L 676.0 243.8 L 678.8 244.9 L 681.7 245.8 L 684.5 246.7 L 687.3 247.5 L 690.2 248.3 L 693.0 249.0 L 695.8 249.6 L 698.7 250.2 L 701.5 250.8 L 704.3 251.3 L 707.2 251.7 L 710.0 252.1 L 712.8 252.5 L 715.7 252.9 L 718.5 253.2 L 721.3 253.5 L 724.2 253.9 L 727.0 254.2 L 729.8 254.6 L 732.7 255.2 L 735.5 255.8 L 738.3 256.8 L 741.2 258.1 L 744.0 260.0 L 746.8 262.7 L 749.7 266.3 L 752.5 270.9 L 755.3 276.6 L 758.2 283.2 L 761.0 290.1 L 763.8 297.1 L 766.7 303.6 L 769.5 309.3 L 772.3 314.0 L 775.2 317.8 L 778.0 320.6 L 780.8 322.7 L 783.7 324.2 L 786.5 325.3 L 789.3 326.2 L 792.2 326.8 L 795.0 327.2 L 797.8 327.6 L 800.7 327.9 L 803.5 328.2 L 806.3 328.4 L 809.2 328.6 L 812.0 328.7" fill="none" stroke="#838A96" stroke-width="2.6" stroke-linejoin="round" stroke-dasharray="9 6"/>
+<path d="M 132.0 116.0 L 134.8 116.0 L 137.7 116.0 L 140.5 116.0 L 143.3 116.0 L 146.2 116.0 L 149.0 116.0 L 151.8 116.0 L 154.7 116.0 L 157.5 116.0 L 160.3 116.0 L 163.2 116.0 L 166.0 116.0 L 168.8 116.0 L 171.7 116.0 L 174.5 116.0 L 177.3 116.0 L 180.2 116.0 L 183.0 116.0 L 185.8 116.0 L 188.7 116.0 L 191.5 116.0 L 194.3 116.0 L 197.2 116.0 L 200.0 116.0 L 202.8 116.0 L 205.7 116.0 L 208.5 116.0 L 211.3 116.0 L 214.2 116.0 L 217.0 116.0 L 219.8 116.0 L 222.7 116.0 L 225.5 116.0 L 228.3 116.0 L 231.2 116.0 L 234.0 116.0 L 236.8 116.0 L 239.7 116.0 L 242.5 116.0 L 245.3 116.0 L 248.2 116.0 L 251.0 116.0 L 253.8 116.0 L 256.7 116.0 L 259.5 116.0 L 262.3 116.0 L 265.2 116.0 L 268.0 116.0 L 270.8 116.0 L 273.7 116.0 L 276.5 116.0 L 279.3 116.0 L 282.2 116.0 L 285.0 116.0 L 287.8 116.0 L 290.7 116.0 L 293.5 116.0 L 296.3 116.0 L 299.2 116.0 L 302.0 116.0 L 304.8 116.0 L 307.7 116.0 L 310.5 116.0 L 313.3 116.0 L 316.2 116.0 L 319.0 116.0 L 321.8 116.0 L 324.7 116.0 L 327.5 116.0 L 330.3 116.0 L 333.2 116.0 L 336.0 116.0 L 338.8 116.0 L 341.7 116.0 L 344.5 116.0 L 347.3 116.0 L 350.2 116.0 L 353.0 116.0 L 355.8 116.0 L 358.7 116.0 L 361.5 116.0 L 364.3 116.0 L 367.2 116.0 L 370.0 116.0 L 372.8 116.0 L 375.7 116.0 L 378.5 116.0 L 381.3 116.0 L 384.2 116.0 L 387.0 116.0 L 389.8 116.0 L 392.7 116.0 L 395.5 116.0 L 398.3 116.0 L 401.2 116.0 L 404.0 116.0 L 406.8 116.0 L 409.7 116.0 L 412.5 116.0 L 415.3 116.0 L 418.2 116.0 L 421.0 116.0 L 423.8 116.0 L 426.7 116.0 L 429.5 116.0 L 432.3 116.0 L 435.2 116.0 L 438.0 116.0 L 440.8 116.0 L 443.7 116.0 L 446.5 116.0 L 449.3 116.0 L 452.2 116.0 L 455.0 116.0 L 457.8 116.0 L 460.7 116.0 L 463.5 116.0 L 466.3 116.0 L 469.2 116.0 L 472.0 116.1 L 474.8 116.1 L 477.7 116.1 L 480.5 116.1 L 483.3 116.2 L 486.2 116.2 L 489.0 116.3 L 491.8 116.4 L 494.7 116.6 L 497.5 116.8 L 500.3 117.1 L 503.2 117.6 L 506.0 118.2 L 508.8 119.1 L 511.7 120.2 L 514.5 121.8 L 517.3 123.9 L 520.2 126.5 L 523.0 129.9 L 525.8 134.0 L 528.7 138.9 L 531.5 144.5 L 534.3 150.8 L 537.2 157.7 L 540.0 165.1 L 542.8 172.8 L 545.7 180.7 L 548.5 188.6 L 551.3 196.5 L 554.2 204.3 L 557.0 211.8 L 559.8 218.8 L 562.7 225.4 L 565.5 231.2 L 568.3 236.4 L 571.2 240.8 L 574.0 244.4 L 576.8 247.3 L 579.7 249.5 L 582.5 251.2 L 585.3 252.5 L 588.2 253.5 L 591.0 254.2 L 593.8 254.7 L 596.7 255.0 L 599.5 255.3 L 602.3 255.5 L 605.2 255.6 L 608.0 255.7 L 610.8 255.8 L 613.7 255.8 L 616.5 255.9 L 619.3 255.9 L 622.2 255.9 L 625.0 255.9 L 627.8 255.9 L 630.7 255.9 L 633.5 255.9 L 636.3 255.9 L 639.2 255.9 L 642.0 255.9 L 644.8 255.9 L 647.7 255.9 L 650.5 255.9 L 653.3 255.9 L 656.2 255.9 L 659.0 255.9 L 661.8 255.9 L 664.7 255.9 L 667.5 255.9 L 670.3 255.9 L 673.2 255.9 L 676.0 255.9 L 678.8 255.9 L 681.7 255.9 L 684.5 255.9 L 687.3 255.9 L 690.2 255.9 L 693.0 255.9 L 695.8 255.9 L 698.7 256.0 L 701.5 256.0 L 704.3 256.0 L 707.2 256.0 L 710.0 256.0 L 712.8 256.0 L 715.7 256.0 L 718.5 256.0 L 721.3 256.1 L 724.2 256.2 L 727.0 256.3 L 729.8 256.5 L 732.7 256.9 L 735.5 257.4 L 738.3 258.2 L 741.2 259.5 L 744.0 261.3 L 746.8 264.0 L 749.7 267.6 L 752.5 272.4 L 755.3 278.2 L 758.2 285.0 L 761.0 292.3 L 763.8 299.6 L 766.7 306.5 L 769.5 312.5 L 772.3 317.5 L 775.2 321.4 L 778.0 324.2 L 780.8 326.2 L 783.7 327.5 L 786.5 328.4 L 789.3 329.0 L 792.2 329.3 L 795.0 329.6 L 797.8 329.7 L 800.7 329.8 L 803.5 329.9 L 806.3 329.9 L 809.2 330.0 L 812.0 330.0" fill="none" stroke="#2E9AA6" stroke-width="3.4" stroke-linejoin="round"/>
+<path d="M 132.0 392 L 506.0 392" fill="none" stroke="#000977" stroke-width="3"/>
+<text class="t neg" x="319" y="412" text-anchor="middle" fill="#000977">meseta · células</text>
+<path d="M 506.0 392 L 602.3 392" fill="none" stroke="#141A4A" stroke-width="3"/>
+<text class="t neg" x="554" y="412" text-anchor="middle" fill="#141A4A">codo</text>
+<path d="M 602.3 392 L 812.0 392" fill="none" stroke="#937E00" stroke-width="3"/>
+<text class="t neg" x="707" y="412" text-anchor="middle" fill="#937E00">cola · gotas vacías</text>
+<text class="t neg" x="854" y="90" fill="#2E9AA6">Tras el codo hay otra meseta</text>
+<text class="t via" x="854" y="112" fill="#5A6373">La curva no se desploma: se</text>
+<text class="t via" x="854" y="130" fill="#5A6373">aplana a la altura del RNA</text>
+<text class="t via" x="854" y="148" fill="#5A6373">ambiental. Esas gotas tienen</text>
+<text class="t via" x="854" y="166" fill="#5A6373">pocas cuentas, pero tienen.</text>
+<path d="M 854 168 L 1104 168" fill="none" stroke="#C9D2E8" stroke-width="1.5"/>
+<path d="M 854 194 L 888 194" fill="none" stroke="#838A96" stroke-width="2.6" stroke-dasharray="9 6"/>
+<text class="t neg" x="898" y="199" fill="#6A7381">codo difuso</text>
+<text class="t via" x="854" y="222" fill="#5A6373">Células y ambiente no se</text>
+<text class="t via" x="854" y="240" fill="#5A6373">separan. No hay altura</text>
+<text class="t via" x="854" y="258" fill="#5A6373">donde trazar la línea, y</text>
+<text class="t via" x="854" y="276" fill="#5A6373">eso se ve antes de aplicar</text>
+<text class="t via" x="854" y="294" fill="#5A6373">ningún método.</text>
+</svg>

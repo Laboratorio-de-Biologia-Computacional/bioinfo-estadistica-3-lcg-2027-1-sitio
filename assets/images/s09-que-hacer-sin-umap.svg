@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 456" width="1180" height="456" role="img" aria-label="Tres revisiones para decidir si una corrección funcionó, en tres paneles. Primero, medir antes y después: una barra gris baja para la mezcla de lotes sin corregir y una barra azul alta después de corregir, comparadas contra el control. Segundo, medir las dos familias: la mezcla de lotes sube y la separación de tipos celulares se queda igual. Tercero, revisar lo que ya se sabe: una gráfica de puntos donde CD3E marca a los linfocitos T, CD14 a los monocitos y MS4A1 a los linfocitos B. Al pie: el UMAP sirve para mirar y la decisión se toma con estas tres revisiones; si el UMAP se ve bien pero las métricas no, mandan las métricas.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 22px; font-weight: 700; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .pie { font-size: 18px; }
+  ]]></style>
+<rect x="40" y="84" width="353" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="216" y="70" fill="#00053F" text-anchor="middle">1. Medir antes y después</text>
+<rect x="413" y="84" width="353" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="590" y="70" fill="#00053F" text-anchor="middle">2. Mezcla y biología</text>
+<rect x="786" y="84" width="353" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="962" y="70" fill="#00053F" text-anchor="middle">3. Lo que ya se sabe</text>
+<rect x="160" y="289" width="46" height="15" fill="#5A6373"/>
+<text class="t lab" x="183" y="324" fill="#5A6373" text-anchor="middle">antes</text>
+<rect x="222" y="184" width="46" height="120" fill="#1F5FBF"/>
+<text class="t lab" x="245" y="324" fill="#5A6373" text-anchor="middle">después</text>
+<line x1="150" y1="304" x2="278" y2="304" stroke="#141A4A" stroke-width="1.6"/>
+<text class="t neg" x="214" y="128" fill="#141A4A" text-anchor="middle">mezcla de lotes</text>
+<text class="t lab" x="216" y="369" fill="#141A4A" text-anchor="middle">se compara contra el control</text>
+<rect x="443" y="289" width="46" height="15" fill="#5A6373"/>
+<text class="t lab" x="466" y="324" fill="#5A6373" text-anchor="middle">antes</text>
+<rect x="505" y="184" width="46" height="120" fill="#1F5FBF"/>
+<text class="t lab" x="528" y="324" fill="#5A6373" text-anchor="middle">después</text>
+<line x1="433" y1="304" x2="561" y2="304" stroke="#141A4A" stroke-width="1.6"/>
+<text class="t neg" x="497" y="128" fill="#141A4A" text-anchor="middle">mezcla de lotes</text>
+<rect x="613" y="199" width="46" height="105" fill="#5A6373"/>
+<text class="t lab" x="636" y="324" fill="#5A6373" text-anchor="middle">antes</text>
+<rect x="675" y="199" width="46" height="105" fill="#1F5FBF"/>
+<text class="t lab" x="698" y="324" fill="#5A6373" text-anchor="middle">después</text>
+<line x1="603" y1="304" x2="731" y2="304" stroke="#141A4A" stroke-width="1.6"/>
+<text class="t neg" x="667" y="128" fill="#141A4A" text-anchor="middle">separación de tipos</text>
+<text class="t lab" x="590" y="356" fill="#141A4A" text-anchor="middle">que suba la primera</text>
+<text class="t lab" x="590" y="378" fill="#141A4A" text-anchor="middle">sin que baje la segunda</text>
+<text class="t neg" x="916" y="142" fill="#141A4A" text-anchor="middle">T</text>
+<text class="t neg" x="986" y="142" fill="#141A4A" text-anchor="middle">mono</text>
+<text class="t neg" x="1056" y="142" fill="#141A4A" text-anchor="middle">B</text>
+<text class="t lab" x="876" y="184" fill="#141A4A" text-anchor="end">CD3E</text>
+<circle cx="916" cy="178" r="16" fill="#1F5FBF"/>
+<circle cx="986" cy="178" r="4" fill="#1F5FBF"/>
+<circle cx="1056" cy="178" r="4" fill="#1F5FBF"/>
+<text class="t lab" x="876" y="236" fill="#141A4A" text-anchor="end">CD14</text>
+<circle cx="916" cy="230" r="4" fill="#1F5FBF"/>
+<circle cx="986" cy="230" r="16" fill="#1F5FBF"/>
+<circle cx="1056" cy="230" r="4" fill="#1F5FBF"/>
+<text class="t lab" x="876" y="288" fill="#141A4A" text-anchor="end">MS4A1</text>
+<circle cx="916" cy="282" r="4" fill="#1F5FBF"/>
+<circle cx="986" cy="282" r="4" fill="#1F5FBF"/>
+<circle cx="1056" cy="282" r="16" fill="#1F5FBF"/>
+<text class="t lab" x="962" y="356" fill="#141A4A" text-anchor="middle">los marcadores siguen separando</text>
+<text class="t lab" x="962" y="378" fill="#141A4A" text-anchor="middle">a cada tipo celular</text>
+<text class="t pie" x="590" y="416" fill="#00053F" text-anchor="middle">El UMAP sirve para mirar; la decisión se toma con estas tres revisiones.</text>
+<text class="t pie" x="590" y="442" fill="#00053F" text-anchor="middle">Si el UMAP se ve bien pero las métricas no, mandan las métricas.</text>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Los dos protocolos de disociación, uno sobre otro. Arriba, en azul, treinta y siete grados con el kit multitejido de Miltenyi, donde la maquinaria de transcripción sigue encendida. Abajo, en turquesa, seis grados con proteasa de Bacillus licheniformis, donde a esa temperatura está casi parada y se congela el patrón in vivo. Al pie, en rojo, que el tejido nunca se lee tal cual y que lo que llega a la matriz ya pasó por aquí.">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .cif { font-size:24px; font-weight:700; }
+      .avi { font-size:24px; font-weight:700; fill:#A01B2B; }
+    </style>
+    <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5A6373"/></marker>
+  </defs>
+
+  <text class="t eti" x="30" y="46">Dos maneras de convertir un tejido en células sueltas</text>
+  <rect x="30" y="86" width="1120" height="132" rx="12" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="3"/>
+  <text class="t eti" x="66" y="146" style="fill:#2B3FA8" font-size="40">37 °C</text>
+  <text class="t eti" x="240" y="136">kit multitejido de Miltenyi</text>
+  <text class="t cap" x="240" y="176">la maquinaria de transcripción sigue encendida</text>
+  <rect x="30" y="250" width="1120" height="132" rx="12" fill="#E4F3F4" stroke="#2E9AA6" stroke-width="3"/>
+  <text class="t eti" x="66" y="310" style="fill:#2E9AA6" font-size="40">6 °C</text>
+  <text class="t eti" x="240" y="300">proteasa de B. licheniformis</text>
+  <text class="t cap" x="240" y="340">a esa temperatura está casi parada: congela el patrón in vivo</text>
+  <text class="t avi" x="30" y="410">El tejido nunca se «lee» tal cual: lo que llega a la matriz ya pasó por aquí.</text>
+</svg>

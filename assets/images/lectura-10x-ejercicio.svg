@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Hoja de trabajo. Tres filas rotuladas índice de muestra, lectura 1 y lectura 2, cada una con su secuencia de nucleótidos sin anotar. Bajo la lectura 1, de veintiocho nucleótidos, hay una regla que marca las posiciones cada cuatro bases y un espacio en blanco para escribir. Al pie, la consigna: marcar el código de barras de célula, el UMI y el inserto, y decir qué responde cada uno.">
+<defs><style>.t{font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif;fill:#141A4A;}.eti{font-size:24px;font-weight:700;}.nota{font-size:24px;font-weight:600;fill:#5A6373;}.seq{font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-size:24px;font-weight:700;letter-spacing:0;fill:#141A4A;}.regla{font-size:24px;font-weight:600;fill:#5A6373;}</style></defs>
+<text class="t eti" x="20" y="70" fill="#5A6373">Índice de muestra</text>
+<text class="t seq" x="300" y="70">ACTGTAGCTA</text>
+<text class="t nota" x="468" y="70">10 nt</text>
+<text class="t eti" x="20" y="160">Lectura 1</text>
+<text class="t seq" x="300" y="160">GTCACGGTCAGTTCCATAGCCTGAATCG</text>
+<text class="t nota" x="727" y="160">28 nt</text>
+<line x1="300.0" y1="168" x2="300.0" y2="182" stroke="#5A6373" stroke-width="2"/>
+<text class="t regla" x="300.0" y="208" text-anchor="middle">0</text>
+<line x1="357.6" y1="168" x2="357.6" y2="182" stroke="#5A6373" stroke-width="2"/>
+<line x1="415.2" y1="168" x2="415.2" y2="182" stroke="#5A6373" stroke-width="2"/>
+<text class="t regla" x="415.2" y="208" text-anchor="middle">8</text>
+<line x1="472.8" y1="168" x2="472.8" y2="182" stroke="#5A6373" stroke-width="2"/>
+<line x1="530.4" y1="168" x2="530.4" y2="182" stroke="#5A6373" stroke-width="2"/>
+<text class="t regla" x="530.4" y="208" text-anchor="middle">16</text>
+<line x1="588.0" y1="168" x2="588.0" y2="182" stroke="#5A6373" stroke-width="2"/>
+<line x1="645.6" y1="168" x2="645.6" y2="182" stroke="#5A6373" stroke-width="2"/>
+<text class="t regla" x="645.6" y="208" text-anchor="middle">24</text>
+<line x1="703.2" y1="168" x2="703.2" y2="182" stroke="#5A6373" stroke-width="2"/>
+<line x1="300.0" y1="175" x2="703.2" y2="175" stroke="#5A6373" stroke-width="2"/>
+
+<rect x="300" y="228" width="403" height="34" rx="6" fill="none" stroke="#5A6373" stroke-width="2" stroke-dasharray="7 6"/>
+<text class="t eti" x="20" y="316">Lectura 2</text>
+<text class="t seq" x="300" y="316">GGCTGATCAAGGTTCCAGTGACCTTAGGCATGCAAGTCCTGAAGGTCAATG…</text>
+<text class="t nota" x="300" y="352">fragmento; la lectura completa mide 91 nt</text>
+<line x1="20" y1="372" x2="1160" y2="372" stroke="#5A6373" stroke-width="2" opacity="0.4"/>
+<text class="t eti" x="20" y="410">Marca las tres piezas y di qué responde cada una</text>
+</svg>

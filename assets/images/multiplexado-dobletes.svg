@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Un doblete entre muestras lleva dos etiquetas y se detecta; uno de la misma muestra lleva una sola y pasa desapercibido">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .cif { font-size:26px; font-weight:700; }
+    </style>
+  </defs>
+
+  <!-- gota con doblete ENTRE muestras -->
+  <circle cx="215" cy="150" r="100" fill="#ffffff" stroke="#937E00" stroke-width="5"/>
+  <circle cx="180" cy="140" r="38" fill="#2E9AA6"/>
+  <circle cx="252" cy="166" r="38" fill="#937E00"/>
+  <text class="t cif" x="215" y="290" text-anchor="middle" fill="#1F7A3D">dos etiquetas</text>
+  <text class="t eti" x="215" y="326" text-anchor="middle" fill="#1F7A3D">SE DETECTA</text>
+  <text class="t cap" x="215" y="366" text-anchor="middle">células de muestras distintas</text>
+
+  <!-- gota con doblete DENTRO de la misma muestra -->
+  <circle cx="640" cy="150" r="100" fill="#ffffff" stroke="#937E00" stroke-width="5"/>
+  <circle cx="605" cy="140" r="38" fill="#2E9AA6"/>
+  <circle cx="677" cy="166" r="38" fill="#2E9AA6"/>
+  <text class="t cif" x="640" y="290" text-anchor="middle" fill="#A01B2B">una sola etiqueta</text>
+  <text class="t eti" x="640" y="326" text-anchor="middle" fill="#A01B2B">PASA DESAPERCIBIDO</text>
+  <text class="t cap" x="640" y="366" text-anchor="middle">dos células de la misma muestra</text>
+
+  <line x1="820" y1="60" x2="820" y2="380" stroke="#DDD8C6" stroke-width="2"/>
+  <text class="t eti" x="856" y="132" fill="#141A4A">Las tres detectan</text>
+  <text class="t eti" x="856" y="164" fill="#141A4A">dobletes igual:</text>
+  <text class="t cap" x="856" y="214">llevan dos códigos</text>
+  <text class="t cap" x="856" y="246">o SNP de dos</text>
+  <text class="t cap" x="856" y="278">donantes.</text>
+  <text class="t cap" x="856" y="330">Ninguna ve el de</text>
+  <text class="t cap" x="856" y="362">una sola muestra.</text>
+</svg>

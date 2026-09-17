@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Una sola membrana: intacta a la izquierda y con detergente intercalado a la derecha, con la estructura del Triton X-100 abajo">
+  <defs>
+    <clipPath id="lluvia"><rect x="410" y="34" width="380" height="126"/></clipPath>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .qui { font-size:24px; font-weight:700; fill:#141A4A; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .bond{ stroke:#141A4A; stroke-width:3; fill:none; }
+
+      @keyframes cae { from { transform:translateY(0) } to { transform:translateY(95px) } }
+      .det { animation: cae 3s linear infinite; }
+      @media (prefers-reduced-motion: reduce) { .det { animation:none } }
+    </style>
+
+    <g id="lipUp">
+      <circle cx="0" cy="0" r="14" fill="#2B3FA8"/>
+      <line x1="-5" y1="13" x2="-5" y2="46" stroke="#8A93A8" stroke-width="4"/>
+      <line x1="5"  y1="13" x2="5"  y2="46" stroke="#8A93A8" stroke-width="4"/>
+    </g>
+    <g id="lipDown">
+      <circle cx="0" cy="0" r="14" fill="#2B3FA8"/>
+      <line x1="-5" y1="-13" x2="-5" y2="-46" stroke="#8A93A8" stroke-width="4"/>
+      <line x1="5"  y1="-13" x2="5"  y2="-46" stroke="#8A93A8" stroke-width="4"/>
+    </g>
+    <g id="det">
+      <circle cx="0" cy="0" r="14" fill="#937E00"/>
+      <line x1="0" y1="13" x2="0" y2="52" stroke="#C9B458" stroke-width="6"/>
+    </g>
+  </defs>
+
+  <text class="t eti" x="60"  y="26" fill="#2B3FA8">membrana intacta</text>
+  <text class="t eti" x="470" y="26" fill="#6E5E00">el detergente se intercala</text>
+
+  <!-- ══════ una sola bicapa ══════ -->
+  <!-- mitad intacta -->
+  <g>
+    <use href="#lipUp" x="70"  y="162"/><use href="#lipUp" x="104" y="162"/>
+    <use href="#lipUp" x="138" y="162"/><use href="#lipUp" x="172" y="162"/>
+    <use href="#lipUp" x="206" y="162"/><use href="#lipUp" x="240" y="162"/>
+    <use href="#lipUp" x="274" y="162"/><use href="#lipUp" x="308" y="162"/>
+    <use href="#lipUp" x="342" y="162"/><use href="#lipUp" x="376" y="162"/>
+    <use href="#lipDown" x="70"  y="254"/><use href="#lipDown" x="104" y="254"/>
+    <use href="#lipDown" x="138" y="254"/><use href="#lipDown" x="172" y="254"/>
+    <use href="#lipDown" x="206" y="254"/><use href="#lipDown" x="240" y="254"/>
+    <use href="#lipDown" x="274" y="254"/><use href="#lipDown" x="308" y="254"/>
+    <use href="#lipDown" x="342" y="254"/><use href="#lipDown" x="376" y="254"/>
+  </g>
+
+  <!-- mitad invadida: lipidos separados, con detergente entre ellos -->
+  <g>
+    <use href="#lipUp" x="430" y="162"/><use href="#det" x="466" y="162"/>
+    <use href="#lipUp" x="502" y="162"/><use href="#det" x="538" y="162"/>
+    <use href="#lipUp" x="574" y="162"/><use href="#det" x="610" y="162"/>
+    <use href="#lipUp" x="646" y="162"/><use href="#det" x="682" y="162"/>
+    <use href="#lipUp" x="718" y="162"/>
+    <use href="#lipDown" x="430" y="254"/><use href="#lipDown" x="502" y="254"/>
+    <use href="#lipDown" x="574" y="254"/><use href="#lipDown" x="646" y="254"/>
+    <use href="#lipDown" x="718" y="254"/>
+  </g>
+
+  <!-- ══════ detergentes que llegan ══════ -->
+  <g clip-path="url(#lluvia)">
+    <g class="det"><use href="#det" x="448" y="-49"/><use href="#det" x="556" y="-49"/><use href="#det" x="664" y="-49"/><use href="#det" x="772" y="-49"/></g>
+    <g class="det"><use href="#det" x="448" y="46"/> <use href="#det" x="556" y="46"/> <use href="#det" x="664" y="46"/> <use href="#det" x="772" y="46"/></g>
+  </g>
+
+  <!-- ══════ el reactivo ══════ -->
+  <line x1="60" y1="300" x2="1120" y2="300" stroke="#DDD8C6" stroke-width="2"/>
+  <text class="t eti" x="60" y="338" fill="#6E5E00">ejemplo: Triton X-100</text>
+
+  <text class="t qui" x="60" y="400">(H₃C)₃C</text>
+  <line class="bond" x1="152" y1="392" x2="184" y2="392"/>
+  <text class="t qui" x="190" y="400">CH₂</text>
+  <line class="bond" x1="240" y1="392" x2="272" y2="392"/>
+  <text class="t qui" x="278" y="400">C(CH₃)₂</text>
+  <line class="bond" x1="392" y1="392" x2="418" y2="392"/>
+  <polygon class="bond" points="444,370 470,378 470,406 444,414 418,406 418,378" fill="none"/>
+  <circle cx="444" cy="392" r="13" class="bond"/>
+  <line class="bond" x1="470" y1="392" x2="496" y2="392"/>
+  <text class="t qui" x="502" y="400">O</text>
+  <line class="bond" x1="528" y1="392" x2="560" y2="392"/>
+  <text class="t qui" x="566" y="400">(CH₂CH₂O)ₙ</text>
+  <line class="bond" x1="738" y1="392" x2="770" y2="392"/>
+  <text class="t qui" x="776" y="400">H</text>
+  <text class="t cap" x="840" y="400">n ≈ 9–10</text>
+  <text class="t cap" x="840" y="352">cabeza soluble · cola grasa</text>
+</svg>

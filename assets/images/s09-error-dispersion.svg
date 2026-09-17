@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 456" width="1180" height="456" role="img" aria-label="Por qué los valores p salen demasiado pequeños, en dos paneles. A la izquierda, lo que se midió: las células control y las de tratamiento forman dos nubes anchas que se enciman, y la diferencia entre sus promedios puede ser azar. A la derecha, después de corregir: la diferencia entre promedios es la misma, pero las nubes se encogieron y la diferencia parece clarísima, con un valor p muy pequeño, en rojo. Al pie: la prueba compara la diferencia contra qué tanto varían las células; la corrección quitó variación con un cálculo hecho sobre los mismos datos y la prueba no lo descuenta, así que cree tener más evidencia de la que hay.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 22px; font-weight: 700; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .pie { font-size: 18px; }
+  ]]></style>
+<rect x="40" y="84" width="530" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="305" y="70" fill="#00053F" text-anchor="middle">1. Lo que se midió</text>
+<circle cx="160.0" cy="180.3" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="172.0" cy="208.6" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="184.0" cy="247.8" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="196.0" cy="203.1" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="208.0" cy="182.9" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="220.0" cy="161.9" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="160.0" cy="256.7" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="172.0" cy="219.4" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="184.0" cy="200.3" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="196.0" cy="186.5" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="208.0" cy="124.7" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="220.0" cy="231.7" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<line x1="142" y1="234" x2="238" y2="234" stroke="#141A4A" stroke-width="3"/>
+<text class="t lab" x="190" y="334" fill="#2A7F8E" text-anchor="middle">control</text>
+<circle cx="340.0" cy="159.1" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="352.0" cy="195.9" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="364.0" cy="260.0" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="376.0" cy="183.3" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="388.0" cy="192.6" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="400.0" cy="238.3" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="340.0" cy="190.2" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="352.0" cy="204.3" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="364.0" cy="150.5" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="376.0" cy="161.1" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="388.0" cy="131.3" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="400.0" cy="240.4" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<line x1="322" y1="204" x2="418" y2="204" stroke="#141A4A" stroke-width="3"/>
+<text class="t lab" x="370" y="334" fill="#A23B5B" text-anchor="middle">tratamiento</text>
+<text class="t lab" x="305" y="369" fill="#141A4A" text-anchor="middle">las nubes se enciman: la diferencia puede ser azar</text>
+<rect x="610" y="84" width="530" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="875" y="70" fill="#00053F" text-anchor="middle">2. Después de corregir</text>
+<circle cx="730.0" cy="218.7" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="742.0" cy="226.7" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="754.0" cy="238.0" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="766.0" cy="225.2" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="778.0" cy="219.4" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="790.0" cy="213.4" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="730.0" cy="240.5" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="742.0" cy="229.8" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="754.0" cy="224.4" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="766.0" cy="220.4" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="778.0" cy="202.8" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<circle cx="790.0" cy="233.3" r="6.5" fill="#2A7F8E" stroke="white" stroke-width="1.2"/>
+<line x1="712" y1="234" x2="808" y2="234" stroke="#141A4A" stroke-width="3"/>
+<text class="t lab" x="760" y="334" fill="#2A7F8E" text-anchor="middle">control</text>
+<circle cx="910.0" cy="191.2" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="922.0" cy="201.7" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="934.0" cy="220.0" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="946.0" cy="198.1" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="958.0" cy="200.7" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="970.0" cy="213.8" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="910.0" cy="200.1" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="922.0" cy="204.1" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="934.0" cy="188.7" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="946.0" cy="191.7" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="958.0" cy="183.2" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<circle cx="970.0" cy="214.4" r="6.5" fill="#A23B5B" stroke="white" stroke-width="1.2"/>
+<line x1="892" y1="204" x2="988" y2="204" stroke="#141A4A" stroke-width="3"/>
+<text class="t lab" x="940" y="334" fill="#A23B5B" text-anchor="middle">tratamiento</text>
+<text class="t neg" x="875" y="369" fill="#B3261E" text-anchor="middle">la misma diferencia parece clarísima: p muy pequeño</text>
+<line x1="500" y1="204" x2="500" y2="234" stroke="#5A6373" stroke-width="2"/>
+<text class="t lab" x="508" y="224" fill="#5A6373" text-anchor="start">diferencia</text>
+<line x1="1070" y1="204" x2="1070" y2="234" stroke="#5A6373" stroke-width="2"/>
+<text class="t lab" x="1078" y="224" fill="#5A6373" text-anchor="start">diferencia</text>
+<text class="t pie" x="590" y="416" fill="#00053F" text-anchor="middle">La prueba compara la diferencia contra qué tanto varían las células. La corrección quitó variación</text>
+<text class="t pie" x="590" y="442" fill="#00053F" text-anchor="middle">con un cálculo hecho sobre los mismos datos, y la prueba no lo descuenta: cree tener más evidencia.</text>
+</svg>

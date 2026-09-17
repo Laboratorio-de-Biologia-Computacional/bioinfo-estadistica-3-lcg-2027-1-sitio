@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Los mismos dos registros de FASTQ, ya anotados">
+  <!-- Los tramos se pintan con tspan dentro de un mismo <text>: asi el corte cae
+       exactamente en el nucleotido 16 y no en una coordenada calculada a ojo. -->
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .mono{ font-family:ui-monospace,"Cascadia Mono",Consolas,monospace; font-size:24px; }
+      .cmd { font-family:ui-monospace,"Cascadia Mono",Consolas,monospace; font-size:24px; font-weight:700; fill:#F3EFDD; }
+    </style>
+  </defs>
+
+  <rect x="20" y="12" width="1140" height="112" rx="10" fill="#141A4A"/>
+  <text class="cmd"  x="40" y="46" >$ ... R1_001.fastq.gz</text>
+  <text class="mono" x="40" y="80" fill="#8A93A8">@A00228:279:HFWFVDMXX:1:1101:2213:1000 1:N:0:ACTGAGCG</text>
+  <text class="mono" x="40" y="112"><tspan fill="#7FB3FF">GTCACGGTCAGTTCCA</tspan><tspan fill="#5FD8E0">TAGCCTGAATCG</tspan></text>
+
+  <text class="t eti" x="20"  y="156" fill="#7FB3FF">16 nt · código</text>
+  <text class="t eti" x="270" y="156" fill="#5FD8E0">12 nt · UMI</text>
+  <text class="t eti" x="500" y="156" fill="#A01B2B">Lectura 1 · técnica</text>
+  <text class="t cap" x="770" y="156">solo identificadores</text>
+
+  <rect x="20" y="176" width="1140" height="144" rx="10" fill="#141A4A"/>
+  <text class="cmd"  x="40" y="210" >$ ... R2_001.fastq.gz</text>
+  <text class="mono" x="40" y="244" fill="#8A93A8">@A00228:279:HFWFVDMXX:1:1101:2213:1000 2:N:0:ACTGAGCG</text>
+  <text class="mono" x="40" y="276" fill="#9BE39B">GGCTGATCAAGGTTCCAGTGACCTTAGGCATGCAAGTCCTGAAGG</text>
+  <text class="mono" x="40" y="308"><tspan fill="#9BE39B">TCAATGCCTAGGACTTGCATGCCTAAGGTC</tspan><tspan fill="#E0A250">AAAAAAAAAAAAAAA</tspan></text>
+
+  <text class="t eti" x="20"  y="352" fill="#1F7A3D">90 nt · el inserto</text>
+  <text class="t eti" x="320" y="352" fill="#1F7A3D">Lectura 2 · biológica</text>
+  <text class="t cap" x="620" y="352">esto se alinea al genoma</text>
+
+  <text class="t eti" x="20"  y="404" fill="#E0A250">Y al final, la cola de poli-A:</text>
+  <text class="t cap" x="420" y="404">la lectura alcanzó el extremo del transcrito</text>
+</svg>

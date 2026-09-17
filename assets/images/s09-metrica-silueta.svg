@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 456" width="1180" height="456" role="img" aria-label="Silueta en dos paneles, con el lote como etiqueta. En cada panel, una célula marcada con un círculo negro se une con líneas azules, llamadas a, a las células de su lote, y con líneas naranjas punteadas, llamadas b, a las del otro lote. A la izquierda, los lotes están separados: a vale 2 y b vale 8, y la silueta es 0.75. A la derecha, los lotes están encimados: a y b valen 5 y la silueta es 0. Al pie: la silueta es b menos a entre el mayor de los dos y va de menos uno a uno; con la etiqueta lote se quiere cerca de cero y con tipo celular cerca de uno.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 22px; font-weight: 700; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .pie { font-size: 18px; }
+  ]]></style>
+<rect x="40" y="84" width="520" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="300" y="70" fill="#00053F" text-anchor="middle">Silueta alta: lotes separados</text>
+<rect x="620" y="84" width="520" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="880" y="70" fill="#00053F" text-anchor="middle">Silueta cerca de 0: lotes encimados</text>
+<line x1="160.0" y1="194.0" x2="130.0" y2="164.0" stroke="#1F5FBF" stroke-width="2.4"/>
+<line x1="160.0" y1="194.0" x2="190.0" y2="169.0" stroke="#1F5FBF" stroke-width="2.4"/>
+<line x1="160.0" y1="194.0" x2="140.0" y2="229.0" stroke="#1F5FBF" stroke-width="2.4"/>
+<line x1="160.0" y1="194.0" x2="440.0" y2="154.0" stroke="#E8820C" stroke-width="2.4" stroke-dasharray="7 5"/>
+<line x1="160.0" y1="194.0" x2="470.0" y2="204.0" stroke="#E8820C" stroke-width="2.4" stroke-dasharray="7 5"/>
+<line x1="160.0" y1="194.0" x2="430.0" y2="234.0" stroke="#E8820C" stroke-width="2.4" stroke-dasharray="7 5"/>
+<circle cx="130.0" cy="164.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="190.0" cy="169.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="140.0" cy="229.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="110.0" cy="199.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="185.0" cy="224.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="440.0" cy="154.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="470.0" cy="204.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="430.0" cy="234.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="490.0" cy="169.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="460.0" cy="244.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="160.0" cy="194.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="160.0" cy="194.0" r="13" fill="none" stroke="#141A4A" stroke-width="2.6"/>
+<text class="t neg" x="145" y="171" fill="#1F5FBF" text-anchor="middle" style="font-size:22px; paint-order:stroke; stroke:white; stroke-width:5px">a</text>
+<text class="t neg" x="300" y="166" fill="#E8820C" text-anchor="middle" style="font-size:22px; paint-order:stroke; stroke:white; stroke-width:5px">b</text>
+<text class="t lab" x="70" y="296" fill="#141A4A" text-anchor="start">a = 2: qué tan lejos están las de SU lote (línea azul)</text>
+<text class="t lab" x="70" y="324" fill="#141A4A" text-anchor="start">b = 8: qué tan lejos están las del OTRO lote (línea naranja)</text>
+<text class="t neg" x="70" y="360" fill="#141A4A" text-anchor="start">silueta = (8 − 2) / 8 = 0.75</text>
+<line x1="880.0" y1="194.0" x2="820.0" y2="154.0" stroke="#1F5FBF" stroke-width="2.4"/>
+<line x1="880.0" y1="194.0" x2="950.0" y2="234.0" stroke="#1F5FBF" stroke-width="2.4"/>
+<line x1="880.0" y1="194.0" x2="810.0" y2="234.0" stroke="#1F5FBF" stroke-width="2.4"/>
+<line x1="880.0" y1="194.0" x2="940.0" y2="159.0" stroke="#E8820C" stroke-width="2.4" stroke-dasharray="7 5"/>
+<line x1="880.0" y1="194.0" x2="820.0" y2="194.0" stroke="#E8820C" stroke-width="2.4" stroke-dasharray="7 5"/>
+<line x1="880.0" y1="194.0" x2="910.0" y2="244.0" stroke="#E8820C" stroke-width="2.4" stroke-dasharray="7 5"/>
+<circle cx="820.0" cy="154.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="950.0" cy="234.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="810.0" cy="234.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="920.0" cy="144.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="860.0" cy="249.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="940.0" cy="159.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="820.0" cy="194.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="910.0" cy="244.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="845.0" cy="139.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="960.0" cy="199.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="880.0" cy="194.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="880.0" cy="194.0" r="13" fill="none" stroke="#141A4A" stroke-width="2.6"/>
+<text class="t neg" x="850" y="166" fill="#1F5FBF" text-anchor="middle" style="font-size:22px; paint-order:stroke; stroke:white; stroke-width:5px">a</text>
+<text class="t neg" x="910" y="168" fill="#E8820C" text-anchor="middle" style="font-size:22px; paint-order:stroke; stroke:white; stroke-width:5px">b</text>
+<text class="t lab" x="650" y="296" fill="#141A4A" text-anchor="start">a = 5: las de SU lote están a la misma distancia</text>
+<text class="t lab" x="650" y="324" fill="#141A4A" text-anchor="start">b = 5: que las del OTRO lote</text>
+<text class="t neg" x="650" y="360" fill="#141A4A" text-anchor="start">silueta = (5 − 5) / 5 = 0</text>
+<text class="t pie" x="590" y="416" fill="#00053F" text-anchor="middle">Silueta = (b − a) / máx(a, b). Va de −1 a 1. El círculo negro marca la célula que se evalúa.</text>
+<text class="t pie" x="590" y="442" fill="#00053F" text-anchor="middle">Con la etiqueta «lote» se quiere cerca de 0; con «tipo celular», cerca de 1.</text>
+<circle cx="60.0" cy="18.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<text class="t lab" x="74" y="24" fill="#5A6373" text-anchor="start">lote 1</text>
+<circle cx="150.0" cy="18.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<text class="t lab" x="164" y="24" fill="#5A6373" text-anchor="start">lote 2</text>
+</svg>

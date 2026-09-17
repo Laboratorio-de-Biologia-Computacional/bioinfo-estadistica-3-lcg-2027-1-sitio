@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Los seis genes de la firma de estrés, repartidos en dos familias. A la izquierda, en azul, los cuatro de respuesta temprana inmediata, que son factores de transcripción: Fos, Jun, Junb y Egr1. A la derecha, en oro, los dos de choque térmico, que son chaperonas: Hspa1a y Hsp90aa1. Debajo, en rojo, que se encienden ante cualquier estímulo y en diez minutos, y que por eso una lesión real y una pipeta escriben el mismo texto. Al pie, las fuentes: Kruijer 1984 para los diez minutos y Denisenko 2020 para las dos familias.">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .cif { font-size:24px; font-weight:700; }
+      .avi { font-size:24px; font-weight:700; fill:#A01B2B; }
+    </style>
+    <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5A6373"/></marker>
+  </defs>
+
+  <text class="t eti" x="30" y="46">Seis genes que se encienden en diez minutos</text>
+  <rect x="30" y="76" width="540" height="196" rx="12" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="3"/>
+  <text class="t eti" x="56" y="112" style="fill:#2B3FA8">Respuesta temprana inmediata</text>
+  <text class="t cap" x="56" y="142">factores de transcripción</text>
+  <rect x="56" y="182" width="68" height="44" rx="10" fill="#2B3FA8"/>
+  <text class="t eti" x="90" y="212" text-anchor="middle" style="fill:#ffffff">Fos</text>
+  <rect x="138" y="182" width="68" height="44" rx="10" fill="#2B3FA8"/>
+  <text class="t eti" x="172" y="212" text-anchor="middle" style="fill:#ffffff">Jun</text>
+  <rect x="220" y="182" width="82" height="44" rx="10" fill="#2B3FA8"/>
+  <text class="t eti" x="261" y="212" text-anchor="middle" style="fill:#ffffff">Junb</text>
+  <rect x="316" y="182" width="82" height="44" rx="10" fill="#2B3FA8"/>
+  <text class="t eti" x="357" y="212" text-anchor="middle" style="fill:#ffffff">Egr1</text>
+  <rect x="610" y="76" width="540" height="196" rx="12" fill="#F3EFDD" stroke="#937E00" stroke-width="3"/>
+  <text class="t eti" x="636" y="112" style="fill:#937E00">Choque térmico</text>
+  <text class="t cap" x="636" y="142">chaperonas</text>
+  <rect x="636" y="182" width="110" height="44" rx="10" fill="#937E00"/>
+  <text class="t eti" x="691" y="212" text-anchor="middle" style="fill:#ffffff">Hspa1a</text>
+  <rect x="760" y="182" width="138" height="44" rx="10" fill="#937E00"/>
+  <text class="t eti" x="829" y="212" text-anchor="middle" style="fill:#ffffff">Hsp90aa1</text>
+  <text class="t eti" x="30" y="320" style="fill:#A01B2B">Se encienden ante CUALQUIER estímulo, y en 10 minutos.</text>
+  <text class="t cap" x="30" y="356">Por eso una lesión real y una pipeta escriben el mismo texto.</text>
+  <text class="t cap" x="30" y="404">c-fos a los 10 min: Kruijer 1984 · las dos familias: Denisenko 2020</text>
+</svg>

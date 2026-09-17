@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="A la izquierda, una jerarquia de cuatro niveles —condicion, donante, celula y lectura— con una llave que marca al donante como unidad de analisis, n igual a seis, y una tache sobre el nivel de la celula. A la derecha, las dos n posibles: seis donantes, la que existe, y diez mil celulas, la que se cuela.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 24px; font-weight: 700; }
+    .sub { font-size: 16px; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .via { font-size: 15px; }
+    .num { font-size: 21px; font-weight: 700; }
+    .gde { font-size: 30px; font-weight: 700; }
+    .pie { font-size: 17px; }
+  ]]></style>
+
+<rect x="40" y="44" width="728" height="308" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="404" y="30" text-anchor="middle" fill="#00053F">Un experimento tiene niveles</text>
+<text class="t via" x="56" y="86" fill="#5A6373">condición</text>
+<text class="t via" x="56" y="152" fill="#5A6373">donante</text>
+<text class="t via" x="56" y="209" fill="#5A6373">célula</text>
+<text class="t via" x="56" y="259" fill="#5A6373">lectura</text>
+<rect x="184" y="64" width="176" height="32" rx="8" fill="#D1D3E7" stroke="#8084BB" stroke-width="1.4"/>
+<text class="t neg" x="272" y="86" text-anchor="middle" fill="#000977">caso</text>
+<rect x="420" y="64" width="176" height="32" rx="8" fill="#ECE8D1" stroke="#C9BE80" stroke-width="1.4"/>
+<text class="t neg" x="508" y="86" text-anchor="middle" fill="#937E00">control</text>
+<path d="M 216.0 96.0 L 216.0 126.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<circle cx="216" cy="135.0" r="10" fill="#000977"/><path d="M 201.0 156 a 15.0 16.0 0 0 1 30.0 0 z" fill="#000977"/>
+<path d="M 216.0 162.0 L 216.0 188.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<circle cx="199" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="199" cy="204" r="2.7" fill="#2E9AA6"/>
+<circle cx="216" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="216" cy="204" r="2.7" fill="#2E9AA6"/>
+<circle cx="233" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="233" cy="204" r="2.7" fill="#2E9AA6"/>
+<path d="M 216.0 214.0 L 216.0 238.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<rect x="196" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="204" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="212" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="220" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="228" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<path d="M 272.0 96.0 L 272.0 126.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<circle cx="272" cy="135.0" r="10" fill="#000977"/><path d="M 257.0 156 a 15.0 16.0 0 0 1 30.0 0 z" fill="#000977"/>
+<path d="M 272.0 162.0 L 272.0 188.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<circle cx="255" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="255" cy="204" r="2.7" fill="#2E9AA6"/>
+<circle cx="272" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="272" cy="204" r="2.7" fill="#2E9AA6"/>
+<circle cx="289" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="289" cy="204" r="2.7" fill="#2E9AA6"/>
+<path d="M 272.0 214.0 L 272.0 238.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<rect x="252" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="260" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="268" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="276" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="284" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<path d="M 328.0 96.0 L 328.0 126.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<circle cx="328" cy="135.0" r="10" fill="#000977"/><path d="M 313.0 156 a 15.0 16.0 0 0 1 30.0 0 z" fill="#000977"/>
+<path d="M 328.0 162.0 L 328.0 188.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<circle cx="311" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="311" cy="204" r="2.7" fill="#2E9AA6"/>
+<circle cx="328" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="328" cy="204" r="2.7" fill="#2E9AA6"/>
+<circle cx="345" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="345" cy="204" r="2.7" fill="#2E9AA6"/>
+<path d="M 328.0 214.0 L 328.0 238.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<rect x="308" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="316" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="324" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="332" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="340" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<path d="M 452.0 96.0 L 452.0 126.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<circle cx="452" cy="135.0" r="10" fill="#937E00"/><path d="M 437.0 156 a 15.0 16.0 0 0 1 30.0 0 z" fill="#937E00"/>
+<path d="M 452.0 162.0 L 452.0 188.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<circle cx="435" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="435" cy="204" r="2.7" fill="#2E9AA6"/>
+<circle cx="452" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="452" cy="204" r="2.7" fill="#2E9AA6"/>
+<circle cx="469" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="469" cy="204" r="2.7" fill="#2E9AA6"/>
+<path d="M 452.0 214.0 L 452.0 238.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<rect x="432" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="440" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="448" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="456" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="464" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<path d="M 508.0 96.0 L 508.0 126.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<circle cx="508" cy="135.0" r="10" fill="#937E00"/><path d="M 493.0 156 a 15.0 16.0 0 0 1 30.0 0 z" fill="#937E00"/>
+<path d="M 508.0 162.0 L 508.0 188.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<circle cx="491" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="491" cy="204" r="2.7" fill="#2E9AA6"/>
+<circle cx="508" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="508" cy="204" r="2.7" fill="#2E9AA6"/>
+<circle cx="525" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="525" cy="204" r="2.7" fill="#2E9AA6"/>
+<path d="M 508.0 214.0 L 508.0 238.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<rect x="488" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="496" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="504" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="512" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="520" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<path d="M 564.0 96.0 L 564.0 126.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<circle cx="564" cy="135.0" r="10" fill="#937E00"/><path d="M 549.0 156 a 15.0 16.0 0 0 1 30.0 0 z" fill="#937E00"/>
+<path d="M 564.0 162.0 L 564.0 188.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<circle cx="547" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="547" cy="204" r="2.7" fill="#2E9AA6"/>
+<circle cx="564" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="564" cy="204" r="2.7" fill="#2E9AA6"/>
+<circle cx="581" cy="204" r="7" fill="white" stroke="#2E9AA6" stroke-width="1.8"/><circle cx="581" cy="204" r="2.7" fill="#2E9AA6"/>
+<path d="M 564.0 214.0 L 564.0 238.0" fill="none" stroke="#C9D2E8" stroke-width="2"/>
+<rect x="544" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="552" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="560" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="568" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<rect x="576" y="244" width="5" height="18" rx="2" fill="#ACB1B9"/>
+<path d="M 598 128 l 12 0 l 0 34 l -12 0" fill="none" stroke="#6E5E00" stroke-width="2.6"/>
+<text class="t via" x="620" y="142" fill="#6E5E00">unidad de análisis</text>
+<text class="t num" x="620" y="166" fill="#6E5E00">n = 6</text>
+<path d="M 604 196 l 16 16 M 620 196 l -16 16" fill="none" stroke="#00053F" stroke-width="3.4" stroke-linecap="round"/>
+<text class="t neg" x="630" y="210" fill="#00053F">aquí no</text>
+<rect x="64" y="286" width="680" height="52" rx="8" fill="#EDEDF2" stroke="none"/>
+<text class="t lab" x="404" y="308" text-anchor="middle" fill="#141A4A">Las células de un donante comparten su genotipo, su tratamiento y su lote.</text>
+<text class="t neg" x="404" y="330" text-anchor="middle" fill="#6E5E00">Contarlas como réplicas es pseudorreplicación.</text>
+<rect x="790" y="44" width="350" height="308" rx="10" fill="white" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="965" y="30" text-anchor="middle" fill="#00053F">La n cambia el resultado</text>
+<rect x="812" y="70" width="306" height="94" rx="10" fill="#EEECE0" stroke="#CCC7A6" stroke-width="1.4"/>
+<text class="t gde" x="965" y="116" text-anchor="middle" fill="#6E5E00">n = 6</text>
+<text class="t via" x="965" y="144" text-anchor="middle" fill="#5A6373">donantes · la que existe</text>
+<rect x="812" y="186" width="306" height="94" rx="10" fill="#E0E1E8" stroke="#A6A8BC" stroke-width="1.4"/>
+<text class="t gde" x="965" y="232" text-anchor="middle" fill="#00053F">n = 10 000</text>
+<text class="t via" x="965" y="260" text-anchor="middle" fill="#5A6373">células · la que se cuela</text>
+<path d="M 965.0 168.0 L 965.0 177.0" fill="none" stroke="#5A6373" stroke-width="2.2"/><path d="M 965 184 l -5.5 -9 l 11 0 z" fill="#5A6373"/>
+<text class="t lab" x="965" y="312" text-anchor="middle" fill="#141A4A">Con la segunda, cualquier diferencia</text>
+<text class="t neg" x="965" y="334" text-anchor="middle" fill="#00053F">sale significativa.</text>
+<rect x="40" y="376" width="1100" height="40" rx="8" fill="#F3EFDD" stroke="none"/><text class="t pie" x="590" y="402" text-anchor="middle" fill="#6E5E00">La réplica es el donante. La célula es submuestreo del donante, no una observación nueva.</text>
+</svg>

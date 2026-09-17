@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Anatomía de una lectura de 10x: índice de muestra, lectura 1 con código de barras y UMI, y lectura 2 con el transcrito">
+  <defs>
+    <style>
+      .t   { font-family: "Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size: 24px; font-weight: 700; }
+      .len { font-size: 24px; font-weight: 700; fill:#5A6373; }
+      .nota{ font-size: 24px; font-weight: 600; fill:#5A6373; }
+    </style>
+  </defs>
+
+  <!-- Los anchos son proporcionales a la longitud real: 10, 16+12 y ~90 nt.
+       Que la lectura 2 aplaste a las otras dos es justamente el punto. -->
+
+  <!-- ── indice de muestra ── -->
+  <text class="t eti" x="40" y="70" fill="#141A4A">Índice de muestra</text>
+  <rect x="330" y="48" width="56" height="30" rx="8" fill="#8A93A8"/>
+  <text class="t len" x="398" y="70">10 nt</text>
+  <text class="t nota" x="520" y="70">¿de qué muestra, dentro de la corrida?</text>
+
+  <!-- ── lectura 1 ── -->
+  <text class="t eti" x="40" y="162" fill="#141A4A">Lectura 1</text>
+  <rect x="330" y="140" width="89" height="30" rx="8" fill="#000977"/>
+  <rect x="423" y="140" width="67" height="30" rx="8" fill="#2E9AA6"/>
+  <text class="t len" x="502" y="162">16 + 12 nt</text>
+  <text class="t eti" x="374" y="204" text-anchor="middle" fill="#000977">código</text>
+  <text class="t eti" x="456" y="204" text-anchor="middle" fill="#2E9AA6">UMI</text>
+  <text class="t nota" x="660" y="162">¿de qué gota? · ¿otra molécula o la misma?</text>
+
+  <!-- ── lectura 2 ── -->
+  <text class="t eti" x="40" y="278" fill="#141A4A">Lectura 2</text>
+  <rect x="330" y="256" width="500" height="30" rx="8" fill="#2B3FA8"/>
+  <text class="t len" x="846" y="278">~90 nt</text>
+  <text class="t eti" x="580" y="320" text-anchor="middle" fill="#2B3FA8">transcrito</text>
+  <text class="t nota" x="940" y="278">¿de qué gen?</text>
+
+  <!-- ── la moraleja ── -->
+  <line x1="330" y1="352" x2="490" y2="352" stroke="#5A6373" stroke-width="3"/>
+  <line x1="330" y1="346" x2="330" y2="358" stroke="#5A6373" stroke-width="3"/>
+  <line x1="490" y1="346" x2="490" y2="358" stroke="#5A6373" stroke-width="3"/>
+  <line x1="330" y1="352" x2="830" y2="352" stroke="#5A6373" stroke-width="3" stroke-dasharray="6 6" opacity="0.35"/>
+
+  <text class="t nota" x="40" y="404">la lectura 1 son identificadores y la lectura 2 es biología: casi todo lo que se secuencia es transcrito</text>
+</svg>

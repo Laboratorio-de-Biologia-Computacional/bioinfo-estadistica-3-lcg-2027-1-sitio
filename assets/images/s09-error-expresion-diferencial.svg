@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 456" width="1180" height="456" role="img" aria-label="Dos rutas para la expresión diferencial. Arriba, en rojo, la equivocada: de las cuentas se pasa a valores corregidos, que ya no son cuentas, y de ahí a una prueba estadística que da valores p demasiado pequeños, con genes que parecen significativos y no lo son. Abajo, la correcta: de las cuentas sumadas por muestra, que es el pseudobulk, se pasa a un modelo que incluye el lote como una variable más, y los valores p sí significan lo que dicen. Al pie: los valores corregidos sirven para agrupar y visualizar; para comparar condiciones se usa el pseudobulk por muestra, con el lote dentro del modelo.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 22px; font-weight: 700; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .pie { font-size: 18px; }
+  ]]></style>
+<defs><marker id="punta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#141A4A"/></marker></defs>
+<text class="t tit" x="40" y="72" fill="#B3261E" text-anchor="start">Así no</text>
+<rect x="40" y="90" width="200" height="90" rx="10" fill="white" stroke="#141A4A" stroke-width="2"/>
+<text class="t lab" x="140" y="130" fill="#141A4A" text-anchor="middle">cuentas</text>
+<text class="t lab" x="140" y="152" fill="#141A4A" text-anchor="middle">(lo que se midió)</text>
+<rect x="300" y="90" width="220" height="90" rx="10" fill="white" stroke="#B3261E" stroke-width="2"/>
+<text class="t lab" x="410" y="130" fill="#141A4A" text-anchor="middle">valores corregidos</text>
+<text class="t lab" x="410" y="152" fill="#141A4A" text-anchor="middle">(ya no son cuentas)</text>
+<rect x="580" y="90" width="180" height="90" rx="10" fill="white" stroke="#141A4A" stroke-width="2"/>
+<text class="t lab" x="670" y="130" fill="#141A4A" text-anchor="middle">prueba</text>
+<text class="t lab" x="670" y="152" fill="#141A4A" text-anchor="middle">estadística</text>
+<rect x="820" y="90" width="320" height="90" rx="10" fill="white" stroke="#B3261E" stroke-width="2"/>
+<text class="t lab" x="980" y="130" fill="#141A4A" text-anchor="middle">valores p demasiado pequeños:</text>
+<text class="t lab" x="980" y="152" fill="#141A4A" text-anchor="middle">genes «significativos» que no lo son</text>
+<line x1="242.0" y1="135.0" x2="296.0" y2="135.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<line x1="522.0" y1="135.0" x2="576.0" y2="135.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<line x1="762.0" y1="135.0" x2="816.0" y2="135.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t tit" x="40" y="252" fill="#00053F" text-anchor="start">Así sí</text>
+<rect x="40" y="270" width="200" height="90" rx="10" fill="white" stroke="#141A4A" stroke-width="2"/>
+<text class="t lab" x="140" y="310" fill="#141A4A" text-anchor="middle">cuentas por muestra</text>
+<text class="t lab" x="140" y="332" fill="#141A4A" text-anchor="middle">(pseudobulk)</text>
+<rect x="300" y="270" width="460" height="90" rx="10" fill="white" stroke="#00053F" stroke-width="2"/>
+<text class="t lab" x="530" y="310" fill="#141A4A" text-anchor="middle">modelo que incluye el lote</text>
+<text class="t lab" x="530" y="332" fill="#141A4A" text-anchor="middle">como una variable más (covariable)</text>
+<rect x="820" y="270" width="320" height="90" rx="10" fill="white" stroke="#00053F" stroke-width="2"/>
+<text class="t lab" x="980" y="310" fill="#141A4A" text-anchor="middle">valores p que sí</text>
+<text class="t lab" x="980" y="332" fill="#141A4A" text-anchor="middle">significan lo que dicen</text>
+<line x1="242.0" y1="315.0" x2="296.0" y2="315.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<line x1="762.0" y1="315.0" x2="816.0" y2="315.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t pie" x="590" y="406" fill="#00053F" text-anchor="middle">Los valores corregidos sirven para agrupar y visualizar.</text>
+<text class="t pie" x="590" y="432" fill="#00053F" text-anchor="middle">Para comparar condiciones: pseudobulk por muestra, con el lote dentro del modelo.</text>
+</svg>

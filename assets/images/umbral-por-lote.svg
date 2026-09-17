@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Dos campanas sobre un eje de cuentas por célula, de cero a seis mil. La de la izquierda, en turquesa, es el lote B, de poca cobertura, centrada en mil. La de la derecha, en azul, es el lote A, de buena cobertura, centrada en cinco mil. Entre las dos hay un valle vacío, y ahí es justo donde cae la mediana global, marcada con una línea roja discontinua en mil quinientos, lejos de todas las células. Dos marcas verdes señalan el umbral propio de cada lote, en quinientos cincuenta y cinco y en cuatro mil sesenta. Una flecha roja sale del eje hacia la izquierda indicando que el umbral global vale menos dos mil doscientos ochenta y uno y ni siquiera cabe en el gráfico. Al pie, que el umbral global no descarta ni una sola célula mientras que por lote se descartan las cuatro malas, y que es un ejemplo con cifras redondas.">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+    </style>
+    <marker id="flr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#A01B2B"/></marker>
+  </defs>
+
+  <text class="t eti" x="30" y="40">Dos lotes, y qué pasa si los mides con un solo umbral</text>
+  <text class="t cap" x="1150" y="40" text-anchor="end">ejemplo con cifras redondas</text>
+  <line x1="130" y1="296" x2="1070" y2="296" stroke="#5A6373" stroke-width="3"/>
+  <line x1="150" y1="290" x2="150" y2="304" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="150" y="330" text-anchor="middle">0</text>
+  <line x1="450" y1="290" x2="450" y2="304" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="450" y="330" text-anchor="middle">2000</text>
+  <line x1="750" y1="290" x2="750" y2="304" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="750" y="330" text-anchor="middle">4000</text>
+  <line x1="1050" y1="290" x2="1050" y2="304" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="1050" y="330" text-anchor="middle">6000</text>
+  <text class="t cap" x="600" y="364" text-anchor="middle">cuentas por célula</text>
+  <polygon points="150,296 154,296 158,296 161,296 165,296 169,296 172,296 176,295 180,295 184,295 188,294 191,294 195,293 199,292 202,291 206,289 210,288 214,285 218,283 221,279 225,276 229,271 232,266 236,261 240,254 244,247 248,240 251,232 255,223 259,214 262,205 266,196 270,187 274,179 278,171 281,164 285,158 289,153 292,149 296,147 300,146 304,147 308,149 311,153 315,158 319,164 322,171 326,179 330,187 334,196 338,205 341,214 345,223 349,232 352,240 356,247 360,254 364,261 368,266 371,271 375,276 379,279 382,283 386,285 390,288 394,289 398,291 401,292 405,293 409,294 412,294 416,295 420,295 424,295 428,296 431,296 435,296 439,296 442,296 446,296 450,296 450,296 150,296" fill="#2E9AA6" opacity="0.30"/>
+  <polyline points="150,296 154,296 158,296 161,296 165,296 169,296 172,296 176,295 180,295 184,295 188,294 191,294 195,293 199,292 202,291 206,289 210,288 214,285 218,283 221,279 225,276 229,271 232,266 236,261 240,254 244,247 248,240 251,232 255,223 259,214 262,205 266,196 270,187 274,179 278,171 281,164 285,158 289,153 292,149 296,147 300,146 304,147 308,149 311,153 315,158 319,164 322,171 326,179 330,187 334,196 338,205 341,214 345,223 349,232 352,240 356,247 360,254 364,261 368,266 371,271 375,276 379,279 382,283 386,285 390,288 394,289 398,291 401,292 405,293 409,294 412,294 416,295 420,295 424,295 428,296 431,296 435,296 439,296 442,296 446,296 450,296" fill="none" stroke="#2E9AA6" stroke-width="4"/>
+  <polygon points="720,296 724,296 729,296 734,296 738,296 742,296 747,296 752,295 756,295 760,295 765,294 770,294 774,293 778,292 783,291 788,289 792,288 796,285 801,283 806,279 810,276 814,271 819,266 824,261 828,254 832,247 837,240 842,232 846,223 850,214 855,205 860,196 864,187 868,179 873,171 878,164 882,158 886,153 891,149 896,147 900,146 904,147 909,149 914,153 918,158 922,164 927,171 932,179 936,187 940,196 945,205 950,214 954,223 958,232 963,240 968,247 972,254 976,261 981,266 986,271 990,276 994,279 999,283 1004,285 1008,288 1012,289 1017,291 1022,292 1026,293 1030,294 1035,294 1040,295 1044,295 1048,295 1053,296 1058,296 1062,296 1066,296 1071,296 1076,296 1080,296 1080,296 720,296" fill="#2B3FA8" opacity="0.30"/>
+  <polyline points="720,296 724,296 729,296 734,296 738,296 742,296 747,296 752,295 756,295 760,295 765,294 770,294 774,293 778,292 783,291 788,289 792,288 796,285 801,283 806,279 810,276 814,271 819,266 824,261 828,254 832,247 837,240 842,232 846,223 850,214 855,205 860,196 864,187 868,179 873,171 878,164 882,158 886,153 891,149 896,147 900,146 904,147 909,149 914,153 918,158 922,164 927,171 932,179 936,187 940,196 945,205 950,214 954,223 958,232 963,240 968,247 972,254 976,261 981,266 986,271 990,276 994,279 999,283 1004,285 1008,288 1012,289 1017,291 1022,292 1026,293 1030,294 1035,294 1040,295 1044,295 1048,295 1053,296 1058,296 1062,296 1066,296 1071,296 1076,296 1080,296" fill="none" stroke="#2B3FA8" stroke-width="4"/>
+  <text class="t eti" x="300" y="100" text-anchor="middle" style="fill:#2E9AA6">lote B</text>
+  <text class="t cap" x="300" y="130" text-anchor="middle">poca cobertura</text>
+  <text class="t eti" x="900" y="100" text-anchor="middle" style="fill:#2B3FA8">lote A</text>
+  <text class="t cap" x="900" y="130" text-anchor="middle">buena cobertura</text>
+  <line x1="375" y1="112" x2="375" y2="296" stroke="#A01B2B" stroke-width="4" stroke-dasharray="9 7"/>
+  <text class="t eti" x="391" y="196" style="fill:#A01B2B">mediana global</text>
+  <text class="t cap" x="391" y="226" style="fill:#A01B2B">cae en el valle,</text>
+  <text class="t cap" x="391" y="256" style="fill:#A01B2B">lejos de todo</text>
+  <path d="M233,270 l-11,22 h22 z" fill="#1F7A3D"/>
+  <text class="t cap" x="233" y="260" text-anchor="middle" style="fill:#1F7A3D">umbral B</text>
+  <path d="M759,270 l-11,22 h22 z" fill="#1F7A3D"/>
+  <text class="t cap" x="759" y="260" text-anchor="middle" style="fill:#1F7A3D">umbral A</text>
+  <line x1="130" y1="396" x2="40" y2="396" stroke="#A01B2B" stroke-width="5" marker-end="url(#flr)"/>
+  <text class="t eti" x="156" y="404" style="fill:#A01B2B">umbral global −2281: ni cabe en el eje, y no descarta ninguna célula</text>
+</svg>

@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<script src="09-efecto-de-lote_files/libs/clipboard/clipboard.min.js"></script>
+<script src="09-efecto-de-lote_files/libs/quarto-html/tabby.min.js"></script>
+<script src="09-efecto-de-lote_files/libs/quarto-html/popper.min.js"></script>
+<script src="09-efecto-de-lote_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="09-efecto-de-lote_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="09-efecto-de-lote_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="09-efecto-de-lote_files/libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.37">
+
+  <title>Sesión 09 · Control de calidad: efecto de lote (introducción)</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="09-efecto-de-lote_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="09-efecto-de-lote_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="09-efecto-de-lote_files/libs/revealjs/dist/theme/quarto-275f60c444ee1f018443e9b680b41113.css">
+  <link href="09-efecto-de-lote_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="09-efecto-de-lote_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="09-efecto-de-lote_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="09-efecto-de-lote_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+
+<section class="slide level2 lcg-portada">
+<h2></h2>
+<div class="lcg-portada-layout">
+<div class="lcg-portada-texto">
+<p><img data-src="assets/images/logo-lcgej.png" class="lcg-portada-logo" alt="Licenciatura en Ciencias Genómicas, ENES Juriquilla"></p>
+<p><span class="lcg-eyebrow">Sesión 09 · Jueves 17 de septiembre de 2026</span></p>
+<p><span class="lcg-titulo-2">Control de calidad: efecto de lote (introducción)</span></p>
+<p><span class="lcg-subtitulo">Bioinformática y Estadística 3 · Licenciatura en Ciencias Genómicas</span><br>
+<span class="lcg-subtitulo-2">ENES Juriquilla, UNAM · Semestre 2027-1</span></p>
+<div class="lcg-autores">
+<p><strong>Yalbi Itzel Balderas Martínez</strong><br>
+<strong>José Antonio Ovando Ricárdez</strong><br>
+<span class="lcg-afiliacion">Laboratorio de Biología Computacional · INER</span></p>
+</div>
+</div>
+<div class="lcg-portada-imagen">
+<p><img data-src="assets/images/motivo-single-cell.svg"></p>
+</div>
+</div>
+</section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Antes de empezar</h1>
+
+</section>
+<section class="slide level2">
+<h2>Objetivo de la sesión</h2>
+<p>Detectar la presencia de efecto de lote en datos de célula única, distinguirlo de señal biológica genuina mediante métricas cuantitativas, y conocer el panorama de métodos de corrección junto con sus supuestos, reconociendo el riesgo de eliminar la señal biológica al corregir.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Cómo está armada</strong></p>
+</div>
+<div class="callout-content">
+<p>Sesión <strong>teórico-práctica</strong> de 120 minutos, en siete momentos.</p>
+<ul>
+<li>Se alterna explicación y trabajo en equipo</li>
+<li>La práctica usa datos públicos de 10x Genomics</li>
+<li>Al final se analiza un experimento publicado</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Una corrección que se ve perfecta</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>Un conjunto de datos con <strong>dos condiciones</strong>. Cada condición se procesó en <strong>su propia corrida</strong>. Se aplica un método de corrección de lote y el resultado se ve impecable: los grupos se mezclan por completo y la métrica de mezcla mejora muchísimo.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>¿Es una buena noticia?</strong></p>
+<p>Anoten su respuesta. La retomamos al final de la sesión.</p>
+
+</div>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Desarrollo</h1>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>El diseño del 20 de agosto</h2>
+<!-- MOMENTO I · Inspirar · 10 min · conduce YB -->
+<p>El 20 de agosto cada equipo diagnosticó un diseño experimental con un <strong>defecto deliberado</strong> y escribió qué esperaba ver en los datos.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Nota</strong></p>
+</div>
+<div class="callout-content">
+<p>Busquen la predicción que su equipo escribió en el formulario de ese día.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li class="fragment">Hoy primero aprendemos a <strong>medir</strong> el efecto de lote, con datos que sí se pueden corregir</li>
+<li class="fragment">Al final vemos un <strong>experimento publicado</strong> que tiene ese mismo defecto, y comparamos con su predicción</li>
+</ul>
+
+</div>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Qué es un lote</h2>
+<!-- MOMENTO N · Nutrir · 30 min · conduce YB -->
+<p>Un <strong>lote</strong> es cualquier grupo de muestras que se procesó junto y que, por eso, puede tener diferencias <strong>técnicas</strong> que no son biología.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Fuente de lote</th>
+<th>Ejemplo</th>
+<th>¿Se puede evitar?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Donante</td>
+<td>cada persona es su propio lote</td>
+<td>no: es la unidad biológica</td>
+</tr>
+<tr class="even">
+<td>Corrida de secuenciación</td>
+<td>dos equipos, dos fechas</td>
+<td>a veces, repartiendo muestras</td>
+</tr>
+<tr class="odd">
+<td>Química o versión del kit</td>
+<td>10x v2 contra v3</td>
+<td>sí, fijándola de antemano</td>
+</tr>
+<tr class="even">
+<td>Sitio de colecta</td>
+<td>tres hospitales</td>
+<td>no en estudios multicéntricos</td>
+</tr>
+<tr class="odd">
+<td>Operador y día</td>
+<td>quién disoció y cuándo</td>
+<td>sí, con aleatorización</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+<h2>Cinco formas de corregir</h2>
+<p>Todas reciben lo mismo —células de varios lotes— y todas intentan lo mismo: que el lote <strong>deje de separar</strong> a las células. Lo que cambia es <strong>qué suponen</strong>.</p>
+<ul>
+<li class="fragment"><strong>Regresión del lote:</strong> resta el promedio de cada lote</li>
+<li class="fragment"><strong><code>fastMNN</code>:</strong> empareja células parecidas entre lotes</li>
+<li class="fragment"><strong>Harmony:</strong> agrupa y mueve los grupos, varias veces</li>
+<li class="fragment"><strong>scVI:</strong> un modelo que aprende las cuentas sabiendo el lote</li>
+<li class="fragment"><strong>Anclas de Seurat:</strong> pares entre lotes, con peso</li>
+</ul>
+
+</section>
+<section class="slide level2">
+<h2>Regresión del lote</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-metodo-regresion.svg" class="quarto-figure quarto-figure-center" style="max-height:400px" alt="Regresión del lote en tres paneles, con la expresión de un gen en dos tipos celulares. Antes: el lote 2, en oro, está más alto que el lote 1, en azul, y más en el tipo B que en el A. Luego se resta el promedio de cada lote: el lote 2 baja la misma cantidad en todas sus células. Después: en el tipo A el lote 2 quedó por debajo y en el tipo B por encima. Al pie: funciona si el lote suma lo mismo en todas las células; aquí no era así y queda un resto."></p>
+</figure>
+</div>
+<p><strong>Supone</strong> un <strong>efecto aditivo</strong>: el lote suma <strong>lo mismo</strong> en todos los tipos celulares.</p>
+<p><span class="lcg-fuente">Implementación usada: <code>removeBatchEffect()</code> de limma, <span class="citation" data-cites="ritchie2015limma">Ritchie et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2015</a>)</span></span></p>
+</section>
+<section class="slide level2">
+<h2><code>fastMNN</code>: vecinos mutuos más cercanos</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-metodo-fastmnn.svg" class="quarto-figure quarto-figure-center" style="max-height:400px" alt="fastMNN en tres paneles, con círculos para el tipo A, cuadrados para el tipo B, azul para el lote 1 y oro para el lote 2. Antes: el lote 2 está desplazado a la derecha de su mismo tipo en el lote 1. Luego se trazan líneas entre pares de células de lotes distintos que se eligen mutuamente como vecinas. Después: el lote 2 se mueve lo que indican los pares y queda encima del lote 1. Al pie: un tipo celular que solo existe en un lote no tiene con quién formar pares."></p>
+</figure>
+</div>
+<p><strong>Supone</strong> que hay células <strong>equivalentes</strong> en los dos lotes.</p>
+<p><span class="lcg-fuente"><code>fastMNN</code>: <em>fast Mutual Nearest Neighbors</em>. Método: <span class="citation" data-cites="haghverdi2018mnn">Haghverdi et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></span></p>
+</section>
+<section class="slide level2">
+<h2>Harmony: agrupar y mover, varias veces</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-metodo-harmony.svg" class="quarto-figure quarto-figure-center" style="max-height:400px" alt="Harmony en tres paneles, con círculos para el tipo A, cuadrados para el tipo B, azul para el lote 1 y oro para el lote 2. Primero agrupa las células sin mirar el lote: dos óvalos, cada uno con células de los dos lotes. Luego mueve cada lote hacia el centro de su grupo, marcado con una equis roja. Después de repetir varias veces, los lotes quedan mezclados. Al pie: trabaja sobre los componentes principales, y si cada grupo contiene un solo lote no encuentra nada que alinear."></p>
+</figure>
+</div>
+<p><strong>Supone</strong> que cada grupo contiene células de <strong>varios lotes</strong>.</p>
+<p><span class="lcg-fuente">Método: <span class="citation" data-cites="korsunsky2019harmony">Korsunsky et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></span></p>
+</section>
+<section class="slide level2">
+<h2>scVI: un modelo que conoce el lote</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-metodo-scvi.svg" class="quarto-figure quarto-figure-center" style="max-height:400px" alt="scVI en tres paneles, con círculos para el tipo A, triángulos para el tipo B, azul para el lote 1 y naranja para el lote 2. Antes: el lote 2 está desplazado de su mismo tipo en el lote 1. Luego, una red neuronal esquemática: los genes entran, se comprimen en dos nodos llamados z y se vuelven a expandir a genes; el lote entra después de z. En el espacio z, los lotes quedan mezclados."></p>
+</figure>
+</div>
+<p><strong>Supone</strong> que el lote es una <strong>covariable</strong>: un dato que se le da al modelo.</p>
+<p><span class="lcg-fuente">scVI: <em>single-cell Variational Inference</em>, inferencia variacional para célula única. Método: <span class="citation" data-cites="lopez2018scvi">Lopez et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></span></p>
+</section>
+<section class="slide level2">
+<h2>Qué es un ancla</h2>
+<p>Un <strong>ancla</strong> es un <strong>par de células de lotes distintos</strong> que el método considera «la misma célula» medida dos veces. Con sentido común: como dos personas que nunca se han visto pero tienen los mismos amigos.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-que-es-un-ancla.svg" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="Qué es un ancla, en dos paneles. A la izquierda, un ancla confiable: una célula del lote 1 y una del lote 2, del mismo tipo, unidas por una línea; se eligen entre sí como vecinas y sus vecindarios también se parecen, así que tiene puntaje alto y se usa para corregir. A la derecha, un ancla dudosa, en rojo: las dos células se eligieron entre sí, pero una es del tipo A y la otra del tipo B y sus vecindarios no se parecen, así que tiene puntaje bajo y se descarta."></p>
+</figure>
+</div>
+<p><span class="lcg-fuente">Definición y puntaje de las anclas: <span class="citation" data-cites="stuart2019integration">Stuart et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></span></p>
+</section>
+<section class="slide level2">
+<h2>Anclas de Seurat</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-metodo-seurat.svg" class="quarto-figure quarto-figure-center" style="max-height:400px" alt="Anclas de Seurat en tres paneles, con círculos para el tipo A, cuadrados para el tipo B, azul para el lote 1 y oro para el lote 2. Primero se busca un eje común con análisis de correlación canónica: al proyectar las células sobre ese eje, cada tipo celular cae junto sin importar el lote. Luego se trazan anclas entre células parecidas de lotes distintos, con líneas más gruesas para las más confiables, y un ancla roja entre tipos distintos que se descarta. Después, cada célula se mueve según las anclas que tiene cerca y los lotes quedan encimados."></p>
+</figure>
+</div>
+<p><strong>CCA</strong> (análisis de correlación canónica) busca ejes donde los dos lotes varían <strong>igual</strong>. <strong>Supone</strong> que hay <strong>correspondencias</strong> entre lotes.</p>
+<p><span class="lcg-fuente">Método: <span class="citation" data-cites="stuart2019integration">Stuart et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span> · implementación actual, Seurat v5: <span class="citation" data-cites="hao2024seuratv5">Hao et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span></span></p>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Los cinco, lado a lado</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Método</th>
+<th>Qué hace</th>
+<th>Qué supone</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Regresión del lote</td>
+<td>resta el promedio de cada lote</td>
+<td>el lote suma <strong>lo mismo</strong> en todas las células</td>
+</tr>
+<tr class="even">
+<td><code>fastMNN</code></td>
+<td>empareja vecinas mutuas entre lotes</td>
+<td>hay células <strong>equivalentes</strong> en los lotes</td>
+</tr>
+<tr class="odd">
+<td>Harmony</td>
+<td>agrupa y mueve, varias veces</td>
+<td>cada grupo tiene <strong>varios lotes</strong></td>
+</tr>
+<tr class="even">
+<td>scVI</td>
+<td>modelo que recibe el lote como dato</td>
+<td>el lote es una <strong>covariable</strong></td>
+</tr>
+<tr class="odd">
+<td>Anclas de Seurat</td>
+<td>pares con peso en un espacio común</td>
+<td>hay <strong>correspondencias</strong> entre lotes</td>
+</tr>
+</tbody>
+</table>
+<p><span class="lcg-fuente"><span class="citation" data-cites="ritchie2015limma">Ritchie et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2015</a>)</span> · <span class="citation" data-cites="haghverdi2018mnn">Haghverdi et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span> · <span class="citation" data-cites="korsunsky2019harmony">Korsunsky et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span> · <span class="citation" data-cites="lopez2018scvi">Lopez et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span> · <span class="citation" data-cites="stuart2019integration">Stuart et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></span></p>
+
+</section>
+<section class="slide level2">
+<h2>El supuesto que comparten todos los métodos</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>Todos suponen que <strong>los tipos celulares se solapan</strong> entre lotes: que cada tipo celular aparece en todos los lotes que se van a corregir.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li><strong>Ejemplo:</strong> si un lote tiene células dendríticas y el otro no, el método no tiene con qué emparejarlas</li>
+<li><strong>Consecuencia posible:</strong> la corrección las acerca a otro tipo celular y la población se pierde</li>
+<li>Por eso, después de corregir, siempre se revisa que <strong>no haya desaparecido ningún grupo</strong></li>
+</ul>
+
+</div>
+</section>
+<section class="slide level2">
+<h2>Qué es un UMAP</h2>
+<!-- MOMENTO S · Significado · 15 min · conduce JAOR -->
+<p><strong>UMAP</strong> (<em>Uniform Manifold Approximation and Projection</em>): una forma de dibujar en un plano células que se describen con miles de genes.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-umap-como-funciona.svg" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="Tres pasos de un UMAP. Primero, una tabla de células por miles de genes. Segundo, cada célula se conecta con sus vecinas más parecidas y se forman tres grupos. Tercero, los grupos se acomodan en un plano: las vecinas quedan juntas y cada grupo compacto. Al pie: UMAP conserva quién es vecina de quién, no cuánto miden las distancias grandes."></p>
+</figure>
+</div>
+<p><span class="lcg-fuente">Su uso en célula única: <span class="citation" data-cites="becht2019umap">Becht et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></span></p>
+
+</section>
+<section class="slide level2">
+<h2>Por qué el ojo se equivoca</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-umap-limites.svg" class="quarto-figure quarto-figure-center" style="max-height:400px" alt="Dos paneles. A la izquierda, cómo están los datos de verdad: los grupos A y B se enciman y el grupo C está muy lejos. A la derecha, el UMAP de esos datos: A, B y C aparecen como tres grupos compactos e igual de separados, así que exagera la separación entre A y B y borra la lejanía de C. Al pie: por eso ver lotes separados no es un diagnóstico, hay que medirlo."></p>
+</figure>
+</div>
+<p>Colorear un UMAP por lote es el diagnóstico <strong>más usado</strong> y el <strong>menos fiable</strong>.</p>
+<p><span class="lcg-fuente">Distorsiones de estas proyecciones: <span class="citation" data-cites="chari2023specious">Chari &amp; Pachter (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span></span></p>
+</section>
+<section class="slide level2">
+<h2>Entonces, ¿cómo se decide si la corrección funcionó?</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-que-hacer-sin-umap.svg" class="quarto-figure quarto-figure-center" style="max-height:400px" alt="Tres revisiones en tres paneles. Primero, medir la mezcla de lotes antes y después de corregir, contra el control. Segundo, medir las dos familias: la mezcla de lotes sube y la separación de tipos celulares se queda igual. Tercero, una gráfica de puntos donde CD3E marca a los linfocitos T, CD14 a los monocitos y MS4A1 a los linfocitos B. Al pie: el UMAP sirve para mirar y la decisión se toma con estas tres revisiones."></p>
+</figure>
+</div>
+<p>Las métricas de mezcla y de separación se explican en las diapositivas siguientes.</p>
+
+</section>
+<section class="slide level2 smaller">
+<h2>Lo que sí se mide</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Métrica</th>
+<th>Qué pregunta</th>
+<th>Escala</th>
+<th>Qué se quiere tras corregir</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Entropía de mezcla</strong> (<em>entropy of batch mixing</em>)</td>
+<td>¿las vecinas de cada célula son de varios lotes?</td>
+<td>de 0 (un solo lote) a 1 (lotes en la misma proporción que el total)</td>
+<td>que <strong>suba</strong></td>
+</tr>
+<tr class="even">
+<td><strong>Silueta por lote</strong></td>
+<td>¿el lote separa a las células?</td>
+<td>de −1 a 1; 0 = lotes encimados</td>
+<td>que <strong>baje hacia 0</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>Silueta por tipo celular</strong></td>
+<td>¿el tipo celular separa a las células?</td>
+<td>de −1 a 1; cerca de 1 = tipos bien separados</td>
+<td>que <strong>no baje</strong></td>
+</tr>
+<tr class="even">
+<td><strong>kBET</strong></td>
+<td>¿cada vecindad se parece a la mezcla del total?</td>
+<td>fracción de vecindades rechazadas, de 0 a 1</td>
+<td>que sea <strong>baja</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Se calculan <strong>sin el UMAP</strong>: sobre las componentes principales, o sobre su versión corregida por cada método. En la práctica, con <code>findKNN()</code> (vecinas) y <code>silhouette()</code>.</p>
+<p>No hay un valor «normal» universal: cada método se compara <strong>contra el control sin corregir</strong>, con los mismos datos.</p>
+</section>
+<section class="slide level2">
+<h2>Entropía de mezcla</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-metrica-entropia.svg" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="Entropía de mezcla en dos paneles. A la izquierda, el lote 1 y el lote 2 forman dos nubes separadas, y las ocho vecinas de la célula evaluada son todas del lote 1: entropía cero, los lotes siguen separados. A la derecha, las dos nubes ocupan la misma zona y la célula evaluada tiene cuatro vecinas de cada lote: entropía uno, el máximo, los lotes están mezclados. Al pie: se cuenta de qué lote son las vecinas de cada célula y se promedia; no mira el tipo celular, así que una mezcla perfecta también puede ser una sobrecorrección."></p>
+</figure>
+</div>
+<p><span class="lcg-fuente">En inglés, <em>entropy of batch mixing</em>; la propusieron <span class="citation" data-cites="haghverdi2018mnn">Haghverdi et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span>. Los benchmarks recientes usan una métrica parecida, iLISI (índice inverso de Simpson local entre lotes): <span class="citation" data-cites="luecken2022benchmarking">Luecken et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span></span></p>
+</section>
+<section class="slide level2">
+<h2>Silueta</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-metrica-silueta.svg" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="Silueta en dos paneles, con el lote como etiqueta. A la izquierda, los dos lotes están separados: la célula marcada está a distancia 2 de las de su lote y a distancia 8 del otro lote, y su silueta es 0.75. A la derecha, los lotes están encimados: las dos distancias valen 5 y la silueta es 0. Al pie: la silueta es b menos a entre el mayor de los dos y va de menos uno a uno; con la etiqueta lote se quiere cerca de cero y con tipo celular cerca de uno."></p>
+</figure>
+</div>
+<p><span class="lcg-fuente">Definición: <span class="citation" data-cites="rousseeuw1987silhouettes">Rousseeuw (<a href="#/references" role="doc-biblioref" onclick="">1987</a>)</span> · en evaluaciones de integración: <span class="citation" data-cites="luecken2022benchmarking">Luecken et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span></span></p>
+
+</section>
+<section class="slide level2">
+<h2>kBET</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-metrica-kbet.svg" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="kBET en dos paneles. A la izquierda, células de dos lotes con tres vecindades marcadas: dos en una zona mezclada y una, en rojo, en un grupo de un solo lote. A la derecha, barras de proporción: las vecindades 1 y 2 tienen 6 y 4 células de cada lote, una diferencia que el azar explica, y no se rechazan; la 3 tiene las 10 de un solo lote, algo casi imposible por azar, y se rechaza."></p>
+</figure>
+</div>
+<p><span class="lcg-fuente"><em>k-nearest-neighbour Batch Effect Test</em>. Método: <span class="citation" data-cites="buttner2019kbet">Büttner et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></span></p>
+
+</section>
+<section class="slide level2">
+<h2>Una métrica sola no basta</h2>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Advertencia</strong></p>
+</div>
+<div class="callout-content">
+<p>Una mezcla alta <strong>no</strong> es buena señal por sí sola: mezclar del todo también es lo que hace la sobrecorrección.</p>
+</div>
+</div>
+</div>
+<ul>
+<li>Se reportan <strong>dos familias</strong> de métricas: las de <strong>mezcla de lotes</strong> y las de <strong>conservación de la biología</strong></li>
+<li>Un buen resultado sube la primera <strong>sin bajar</strong> la segunda</li>
+</ul>
+<p><span class="lcg-fuente">Marco de evaluación con las dos familias: <span class="citation" data-cites="luecken2022benchmarking">Luecken et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span></span></p>
+</section>
+<section class="slide level2">
+<h2>Quién ha comparado los métodos</h2>
+<p>Hay <strong>comparaciones sistemáticas</strong> (<em>benchmarks</em>): se corren muchos métodos sobre los mismos conjuntos de datos y se califican con las mismas métricas.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Tran y colaboradores, 2020</th>
+<th>Luecken y colaboradores, 2022</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Qué compararon</td>
+<td>14 métodos, 5 escenarios</td>
+<td>16 herramientas en 68 combinaciones, 13 tareas, más de 1.2 millones de células</td>
+</tr>
+<tr class="even">
+<td>Con qué métricas</td>
+<td>4: kBET, LISI, ASW y ARI</td>
+<td>14, en dos familias</td>
+</tr>
+<tr class="odd">
+<td>Qué concluyeron</td>
+<td>Harmony, LIGER y Seurat 3; Harmony primero por ser rápido</td>
+<td>scANVI, Scanorama, scVI y scGen, sobre todo en tareas complejas</td>
+</tr>
+</tbody>
+</table>
+<p><span class="lcg-fuente"><span class="citation" data-cites="tran2020benchmark"><span class="nocase">Tran et&nbsp;al.</span> (<a href="#/references" role="doc-biblioref" onclick="">2020</a>)</span> · <span class="citation" data-cites="luecken2022benchmarking">Luecken et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span>. Las siglas de las métricas se explican en la diapositiva siguiente.</span></p>
+</section>
+<section class="slide level2">
+<h2>Qué miden los benchmarks, y por qué</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Familia</th>
+<th>Pregunta</th>
+<th>Métricas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Quitar el lote</strong></td>
+<td>¿las células de distintos lotes quedaron mezcladas?</td>
+<td>kBET, iLISI, silueta por lote, conectividad del grafo, regresión sobre componentes principales</td>
+</tr>
+<tr class="even">
+<td><strong>Conservar la biología</strong></td>
+<td>¿los tipos celulares y los procesos siguen ahí?</td>
+<td>ARI, NMI, silueta por tipo, cLISI, etiquetas aisladas, ciclo celular, genes variables, trayectorias</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Se miden <strong>las dos</strong> porque se contraponen: quitar más lote suele borrar más biología</li>
+<li>La calificación final de Luecken pesa <strong>40 % quitar el lote y 60 % conservar la biología</strong></li>
+</ul>
+<p><span class="lcg-fuente">LISI: índice inverso de Simpson local (iLISI, entre lotes; cLISI, entre tipos). ARI: índice de Rand ajustado. NMI: información mutua normalizada. Ambos comparan los grupos obtenidos con los tipos conocidos. Fuente: <span class="citation" data-cites="luecken2022benchmarking">Luecken et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span></span></p>
+</section>
+<section class="slide level2">
+<h2>¿El mejor método depende de los datos?</h2>
+<p><strong>Sí.</strong> No hay un ganador universal. Lo que encontraron los benchmarks:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Situación</th>
+<th>Métodos que rindieron mejor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tarea <strong>sencilla</strong>: pocos lotes, tipos celulares parecidos</td>
+<td>Harmony, anclas de Seurat</td>
+</tr>
+<tr class="even">
+<td>Tarea <strong>compleja</strong>: atlas con muchos lotes</td>
+<td>Scanorama, scVI</td>
+</tr>
+<tr class="odd">
+<td>Los tipos celulares <strong>ya están anotados</strong></td>
+<td>scANVI, scGen (aprovechan esas etiquetas)</td>
+</tr>
+<tr class="even">
+<td><strong>scATAC-seq</strong> (secuenciación de cromatina accesible, en células individuales)</td>
+<td>depende mucho de qué variables se usan</td>
+</tr>
+<tr class="odd">
+<td>Lote <strong>confundido</strong> con la condición</td>
+<td><strong>ninguno</strong></td>
+</tr>
+</tbody>
+</table>
+<p><span class="lcg-fuente">Comparaciones: <span class="citation" data-cites="luecken2022benchmarking">Luecken et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span>; <span class="citation" data-cites="tran2020benchmark"><span class="nocase">Tran et&nbsp;al.</span> (<a href="#/references" role="doc-biblioref" onclick="">2020</a>)</span> · Scanorama: <span class="citation" data-cites="hie2019scanorama">Hie et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span> · scANVI: <span class="citation" data-cites="xu2021scanvi">Xu et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span> · scGen: <span class="citation" data-cites="lotfollahi2019scgen">Lotfollahi et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></span></p>
+
+</section>
+<section class="slide level2">
+<h2>Entonces, ¿para qué sirven los benchmarks?</h2>
+<ul>
+<li class="fragment">Para <strong>elegir candidatos</strong>, no para decidir: la decisión se toma con las dos familias de métricas <strong>en sus propios datos</strong></li>
+<li class="fragment">En casi todos los métodos, <strong>elegir genes variables</strong> antes de corregir mejora el resultado</li>
+<li class="fragment">Ninguna comparación rescata un mal diseño: si el lote es la condición, no hay método que sirva</li>
+</ul>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Los datos de la práctica</h2>
+<p>Dos conjuntos <strong>públicos</strong> de 10x Genomics de células mononucleares de sangre periférica (PBMC):</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Lote</th>
+<th>Conjunto</th>
+<th>Química</th>
+<th>Año</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>pbmc3k</code></td>
+<td>PBMC 3k</td>
+<td>v1</td>
+<td>2016</td>
+</tr>
+<tr class="even">
+<td><code>pbmc10k</code></td>
+<td>PBMC 10k (el del módulo anterior)</td>
+<td>v3</td>
+<td>2018</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li class="fragment">El lote aquí es <strong>donante + química + fecha</strong>, y no se pueden separar</li>
+<li class="fragment">Cada célula trae una etiqueta <strong>gruesa</strong>: T, B, monocito o NK</li>
+<li class="fragment">A uno de los lotes <strong>se le quitó una población completa</strong>. Encontrarla es parte de la práctica</li>
+</ul>
+
+</section>
+<section class="slide level2">
+<h2>Actividad en salas: un método por equipo</h2>
+<!-- MOMENTO P · Practicar · 20 min · conduce YB y JAOR + equipos -->
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Equipo</th>
+<th>Método</th>
+<th>Su documento</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A</strong></td>
+<td><strong>Sin corregir</strong> (el control)</td>
+<td><code>equipo-a</code></td>
+</tr>
+<tr class="even">
+<td><strong>B</strong></td>
+<td><code>fastMNN</code></td>
+<td><code>equipo-b</code></td>
+</tr>
+<tr class="odd">
+<td><strong>C</strong></td>
+<td>Harmony</td>
+<td><code>equipo-c</code></td>
+</tr>
+<tr class="even">
+<td><strong>D</strong></td>
+<td>Anclas de Seurat</td>
+<td><code>equipo-d</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li class="fragment">Cada sala abre <strong>su documento</strong> (enlace en el chat): ya trae los resultados</li>
+<li class="fragment"><strong>En clase no se corre código</strong>: se interpreta. El código se corre después</li>
+<li class="fragment">Contesten las tres preguntas y peguen en el tablero su <strong>figura</strong> y su <strong>fila de métricas</strong></li>
+</ul>
+
+</section>
+<section class="slide level2 scrollable">
+<h2>Las tres preguntas de cada sala</h2>
+<ol type="1">
+<li class="fragment">¿Los lotes se mezclaron?</li>
+<li class="fragment">¿Los <strong>tipos celulares</strong> siguen separados entre sí?</li>
+<li class="fragment">¿Desapareció algún grupo que estaba en el control?</li>
+</ol>
+<p>La comparación <strong>no existe</strong> hasta que se juntan las piezas del tablero: ninguna sala tiene el cuadro completo.</p>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Cómo se contesta cada pregunta</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pregunta</th>
+<th>Dónde se mira</th>
+<th>Qué indica que salió bien</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. ¿Se mezclaron los lotes?</td>
+<td><code>mezcla_lote</code> y <code>silueta_lote</code></td>
+<td>la mezcla <strong>sube</strong> y la silueta por lote <strong>baja</strong> respecto al control</td>
+</tr>
+<tr class="even">
+<td>2. ¿Siguen separados los tipos?</td>
+<td><code>silueta_tipo</code></td>
+<td><strong>no baja</strong> respecto al control</td>
+</tr>
+<tr class="odd">
+<td>3. ¿Desapareció algún grupo?</td>
+<td>la tabla de la sección 7</td>
+<td>la población exclusiva sigue en <strong>su propio grupo</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Respuestas: las cuatro filas juntas</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Método</th>
+<th>Mezcla de lotes</th>
+<th>Silueta por lote</th>
+<th>Silueta por tipo</th>
+<th>Linfocitos B en su grupo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A · sin corregir</td>
+<td>0.001</td>
+<td>0.179</td>
+<td>0.367</td>
+<td>224 de 233</td>
+</tr>
+<tr class="even">
+<td>B · <code>fastMNN</code></td>
+<td>0.649</td>
+<td>0.007</td>
+<td>0.469</td>
+<td>224 de 233</td>
+</tr>
+<tr class="odd">
+<td>C · Harmony</td>
+<td>0.236</td>
+<td>0.100</td>
+<td>0.405</td>
+<td>223 de 233</td>
+</tr>
+<tr class="even">
+<td>D · anclas de Seurat</td>
+<td><strong>0.827</strong></td>
+<td><strong>−0.002</strong></td>
+<td>0.449</td>
+<td>228 de 233</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li class="fragment"><strong>Pregunta 1:</strong> los tres métodos mezclan; Seurat es el que más, Harmony el que menos</li>
+<li class="fragment"><strong>Pregunta 2:</strong> la silueta por tipo <strong>subió</strong> en los tres: la biología se conservó</li>
+<li class="fragment"><strong>Pregunta 3:</strong> la población retirada eran los <strong>linfocitos B</strong> de <code>pbmc3k</code>, y <strong>ningún método los borró</strong></li>
+</ul>
+
+</section>
+<section class="slide level2">
+<h2>Respuestas: el control, sin corregir</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-practica-A-sin-corregir.png" class="quarto-figure quarto-figure-center" style="max-height:400px" alt="UMAP de los datos de la práctica sin corregir, coloreado por lote a la izquierda y por tipo celular a la derecha. Cada lote ocupa islas separadas, aunque tengan el mismo tipo celular."></p>
+</figure>
+</div>
+<p>Los números de los ejes del UMAP no tienen unidades: solo importa <strong>qué células quedan juntas</strong>.</p>
+</section>
+<section class="slide level2">
+<h2>Respuestas: <code>fastMNN</code></h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-practica-B-fastmnn.png" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="UMAP de los datos de la práctica corregidos con fastMNN, coloreado por lote y por tipo celular. Los dos lotes quedan encimados y los tipos celulares siguen separados; los linfocitos B forman su propia isla."></p>
+</figure>
+</div>
+</section>
+<section class="slide level2">
+<h2>Respuestas: Harmony</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-practica-C-harmony.png" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="UMAP de los datos de la práctica corregidos con Harmony, coloreado por lote y por tipo celular. Los monocitos y las células NK se mezclan, pero los linfocitos T de pbmc3k siguen en una isla aparte."></p>
+</figure>
+</div>
+</section>
+<section class="slide level2">
+<h2>Respuestas: anclas de Seurat</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-practica-D-seurat.png" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="UMAP de los datos de la práctica corregidos con anclas de Seurat, coloreado por lote y por tipo celular. Los lotes quedan muy mezclados, los tipos celulares siguen separados y los linfocitos B forman su propia isla."></p>
+</figure>
+</div>
+
+</section>
+<section class="slide level2">
+<h2>Cuando el lote es la condición</h2>
+<!-- MOMENTO R · Retar · 15 min · conduce YB -->
+<p>Un estudio de una enfermedad. <strong>Tres donantes sanos y tres enfermos.</strong> Cada donante se procesó en su propio día.</p>
+<ul>
+<li class="fragment">El lote es el donante</li>
+<li class="fragment">La condición <strong>también</strong> es el donante</li>
+<li class="fragment">Están perfectamente confundidos</li>
+</ul>
+<div class="fragment">
+<p><strong>¿Qué método de corrección lo resuelve?</strong></p>
+</div>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Qué método lo resuelve: la respuesta</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Ninguno.</strong> Corregir por lote elimina la diferencia entre sano y enfermo, porque son la misma variable. No corregir deja el efecto de lote intacto.</p>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment">No es un problema de análisis: es un problema de <strong>diseño</strong></li>
+<li class="fragment">Se resuelve el día que se reparten las muestras, no después</li>
+<li class="fragment">Es el tipo de defecto que diagnosticaron el 20 de agosto</li>
+</ul>
+<p><span class="lcg-fuente">Lote confundido en célula única: <span class="citation" data-cites="hicks2018missing">Hicks et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span></span></p>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Un experimento publicado con ese defecto</h2>
+<p><a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE96583"><strong>GSE96583, lote 2</strong></a>: células de sangre de <strong>8 donantes</strong>, mezcladas y separadas después por genotipo. Una parte se estimuló con <strong>interferón beta</strong> (IFN-β).</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Biblioteca</th>
+<th>Condición</th>
+<th>Donantes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2.1</td>
+<td>solo <strong>control</strong></td>
+<td>los 8</td>
+</tr>
+<tr class="even">
+<td>2.2</td>
+<td>solo <strong>IFN-β</strong></td>
+<td>los 8</td>
+</tr>
+</tbody>
+</table>
+<p>El mismo defecto: el <strong>donante</strong> se puede separar (está en las dos bibliotecas); la <strong>biblioteca no</strong>, porque es la condición.</p>
+<p><span class="lcg-fuente">Datos: <span class="citation" data-cites="kang2018demuxlet"><span class="nocase">Kang et&nbsp;al.</span> (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span> · GEO (<em>Gene Expression Omnibus</em>): GSE96583, muestras GSM2560248 y GSM2560249</span></p>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Sin corregir</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-gse96583-sin-corregir.png" class="quarto-figure quarto-figure-center" style="max-height:400px" alt="Dos proyecciones UMAP del lote 2 de GSE96583 sin corregir. A la izquierda, las células coloreadas por estímulo, que es lo mismo que por biblioteca. A la derecha, las mismas células coloreadas por tipo celular."></p>
+</figure>
+</div>
+<p><strong>¿Qué ven en la gráfica de la izquierda, dentro de cada tipo celular?</strong></p>
+</section>
+<section class="slide level2">
+<h2>Sin corregir: la respuesta</h2>
+<ul>
+<li class="fragment">Cada tipo celular aparece <strong>dos veces</strong>: una isla de control y otra de IFN-β</li>
+<li class="fragment">El mapa parece dos copias del mismo mapa</li>
+<li class="fragment">Con este diseño <strong>no se sabe</strong> cuánto de esa separación es el interferón y cuánto es la biblioteca</li>
+</ul>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Corrigiendo por biblioteca con Harmony</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-gse96583-harmony.png" class="quarto-figure quarto-figure-center" style="max-height:400px" alt="Las mismas dos proyecciones UMAP después de corregir con Harmony usando la biblioteca como lote. A la izquierda, coloreadas por estímulo. A la derecha, por tipo celular."></p>
+</figure>
+</div>
+<p><strong>¿Qué pasó con la separación entre control e IFN-β?</strong></p>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Harmony: la respuesta</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Sin corregir</th>
+<th>Harmony</th>
+<th>Cambio</th>
+<th>Qué buscaba la corrección</th>
+<th>Qué significa aquí</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mezcla por biblioteca</td>
+<td>0.086</td>
+<td><strong>0.771</strong></td>
+<td>↑ subió</td>
+<td>que suba</td>
+<td>se mezclaron las bibliotecas… que son las condiciones</td>
+</tr>
+<tr class="even">
+<td>Silueta por estímulo</td>
+<td>0.148</td>
+<td><strong>0.007</strong></td>
+<td>↓ bajó a casi 0</td>
+<td>que la silueta por <strong>lote</strong> baje</td>
+<td>el estímulo ya no separa: se borró la respuesta al interferón</td>
+</tr>
+<tr class="odd">
+<td>Silueta por tipo celular</td>
+<td>0.157</td>
+<td>0.219</td>
+<td>↑ subió</td>
+<td>que no baje</td>
+<td>los tipos celulares se conservaron</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+<h2>Harmony: lo que dice la tabla</h2>
+<ul>
+<li class="fragment">Las islas de control e IFN-β <strong>se juntaron</strong>: la separación por estímulo casi desapareció</li>
+<li class="fragment">Las tres métricas cambian en la dirección «buena»… y se borró justo lo que el experimento quería medir</li>
+<li class="fragment">Dentro de monocitos y linfocitos T quedan zonas de un solo color: la mezcla es alta, no total</li>
+</ul>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Lo que le pasa a la respuesta al interferón</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-gse96583-isg.png" class="quarto-figure quarto-figure-center" style="max-height:400px" alt="Distribución de la expresión promedio de genes de respuesta a interferón en control y en IFN-beta, en dos paneles. A la izquierda, sin corregir. A la derecha, después de restar el efecto de la biblioteca. Los rombos blancos marcan el promedio; en el panel derecho quedan a la misma altura. El subtítulo da la diferencia entre los dos promedios en cada panel."></p>
+</figure>
+</div>
+<p><strong>¿Por qué los dos promedios quedan exactamente a la misma altura?</strong></p>
+
+</section>
+<section class="slide level2">
+<h2>Los promedios: la respuesta</h2>
+<ul>
+<li class="fragment">Restar el promedio de cada <strong>biblioteca</strong> es restar el promedio de cada <strong>condición</strong>: los dos promedios quedan iguales <strong>por construcción</strong> (diferencia = 0)</li>
+<li class="fragment">Lo que desaparece es la <strong>diferencia de promedios</strong>, no toda diferencia: las células con IFN-β siguen <strong>mucho más dispersas</strong> que las control</li>
+<li class="fragment">La regresión supone un <strong>efecto aditivo</strong>: el lote <strong>suma</strong> la misma cantidad a todas sus células en un gen. Por eso solo mueve el promedio y no cambia la dispersión</li>
+<li class="fragment">Los valores negativos no son expresión: son el resultado de la resta</li>
+</ul>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>¿La corrección perfecta era buena noticia?</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>No.</strong> Al corregir por biblioteca se borró el efecto del interferón: la biblioteca <strong>es</strong> la condición. Las métricas de mezcla mejoraron, y eso es justamente lo que hace que la sobrecorrección parezca un éxito.</p>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment">¿Entonces el efecto del interferón es real? Los genes que suben son los que <strong>ya se sabe</strong> que responden al interferón. Es un argumento <strong>externo</strong> al experimento, razonable pero no una prueba</li>
+<li class="fragment">Con la tabla del diseño, esa limitación se conocía antes de secuenciar</li>
+</ul>
+
+</section>
+<section class="slide level2">
+<h2>El código de esta demostración</h2>
+<ul>
+<li>Se comparte <strong>solo para consulta</strong>, para que vean cómo se hizo</li>
+<li><strong>No hay actividad ni tarea</strong> con estos datos</li>
+<li>Archivo: <code>12-demo-lote-confundido-gse96583.R</code>, en Classroom</li>
+</ul>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Qué datos entran a cada paso</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-dos-rutas-de-los-datos.svg" class="quarto-figure quarto-figure-center" style="max-height:340px" alt="Dos rutas para los mismos datos. Arriba, para corregir el lote y visualizar: de las cuentas se pasa a normalizar y elegir genes variables, de ahí a los componentes principales, luego a corregir el lote con anclas de Seurat, Harmony o fastMNN, y al final a agrupar, anotar y ver el UMAP. Abajo, para comparar condiciones: las cuentas se suman por muestra, que es el pseudobulk, y pasan a un modelo que incluye el lote como una variable más, y de ahí a los genes con valores p que sí significan lo que dicen. Al pie: normalizar no quita el lote, quita la profundidad de cada célula, y son dos pasos distintos; la excepción es scVI, que entra con cuentas crudas porque modela la profundidad por dentro."></p>
+</figure>
+</div>
+<ul>
+<li class="fragment"><strong>Corregir el lote:</strong> primero normalizar; <code>scVI</code> es la excepción</li>
+<li class="fragment"><strong>Comparar condiciones:</strong> pseudobulk por muestra, con el lote en el modelo</li>
+<li class="fragment">Con <code>SCTransform</code>, integrar sobre el ensayo <code>SCT</code>, no sobre <code>RNA</code></li>
+</ul>
+<p><span class="lcg-fuente">Anclas de Seurat: <span class="citation" data-cites="stuart2019integration">Stuart et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span> · scVI: <span class="citation" data-cites="lopez2018scvi">Lopez et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span> · Por qué no se comparan condiciones sobre valores corregidos: <span class="citation" data-cites="nygaard2016batch">Nygaard et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2016</a>)</span></span></p>
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Errores comunes</h1>
+
+</section>
+<section class="slide level2">
+<h2>Corregir sin revisar antes si hacía falta</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-error-sin-diagnostico.svg" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="Corregir sin diagnosticar, en tres paneles. Primero, dos tipos celulares bien separados y, dentro de cada uno, los dos lotes ya mezclados: no había efecto de lote. Luego se corrige de todos modos y el método mueve las células. Al final, los dos tipos celulares quedaron más cerca y se perdió separación biológica. Al pie: para darse cuenta, la entropía de mezcla ya era alta antes de corregir; qué hacer, medir primero y no corregir si los lotes ya están mezclados."></p>
+</figure>
+</div>
+
+</section>
+<section class="slide level2">
+<h2>Aceptar una corrección solo por el UMAP</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-gse96583-harmony.png" class="quarto-figure quarto-figure-center" style="max-height:340px" alt="El UMAP de GSE96583 corregido con Harmony: control e IFN-beta se ven mezclados y los tipos celulares separados. Se ve bien, aunque la corrección borró el efecto del estímulo."></p>
+</figure>
+</div>
+<ul>
+<li class="fragment"><strong>Qué pasa:</strong> el UMAP se ve impecable y se acepta, aunque se haya borrado biología</li>
+<li class="fragment"><strong>Cómo darse cuenta:</strong> revisar las dos familias de métricas y que los <strong>genes marcadores</strong> sigan separando los tipos</li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Valores corregidos en expresión diferencial</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-error-expresion-diferencial.svg" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="Dos rutas para la expresión diferencial. Arriba, en rojo, la equivocada: de las cuentas se pasa a valores corregidos, que ya no son cuentas, y de ahí a una prueba estadística que da valores p demasiado pequeños, con genes que parecen significativos y no lo son. Abajo, la correcta: de las cuentas sumadas por muestra, que es el pseudobulk, se pasa a un modelo que incluye el lote como una variable más. Al pie: la corrección usa a todas las células para mover a cada una, así que ya no son mediciones independientes y la prueba cree que tiene más evidencia de la que hay."></p>
+</figure>
+</div>
+<p><span class="lcg-fuente">Evaluación en célula única: <span class="citation" data-cites="tran2020benchmark"><span class="nocase">Tran et&nbsp;al.</span> (<a href="#/references" role="doc-biblioref" onclick="">2020</a>)</span></span></p>
+</section>
+<section class="slide level2">
+<h2>Por qué los valores p salen demasiado pequeños</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-error-dispersion.svg" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="Dos paneles. A la izquierda, lo que se midió: células control y de tratamiento en dos nubes anchas que se enciman. A la derecha, después de corregir: la misma diferencia entre promedios, pero las nubes se encogieron y la diferencia parece clarísima, con un valor p muy pequeño."></p>
+</figure>
+</div>
+<p><span class="lcg-fuente">Por qué la corrección infla la confianza: <span class="citation" data-cites="nygaard2016batch">Nygaard et&nbsp;al. (<a href="#/references" role="doc-biblioref" onclick="">2016</a>)</span></span></p>
+
+</section>
+<section class="slide level2 scrollable">
+<h2>Cómo saber si se está haciendo mal</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-error-como-detectar.svg" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="Tres revisiones. Primero, revisar qué entra a la prueba: una tabla con decimales y negativos no son cuentas. Segundo, comparar con la ruta correcta, cuentas más lote en el modelo: con valores corregidos salen muchos más genes significativos. Tercero, barajar las etiquetas de condición dentro de cada lote: sin efecto real deberían salir casi cero genes, y con valores corregidos salen cientos. Las cifras son ilustrativas."></p>
+</figure>
+</div>
+
+</section>
+<section class="slide level2">
+<h2>Corregir cuando el lote es la condición</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/confusion-y-balance.svg" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="Tres repartos de seis casos y seis controles entre dos lotes. En el confundido, un lote lleva los seis casos y el otro los seis controles, y no se puede separar. En el equilibrado, cada lote lleva tres y tres, y se separa bien. En el parcialmente confundido, cinco y uno, y se separa con poca precisión."></p>
+</figure>
+</div>
+</section>
+<section class="slide level2">
+<h2>Lote igual a condición: qué hacer</h2>
+<ul>
+<li class="fragment"><strong>Qué pasa:</strong> corregir borra la diferencia entre condiciones, como en GSE96583</li>
+<li class="fragment"><strong>Cómo darse cuenta:</strong> en la tabla lote contra condición, cada lote tiene <strong>una sola</strong> condición</li>
+<li class="fragment"><strong>Qué hacer:</strong> no corregir, reportar la limitación y, en el siguiente experimento, <strong>repartir</strong> las condiciones entre lotes</li>
+</ul>
+
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Cierre</h1>
+
+</section>
+<section class="slide level2">
+<h2>Cómo decidir, paso a paso</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/images/s09-flujo-decision.svg" class="quarto-figure quarto-figure-center" style="max-height:480px" alt="Diagrama de flujo para decidir si corregir el efecto de lote. Uno: si cada lote tiene una sola condición, no se corrige y se reporta. Dos: si no hay efecto de lote, no se corrige. Tres: si hay tipos celulares en un solo lote, se vigila esa población. Cuatro: se corrige con dos o tres métodos y se revisa que la mezcla suba, la silueta por tipo no baje y los marcadores sigan intactos; si ninguno sirve, se prueban parámetros o no se corrige. Cinco: lo corregido se usa para agrupar y visualizar; la expresión diferencial se hace con cuentas y el lote en el modelo. Un recuadro aparte señala lo menos obvio: la mezcla no llega a uno si los lotes no tienen los mismos tipos, y el UMAP no decide."></p>
+</figure>
+</div>
+</section>
+<section class="slide level2">
+<h2>Qué mensaje se llevan a casa</h2>
+<!-- MOMENTO A · Acompañar · 5 min · conduce YB -->
+<ul>
+<li class="fragment">Antes de corregir, <strong>medir</strong>: hay conjuntos que no lo necesitan</li>
+<li class="fragment">El UMAP no es un diagnóstico; las métricas de mezcla y de biología sí</li>
+<li class="fragment">Todo método supone que los tipos celulares <strong>se solapan</strong> entre lotes</li>
+<li class="fragment">El mejor método <strong>depende de los datos</strong>: los benchmarks dan candidatos, no la respuesta</li>
+<li class="fragment">Sobrecorregir borra biología, y la métrica de mezcla no lo distingue</li>
+<li class="fragment">Cuando el lote es la condición, ningún método lo arregla</li>
+</ul>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Lo que hoy solo se abrió</h2>
+<ul>
+<li class="fragment">La corrección de lote se trabaja <strong>a fondo el 6 de octubre</strong></li>
+<li class="fragment">Hoy fue el panorama y el criterio para elegir; ahí viene el detalle</li>
+</ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>Para su proyecto (entrega del <strong>viernes 2 de octubre</strong>): si sus datos tienen lote, el reporte tiene que decir si corrigieron, con qué y <strong>por qué ese método</strong>. Un método sin justificación cuenta lo mismo que no corregir.</p>
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2">
+<h2>Para terminar la sesión</h2>
+<p>En un renglón, en el chat de Zoom:</p>
+<p><strong>¿Por qué ningún método de corrección resuelve un lote confundido con la condición?</strong></p>
+
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Para leer: comparaciones, métricas y métodos</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tema</th>
+<th>Idea principal</th>
+<th>Dónde se vio hoy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Benchmarks</td>
+<td>no hay un método ganador; depende de la tarea <span class="citation" data-cites="tran2020benchmark luecken2022benchmarking">(<a href="#/references" role="doc-biblioref" onclick="">Luecken et&nbsp;al., 2022</a>; <a href="#/references" role="doc-biblioref" onclick=""><span class="nocase">Tran et&nbsp;al.</span>, 2020</a>)</span></td>
+<td>¿El mejor método depende de los datos?</td>
+</tr>
+<tr class="even">
+<td>Métricas</td>
+<td>medir mezcla <strong>y</strong> biología <span class="citation" data-cites="luecken2022benchmarking buttner2019kbet rousseeuw1987silhouettes">(<a href="#/references" role="doc-biblioref" onclick="">Büttner et&nbsp;al., 2019</a>; <a href="#/references" role="doc-biblioref" onclick="">Luecken et&nbsp;al., 2022</a>; <a href="#/references" role="doc-biblioref" onclick="">Rousseeuw, 1987</a>)</span></td>
+<td>entropía, silueta, kBET</td>
+</tr>
+<tr class="odd">
+<td>Métodos</td>
+<td>cada uno tiene un supuesto <span class="citation" data-cites="haghverdi2018mnn korsunsky2019harmony lopez2018scvi stuart2019integration">(<a href="#/references" role="doc-biblioref" onclick="">Haghverdi et&nbsp;al., 2018</a>; <a href="#/references" role="doc-biblioref" onclick="">Korsunsky et&nbsp;al., 2019</a>; <a href="#/references" role="doc-biblioref" onclick="">Lopez et&nbsp;al., 2018</a>; <a href="#/references" role="doc-biblioref" onclick="">Stuart et&nbsp;al., 2019</a>)</span></td>
+<td>una diapositiva por método</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2 smaller-notes">
+<h2>Para leer: UMAP, pruebas y diseño</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tema</th>
+<th>Idea principal</th>
+<th>Dónde se vio hoy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>UMAP</td>
+<td>sirve para ver vecinos, no distancias <span class="citation" data-cites="becht2019umap chari2023specious">(<a href="#/references" role="doc-biblioref" onclick="">Becht et&nbsp;al., 2019</a>; <a href="#/references" role="doc-biblioref" onclick="">Chari &amp; Pachter, 2023</a>)</span></td>
+<td>Qué es un UMAP</td>
+</tr>
+<tr class="even">
+<td>Corrección y valores p</td>
+<td>corregir infla la confianza de las pruebas <span class="citation" data-cites="nygaard2016batch">(<a href="#/references" role="doc-biblioref" onclick="">Nygaard et&nbsp;al., 2016</a>)</span></td>
+<td>errores comunes</td>
+</tr>
+<tr class="odd">
+<td>Diseño</td>
+<td>el lote confundido no se arregla analizando <span class="citation" data-cites="hicks2018missing">(<a href="#/references" role="doc-biblioref" onclick="">Hicks et&nbsp;al., 2018</a>)</span></td>
+<td>GSE96583 <span class="citation" data-cites="kang2018demuxlet">(<a href="#/references" role="doc-biblioref" onclick=""><span class="nocase">Kang et&nbsp;al.</span>, 2018</a>)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2 smaller-notes scrollable smaller" id="references"><h2>Referencias completas (1/3)</h2>
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list"><div id="ref-becht2019umap" class="csl-entry" role="listitem">
+Becht, E., McInnes, L., Healy, J., Dutertre, C.-A., Kwok, I. W. H., Ng, L. G., Ginhoux, F., &amp; Newell, E. W. (2019). Dimensionality reduction for visualizing single-cell data using <span>UMAP</span>. <em>Nature Biotechnology</em>, <em>37</em>(1), 38-44. <a href="https://doi.org/10.1038/nbt.4314">https://doi.org/10.1038/nbt.4314</a>
+</div><div id="ref-buttner2019kbet" class="csl-entry" role="listitem">
+Büttner, M., Miao, Z., Wolf, F. A., Teichmann, S. A., &amp; Theis, F. J. (2019). A test metric for assessing single-cell <span>RNA</span>-seq batch correction. <em>Nature Methods</em>, <em>16</em>, 43-49. <a href="https://doi.org/10.1038/s41592-018-0254-1">https://doi.org/10.1038/s41592-018-0254-1</a>
+</div><div id="ref-chari2023specious" class="csl-entry" role="listitem">
+Chari, T., &amp; Pachter, L. (2023). The specious art of single-cell genomics. <em>PLOS Computational Biology</em>, <em>19</em>(8), e1011288. <a href="https://doi.org/10.1371/journal.pcbi.1011288">https://doi.org/10.1371/journal.pcbi.1011288</a>
+</div><div id="ref-haghverdi2018mnn" class="csl-entry" role="listitem">
+Haghverdi, L., Lun, A. T. L., Morgan, M. D., &amp; Marioni, J. C. (2018). Batch effects in single-cell <span>RNA</span>-sequencing data are corrected by matching mutual nearest neighbors. <em>Nature Biotechnology</em>, <em>36</em>(5), 421-427. <a href="https://doi.org/10.1038/nbt.4091">https://doi.org/10.1038/nbt.4091</a>
+</div><div id="ref-hao2024seuratv5" class="csl-entry" role="listitem">
+Hao, Y., Stuart, T., Kowalski, M. H., Choudhary, S., Hoffman, P., Hartman, A., Srivastava, A., Molla, G., Madad, S., Fernandez-Granda, C., &amp; Satija, R. (2024). Dictionary learning for integrative, multimodal and scalable single-cell analysis. <em>Nature Biotechnology</em>, <em>42</em>, 293-304. <a href="https://doi.org/10.1038/s41587-023-01767-y">https://doi.org/10.1038/s41587-023-01767-y</a>
+</div><div id="ref-hicks2018missing" class="csl-entry" role="listitem">
+Hicks, S. C., Townes, F. W., Teng, M., &amp; Irizarry, R. A. (2018). Missing data and technical variability in single-cell <span>RNA</span>-sequencing experiments. <em>Biostatistics</em>, <em>19</em>(4), 562-578. <a href="https://doi.org/10.1093/biostatistics/kxx053">https://doi.org/10.1093/biostatistics/kxx053</a>
+</div></div></section><section class="slide level2 smaller-notes scrollable smaller" id="references-2"><h2>Referencias completas (2/3)</h2><div id="refs-2" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list"><div id="ref-hie2019scanorama" class="csl-entry" role="listitem">
+Hie, B., Bryson, B., &amp; Berger, B. (2019). Efficient integration of heterogeneous single-cell transcriptomes using <span>Scanorama</span>. <em>Nature Biotechnology</em>, <em>37</em>(6), 685-691. <a href="https://doi.org/10.1038/s41587-019-0113-3">https://doi.org/10.1038/s41587-019-0113-3</a>
+</div><div id="ref-kang2018demuxlet" class="csl-entry" role="listitem">
+<span class="nocase">Kang, H. M., Subramaniam, M., Targ, S., Nguyen, M., Maliskova, L., et&nbsp;al.</span> (2018). Multiplexed Droplet Single-Cell RNA-Sequencing Using Natural Genetic Variation. <em>Nature Biotechnology</em>, <em>36</em>(1), 89-94. <a href="https://doi.org/10.1038/nbt.4042">https://doi.org/10.1038/nbt.4042</a>
+</div><div id="ref-korsunsky2019harmony" class="csl-entry" role="listitem">
+Korsunsky, I., Millard, N., Fan, J., Slowikowski, K., Zhang, F., Wei, K., Baglaenko, Y., Brenner, M., Loh, P.-R., &amp; Raychaudhuri, S. (2019). Fast, sensitive and accurate integration of single-cell data with <span>Harmony</span>. <em>Nature Methods</em>, <em>16</em>, 1289-1296. <a href="https://doi.org/10.1038/s41592-019-0619-0">https://doi.org/10.1038/s41592-019-0619-0</a>
+</div><div id="ref-lopez2018scvi" class="csl-entry" role="listitem">
+Lopez, R., Regier, J., Cole, M. B., Jordan, M. I., &amp; Yosef, N. (2018). Deep generative modeling for single-cell transcriptomics. <em>Nature Methods</em>, <em>15</em>, 1053-1058. <a href="https://doi.org/10.1038/s41592-018-0229-2">https://doi.org/10.1038/s41592-018-0229-2</a>
+</div><div id="ref-lotfollahi2019scgen" class="csl-entry" role="listitem">
+Lotfollahi, M., Wolf, F. A., &amp; Theis, F. J. (2019). <span>scGen</span> predicts single-cell perturbation responses. <em>Nature Methods</em>, <em>16</em>(8), 715-721. <a href="https://doi.org/10.1038/s41592-019-0494-8">https://doi.org/10.1038/s41592-019-0494-8</a>
+</div><div id="ref-luecken2022benchmarking" class="csl-entry" role="listitem">
+Luecken, M. D., Büttner, M., Chaichoompu, K., Danese, A., Interlandi, M., Müller, M. F., Strobl, D. C., Zappia, L., Dugas, M., Colomé-Tatché, M., &amp; Theis, F. J. (2022). Benchmarking atlas-level data integration in single-cell genomics. <em>Nature Methods</em>, <em>19</em>(1), 41-50. <a href="https://doi.org/10.1038/s41592-021-01336-8">https://doi.org/10.1038/s41592-021-01336-8</a>
+</div></div></section><section class="slide level2 smaller-notes scrollable smaller" id="references-3"><h2>Referencias completas (3/3)</h2><div id="refs-3" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list"><div id="ref-nygaard2016batch" class="csl-entry" role="listitem">
+Nygaard, V., Rødland, E. A., &amp; Hovig, E. (2016). Methods that remove batch effects while retaining group differences may lead to exaggerated confidence in downstream analyses. <em>Biostatistics</em>, <em>17</em>(1), 29-39. <a href="https://doi.org/10.1093/biostatistics/kxv027">https://doi.org/10.1093/biostatistics/kxv027</a>
+</div><div id="ref-ritchie2015limma" class="csl-entry" role="listitem">
+Ritchie, M. E., Phipson, B., Wu, D., Hu, Y., Law, C. W., Shi, W., &amp; Smyth, G. K. (2015). limma powers differential expression analyses for <span>RNA</span>-sequencing and microarray studies. <em>Nucleic Acids Research</em>, <em>43</em>(7), e47. <a href="https://doi.org/10.1093/nar/gkv007">https://doi.org/10.1093/nar/gkv007</a>
+</div><div id="ref-rousseeuw1987silhouettes" class="csl-entry" role="listitem">
+Rousseeuw, P. J. (1987). Silhouettes: A graphical aid to the interpretation and validation of cluster analysis. <em>Journal of Computational and Applied Mathematics</em>, <em>20</em>, 53-65. <a href="https://doi.org/10.1016/0377-0427(87)90125-7">https://doi.org/10.1016/0377-0427(87)90125-7</a>
+</div><div id="ref-stuart2019integration" class="csl-entry" role="listitem">
+Stuart, T., Butler, A., Hoffman, P., Hafemeister, C., Papalexi, E., Mauck, W. M., Hao, Y., Stoeckius, M., Smibert, P., &amp; Satija, R. (2019). Comprehensive Integration of Single-Cell Data. <em>Cell</em>, <em>177</em>(7), 1888-1902.e21. <a href="https://doi.org/10.1016/j.cell.2019.05.031">https://doi.org/10.1016/j.cell.2019.05.031</a>
+</div><div id="ref-tran2020benchmark" class="csl-entry" role="listitem">
+<span class="nocase">Tran, H. T. N., Ang, K. S., Chevrier, M., Zhang, X., Lee, N. Y. S., Goh, M., et&nbsp;al.</span> (2020). A benchmark of batch-effect correction methods for single-cell <span>RNA</span> sequencing data. <em>Genome Biology</em>, <em>21</em>, 12. <a href="https://doi.org/10.1186/s13059-019-1850-9">https://doi.org/10.1186/s13059-019-1850-9</a>
+</div><div id="ref-xu2021scanvi" class="csl-entry" role="listitem">
+Xu, C., Lopez, R., Mehlman, E., Regier, J., Jordan, M. I., &amp; Yosef, N. (2021). Probabilistic harmonization and annotation of single-cell transcriptomics data with deep generative models. <em>Molecular Systems Biology</em>, <em>17</em>(1), e9620. <a href="https://doi.org/10.15252/msb.20209620">https://doi.org/10.15252/msb.20209620</a>
+</div></div></section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>Análisis de single-cell RNA-seq · Bioinformática y Estadística 3 · LCG, ENES Juriquilla UNAM · 2027-1</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="09-efecto-de-lote_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="09-efecto-de-lote_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="09-efecto-de-lote_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="09-efecto-de-lote_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="09-efecto-de-lote_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="09-efecto-de-lote_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="09-efecto-de-lote_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="09-efecto-de-lote_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="09-efecto-de-lote_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="09-efecto-de-lote_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'fast',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 4.0e-2,
+
+        // Bounds for smallest/largest possible scale to apply to content
+        minScale: 0.4,
+
+        maxScale: 1.8,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copiado");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copiado");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    <a href="index.html" class="unam-home-button" title="Volver al índice del módulo">
+      <svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
+      </svg>
+      <span>Inicio</span>
+    </a>
+    
+
+</body></html>

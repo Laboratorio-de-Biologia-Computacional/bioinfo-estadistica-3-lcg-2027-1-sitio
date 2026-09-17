@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 456" width="1180" height="456" role="img" aria-label="Dos paneles. A la izquierda, cómo están los datos de verdad: los grupos A y B se enciman y el grupo C está muy lejos. A la derecha, el UMAP de esos datos: A, B y C aparecen como tres grupos compactos e igual de separados, así que exagera la separación entre A y B y borra la lejanía de C. Al pie: por eso ver lotes separados no es un diagnóstico, hay que medirlo.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 22px; font-weight: 700; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .pie { font-size: 18px; }
+  ]]></style>
+<defs><marker id="punta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#141A4A"/></marker></defs>
+<rect x="40" y="84" width="520" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="300" y="70" fill="#00053F" text-anchor="middle">Cómo están de verdad</text>
+<rect x="620" y="84" width="520" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="880" y="70" fill="#00053F" text-anchor="middle">Cómo las dibuja el UMAP</text>
+<circle cx="151.2" cy="227.9" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="136.2" cy="224.6" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="177.8" cy="226.3" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="196.9" cy="187.4" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="152.0" cy="192.8" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="126.5" cy="208.5" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="156.6" cy="226.6" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="165.2" cy="281.0" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="175.9" cy="166.2" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="156.1" cy="195.3" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="134.5" cy="253.2" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="143.3" cy="155.5" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="219.3" cy="225.3" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="174.8" cy="206.4" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="191.2" cy="233.3" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="197.2" cy="236.1" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="265.1" cy="210.0" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="185.8" cy="226.5" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="242.9" cy="212.8" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="253.0" cy="194.8" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="179.0" cy="232.4" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="184.1" cy="215.4" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="223.5" cy="255.7" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="213.4" cy="225.8" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="499.6" cy="242.9" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="464.8" cy="260.7" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="450.2" cy="237.6" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="484.5" cy="233.8" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="457.4" cy="241.7" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="458.1" cy="220.9" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="447.5" cy="262.7" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="457.9" cy="259.4" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="478.4" cy="228.3" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="484.7" cy="240.0" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="472.9" cy="203.7" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="471.6" cy="253.7" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<text class="t neg" x="180" y="334" fill="#141A4A" text-anchor="middle">A y B se enciman</text>
+<text class="t neg" x="470" y="334" fill="#141A4A" text-anchor="middle">C, muy lejos</text>
+<circle cx="735.4" cy="205.0" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="746.4" cy="198.5" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="751.7" cy="177.4" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="727.4" cy="166.2" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="739.0" cy="195.0" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="748.6" cy="190.0" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="707.7" cy="208.1" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="715.2" cy="180.1" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="728.1" cy="200.9" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="724.4" cy="196.0" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="709.3" cy="213.0" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="729.3" cy="195.3" r="6" fill="#2A7F8E" fill-opacity="0.8"/>
+<circle cx="886.4" cy="195.9" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="882.2" cy="183.8" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="878.8" cy="198.8" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="891.5" cy="192.7" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="881.0" cy="197.7" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="886.3" cy="196.3" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="877.2" cy="188.4" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="892.4" cy="197.2" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="880.2" cy="232.3" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="889.7" cy="203.4" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="881.7" cy="182.8" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="892.5" cy="193.0" r="6" fill="#A23B5B" fill-opacity="0.8"/>
+<circle cx="1030.6" cy="205.3" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="1041.2" cy="196.6" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="1030.2" cy="217.1" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="1036.3" cy="182.7" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="1038.3" cy="195.7" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="1030.4" cy="201.5" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="1032.6" cy="216.1" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="1032.2" cy="196.8" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="1042.8" cy="187.8" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="1041.2" cy="193.3" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="1043.0" cy="184.7" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<circle cx="1034.6" cy="176.4" r="6" fill="#5A6373" fill-opacity="0.8"/>
+<text class="t neg" x="730" y="254" fill="#141A4A" text-anchor="middle">A</text>
+<text class="t neg" x="880" y="254" fill="#141A4A" text-anchor="middle">B</text>
+<text class="t neg" x="1030" y="254" fill="#141A4A" text-anchor="middle">C</text>
+<text class="t lab" x="300" y="362" fill="#5A6373" text-anchor="middle">tres grupos (A, B y C)</text>
+<text class="t lab" x="880" y="309" fill="#141A4A" text-anchor="middle">A y B aparecen separados: lo exagera</text>
+<text class="t lab" x="880" y="339" fill="#141A4A" text-anchor="middle">las tres distancias se ven iguales:</text>
+<text class="t lab" x="880" y="364" fill="#141A4A" text-anchor="middle">la lejanía de C desaparece</text>
+<text class="t neg" x="150" y="144" fill="#141A4A" text-anchor="middle">A</text>
+<text class="t neg" x="210" y="144" fill="#141A4A" text-anchor="middle">B</text>
+<text class="t neg" x="470" y="144" fill="#141A4A" text-anchor="middle">C</text>
+<line x1="566.0" y1="234.0" x2="614.0" y2="234.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t pie" x="590" y="416" fill="#00053F" text-anchor="middle">Por eso «estos lotes se ven separados» no es un diagnóstico: hay que medirlo.</text>
+</svg>

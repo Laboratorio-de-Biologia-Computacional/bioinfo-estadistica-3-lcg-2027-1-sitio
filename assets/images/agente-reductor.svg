@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="El agente reductor corta el enlace disulfuro y libera el oligo de la perla">
+  <defs>
+    <marker id="fOro" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6E5E00"/>
+    </marker>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .at  { font-size:26px; font-weight:700; fill:#ffffff; }
+      .qui { font-size:26px; font-weight:700; fill:#6E5E00; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+    </style>
+  </defs>
+
+  <!-- ═══ antes: el oligo amarrado por un disulfuro ═══ -->
+  <rect x="386" y="98" width="118" height="52" rx="10" fill="#000977"/>
+  <text class="t at" x="445" y="132" text-anchor="middle">perla</text>
+  <line x1="504" y1="124" x2="534" y2="124" stroke="#5A6373" stroke-width="7"/>
+  <circle cx="554" cy="124" r="20" fill="#937E00"/><text class="t at" x="554" y="133" text-anchor="middle">S</text>
+  <line x1="574" y1="124" x2="596" y2="124" stroke="#937E00" stroke-width="7"/>
+  <circle cx="616" cy="124" r="20" fill="#937E00"/><text class="t at" x="616" y="133" text-anchor="middle">S</text>
+  <line x1="636" y1="124" x2="666" y2="124" stroke="#5A6373" stroke-width="7"/>
+  <rect x="666" y="98" width="126" height="52" rx="10" fill="#2B3FA8"/>
+  <text class="t at" x="729" y="132" text-anchor="middle">oligo</text>
+
+  <!-- ═══ la reacción ═══ -->
+  <line x1="590" y1="180" x2="590" y2="252" stroke="#6E5E00" stroke-width="5" marker-end="url(#fOro)"/>
+  <text class="t qui" x="612" y="224">agente reductor</text>
+
+  <!-- ═══ después: dos tioles ═══ -->
+  <rect x="356" y="286" width="118" height="52" rx="10" fill="#000977"/>
+  <text class="t at" x="415" y="320" text-anchor="middle">perla</text>
+  <line x1="474" y1="312" x2="504" y2="312" stroke="#5A6373" stroke-width="7"/>
+  <circle cx="524" cy="312" r="20" fill="#937E00"/><text class="t at" x="524" y="321" text-anchor="middle">S</text>
+  <text class="t qui" x="524" y="272" text-anchor="middle">H</text>
+  <line x1="524" y1="292" x2="524" y2="282" stroke="#937E00" stroke-width="4"/>
+
+  <circle cx="656" cy="312" r="20" fill="#937E00"/><text class="t at" x="656" y="321" text-anchor="middle">S</text>
+  <text class="t qui" x="656" y="272" text-anchor="middle">H</text>
+  <line x1="656" y1="292" x2="656" y2="282" stroke="#937E00" stroke-width="4"/>
+  <line x1="676" y1="312" x2="706" y2="312" stroke="#5A6373" stroke-width="7"/>
+  <rect x="706" y="286" width="126" height="52" rx="10" fill="#2B3FA8"/>
+  <text class="t at" x="769" y="320" text-anchor="middle">oligo</text>
+
+  <text class="t cap" x="590" y="392" text-anchor="middle">el oligo queda suelto dentro de la gota</text>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 230" width="1180" height="230" role="img" aria-label="Dos resultados del mismo tejido que no concuerdan.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 25px; font-weight: 700; }
+    .sub { font-size: 16px; fill: #5A6373; }
+    .lab { font-size: 17px; }
+    .via { font-size: 15px; fill: #5A6373; }
+    .fle { stroke: #5A6373; stroke-width: 2.2; fill: none; }
+  ]]></style>
+
+<text class="t tit" x="40" y="34" fill="#00053F">Bulk</text>
+<text class="t sub" x="40" y="58">un número por muestra</text>
+<rect x="138" y="82" width="68" height="88" rx="4" fill="#000977"/>
+<text class="t via" x="172" y="192" text-anchor="middle">antes</text>
+<rect x="252" y="128" width="68" height="42" rx="4" fill="#000977"/>
+<text class="t via" x="286" y="192" text-anchor="middle">después</text>
+<path class="fle" d="M 214 80 C 248 76, 264 108, 278 126"/>
+<path d="M 279 128 l -10 -5 l -1 11 z" fill="#5A6373"/>
+<text class="t lab" x="40" y="216" fill="#6E5E00">el promedio del gen X baja</text>
+<line x1="396" y1="22" x2="396" y2="196" stroke="#C9D2E8" stroke-width="2" stroke-dasharray="7,6"/>
+<line x1="656" y1="22" x2="656" y2="196" stroke="#C9D2E8" stroke-width="2" stroke-dasharray="7,6"/>
+<text x="526" y="118" text-anchor="middle" font-family="Calibri, Inter, sans-serif" font-size="74" font-weight="700" fill="#000977">?</text>
+<text class="t via" x="526" y="152" text-anchor="middle">los dos están bien medidos</text>
+<text class="t tit" x="690" y="34" fill="#00053F">Célula única</text>
+<text class="t sub" x="690" y="58">un número por célula</text>
+<circle cx="716" cy="88" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="768" cy="88" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="820" cy="88" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="872" cy="88" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="924" cy="88" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="976" cy="88" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="1028" cy="88" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="1080" cy="88" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="716" cy="128" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="768" cy="128" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="820" cy="128" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="872" cy="128" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="924" cy="128" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="976" cy="128" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="1028" cy="128" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="1080" cy="128" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="716" cy="168" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="768" cy="168" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="820" cy="168" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="872" cy="168" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="924" cy="168" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="976" cy="168" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="1028" cy="168" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<circle cx="1080" cy="168" r="14" fill="#F7F8FC" stroke="#2E9AA6" stroke-width="2.6"/>
+<text class="t lab" x="690" y="216" fill="#6E5E00">ninguna célula bajó su expresión del gen X</text>
+</svg>

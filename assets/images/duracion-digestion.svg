@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Una curva sobre un eje de tiempo de digestión con marcas en cero, quince, sesenta y ciento veinte minutos. El eje vertical es la expresión media del grupo de genes tempranos. La curva ya está alta a los quince minutos, hace pico a los sesenta y a las dos horas vuelve casi al punto de partida. Debajo se explica que cuarenta y dos genes suben ya a los quince minutos y que a las dos horas son más de tres mil, pero que para entonces la firma ya bajó. Al pie, que los datos son de Machado 2021 en músculo de ratón y que en riñón no hay curva publicada.">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .cif { font-size:24px; font-weight:700; }
+      .avi { font-size:24px; font-weight:700; fill:#A01B2B; }
+    </style>
+    <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5A6373"/></marker>
+  </defs>
+
+  <text class="t eti" x="30" y="44">La firma sube, hace pico y vuelve a bajar</text>
+  <line x1="150" y1="96" x2="150" y2="316" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="30" y="150">expresión</text>
+  <text class="t cap" x="30" y="180">media del</text>
+  <text class="t cap" x="30" y="210">grupo de</text>
+  <text class="t cap" x="30" y="240">genes</text>
+  <text class="t cap" x="30" y="270">tempranos</text>
+  <line x1="150" y1="316" x2="1120" y2="316" stroke="#5A6373" stroke-width="3"/>
+  <line x1="190" y1="310" x2="190" y2="324" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="190" y="352" text-anchor="middle">0</text>
+  <line x1="400" y1="310" x2="400" y2="324" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="400" y="352" text-anchor="middle">15 min</text>
+  <line x1="720" y1="310" x2="720" y2="324" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="720" y="352" text-anchor="middle">60 min</text>
+  <line x1="1050" y1="310" x2="1050" y2="324" stroke="#5A6373" stroke-width="3"/>
+  <text class="t cap" x="1050" y="352" text-anchor="middle">120 min</text>
+  <polyline points="190,300 400,230 720,124 1050,286" fill="none" stroke="#A01B2B" stroke-width="7" stroke-linejoin="round"/>
+  <circle cx="190" cy="300" r="10" fill="#A01B2B"/>
+  <circle cx="400" cy="230" r="10" fill="#A01B2B"/>
+  <circle cx="720" cy="124" r="10" fill="#A01B2B"/>
+  <circle cx="1050" cy="286" r="10" fill="#A01B2B"/>
+  <text class="t eti" x="720" y="100" text-anchor="middle" style="fill:#A01B2B">pico</text>
+  <text class="t cap" x="422" y="272" style="fill:#A01B2B">ya está</text>
+  <text class="t cap" x="1026" y="300" text-anchor="end" style="fill:#A01B2B">vuelve casi al inicio</text>
+  <text class="t eti" x="150" y="382">42 genes suben ya a los 15 min. A las 2 h son más de 3000 — pero la firma ya bajó.</text>
+  <text class="t cap" x="150" y="416">Machado 2021, músculo de ratón · en riñón no hay curva publicada</text>
+</svg>

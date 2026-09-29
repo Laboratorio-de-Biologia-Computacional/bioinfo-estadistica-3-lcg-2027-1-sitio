@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Dos comparaciones lado a lado. A la izquierda, que el protocolo caliente destruye lo frágil: se recuperan trescientos treinta podocitos con el protocolo frío y solo tres con el caliente. A la derecha, que el frío deja sin soltar lo difícil: las células del asa de Henle son el cuatro coma noventa y nueve por ciento con el protocolo caliente y solo el dos coma cincuenta y dos con el frío. Al pie, que los datos son de Denisenko 2020, el mismo conjunto de datos de la clase.">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .cif { font-size:24px; font-weight:700; }
+      .avi { font-size:24px; font-weight:700; fill:#A01B2B; }
+    </style>
+    <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5A6373"/></marker>
+  </defs>
+
+  <text class="t eti" x="30" y="46">Ninguno de los dos protocolos es neutral</text>
+  <text class="t eti" x="30" y="96" style="fill:#A01B2B">El caliente destruye lo frágil</text>
+  <text class="t cap" x="30" y="130">Podocitos recuperados</text>
+  <text class="t cap" x="30" y="182">frío</text>
+  <rect x="160" y="160" width="290" height="32" rx="8" fill="#2E9AA6"/>
+  <text class="t cif" x="464" y="184" style="fill:#2E9AA6">330</text>
+  <text class="t cap" x="30" y="244">caliente</text>
+  <rect x="160" y="222" width="6" height="32" rx="8" fill="#A01B2B"/>
+  <text class="t cif" x="180" y="246" style="fill:#A01B2B">3 %</text>
+  <text class="t eti" x="30" y="322" style="fill:#A01B2B">de 330 a 3</text>
+  <text class="t eti" x="610" y="96" style="fill:#6E5E00">El frío deja lo difícil de soltar</text>
+  <text class="t cap" x="610" y="130">Asa de Henle, % del total</text>
+  <text class="t cap" x="610" y="182">caliente</text>
+  <rect x="740" y="160" width="300" height="32" rx="8" fill="#2B3FA8"/>
+  <text class="t cif" x="1054" y="184" style="fill:#2B3FA8">4,99 %</text>
+  <text class="t cap" x="610" y="244">frío</text>
+  <rect x="740" y="222" width="152" height="32" rx="8" fill="#2E9AA6"/>
+  <text class="t cif" x="906" y="246" style="fill:#2E9AA6">2,52 %</text>
+  <text class="t eti" x="610" y="322" style="fill:#6E5E00">de 4,99 % a 2,52 %</text>
+  <text class="t cap" x="30" y="404">Denisenko 2020, el mismo conjunto de datos de la clase</text>
+</svg>

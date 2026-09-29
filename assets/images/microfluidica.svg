@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Formación de gotas en un chip de microfluídica, con gotas vacías, con perla sola, con perla y célula, y con perla y dos células">
+  <!-- Altura 430: el tema limita las imagenes a 60vh = 432 px sobre el lienzo.
+       Animacion en CSS (no SMIL) para poder apagarla con prefers-reduced-motion.
+
+       Regla del bucle: dentro de un carril, todos los elementos comparten el
+       MISMO retardo y el desplazamiento es un multiplo exacto del espaciado.
+       Escalonar los retardos con espaciado uniforme hace que se alcancen entre
+       si y se amontonen — que es justo lo que pasaba antes. -->
+  <defs>
+    <clipPath id="cCel">  <rect x="50"  y="96"  width="380" height="46"/></clipPath>
+    <clipPath id="cPer">  <rect x="50"  y="262" width="380" height="46"/></clipPath>
+    <clipPath id="cSalida"><rect x="620" y="150" width="520" height="86"/></clipPath>
+    <marker id="fOro" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#937E00"/>
+    </marker>
+    <style>
+      .t     { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti   { font-size:24px; font-weight:700; }
+      .nota  { font-size:24px; font-weight:600; fill:#5A6373; }
+      .canal { fill:#E7E9F7; stroke:#2B3FA8; stroke-width:2; }
+      .aceite{ fill:#F3EFDD; stroke:#937E00; stroke-width:2; }
+
+      @keyframes carril { from { transform:translateX(0) }   to { transform:translateX(120px) } }
+      @keyframes salida { from { transform:translateX(0) }   to { transform:translateX(575px) } }
+      .cel  { animation: carril 3.2s  linear infinite; }
+      .per  { animation: carril 3.2s  linear infinite; }
+      .gota { animation: salida 15.4s linear infinite; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .cel, .per, .gota { animation: none; }
+      }
+    </style>
+  </defs>
+
+  <!-- ══════ aceite ══════ -->
+  <rect class="aceite" x="530" y="16" width="120" height="52" rx="10"/>
+  <text class="t eti" x="590" y="50" text-anchor="middle" fill="#6E5E00">aceite</text>
+  <line x1="590" y1="70" x2="590" y2="162" stroke="#937E00" stroke-width="4" marker-end="url(#fOro)"/>
+
+  <rect class="aceite" x="530" y="344" width="120" height="52" rx="10"/>
+  <text class="t eti" x="590" y="378" text-anchor="middle" fill="#6E5E00">aceite</text>
+  <line x1="590" y1="342" x2="590" y2="224" stroke="#937E00" stroke-width="4" marker-end="url(#fOro)"/>
+
+  <!-- ══════ canales de entrada ══════ -->
+  <rect class="canal" x="50" y="96"  width="380" height="46" rx="10"/>
+  <text class="t eti" x="50" y="84"  fill="#2E9AA6">células en suspensión</text>
+
+  <rect class="canal" x="50" y="262" width="380" height="46" rx="10"/>
+  <text class="t eti" x="50" y="336" fill="#000977">perlas con código de barras</text>
+
+  <!-- ══════ confluencia ══════ -->
+  <path d="M430,96 L505,166 L505,193 L430,142 Z"  fill="#E7E9F7" stroke="#2B3FA8" stroke-width="2"/>
+  <path d="M430,308 L505,220 L505,193 L430,262 Z" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="2"/>
+  <rect class="canal" x="500" y="170" width="64" height="46"/>
+
+  <!-- ══════ la encapsulación: el cuello que se estrangula ══════ -->
+  <path d="M562,170 C592,174 604,182 614,193 C604,204 592,212 562,216 Z"
+        fill="#E7E9F7" stroke="#2B3FA8" stroke-width="2"/>
+  <line x1="614" y1="193" x2="632" y2="193" stroke="#2B3FA8" stroke-width="3"/>
+
+  <!-- ══════ canal de salida ══════ -->
+  <rect class="canal" x="620" y="150" width="520" height="86" rx="24"/>
+  <text class="t eti" x="1140" y="270" text-anchor="end" fill="#2B3FA8">gotas</text>
+
+  <!-- puntero a la encapsulación -->
+  <line x1="646" y1="262" x2="612" y2="212" stroke="#5A6373" stroke-width="2"/>
+  <text class="t nota" x="652" y="272">el aceite estrangula el chorro</text>
+  <text class="t nota" x="652" y="302">y cierra la gota aquí</text>
+
+  <!-- ══════ células ══════ -->
+  <g clip-path="url(#cCel)">
+    <g class="cel"><circle cx="-50" cy="119" r="11" fill="#2E9AA6"/></g>
+    <g class="cel"><circle cx="70"  cy="119" r="11" fill="#2E9AA6"/></g>
+    <g class="cel"><circle cx="190" cy="119" r="11" fill="#2E9AA6"/></g>
+    <g class="cel"><circle cx="310" cy="119" r="11" fill="#2E9AA6"/></g>
+    <g class="cel"><circle cx="430" cy="119" r="11" fill="#2E9AA6"/></g>
+  </g>
+
+  <!-- ══════ perlas ══════ -->
+  <g clip-path="url(#cPer)">
+    <g class="per"><circle cx="-30" cy="285" r="15" fill="#000977"/></g>
+    <g class="per"><circle cx="90"  cy="285" r="15" fill="#000977"/></g>
+    <g class="per"><circle cx="210" cy="285" r="15" fill="#000977"/></g>
+    <g class="per"><circle cx="330" cy="285" r="15" fill="#000977"/></g>
+    <g class="per"><circle cx="450" cy="285" r="15" fill="#000977"/></g>
+  </g>
+
+  <!-- ══════ gotas ══════
+       Espaciado 115, desplazamiento 575 = 5 espaciados. El contenido tiene
+       periodo 5, asi que el bucle cierra sin salto:
+         i%5=0  vacia          i%5=1  solo perla
+         i%5=2  perla+celula   i%5=3  solo perla
+         i%5=4  perla + DOS celulas  <- el doblete
+       Si se cambia el periodo hay que mover translateX y la duracion a la vez,
+       o las gotas se alcanzan entre si. 575 px a 37.4 px/s = 15.4 s, la misma
+       velocidad que los carriles de entrada. -->
+  <g clip-path="url(#cSalida)">
+    <g class="gota"><circle cx="160"  cy="193" r="30" fill="#fff" stroke="#937E00" stroke-width="3"/></g>
+    <g class="gota"><circle cx="275"  cy="193" r="30" fill="#fff" stroke="#937E00" stroke-width="3"/><circle cx="275"  cy="193" r="14" fill="#000977"/></g>
+    <g class="gota"><circle cx="390"  cy="193" r="30" fill="#fff" stroke="#937E00" stroke-width="3"/><circle cx="383"  cy="193" r="14" fill="#000977"/><circle cx="404" cy="184" r="10" fill="#2E9AA6"/></g>
+    <g class="gota"><circle cx="505"  cy="193" r="30" fill="#fff" stroke="#937E00" stroke-width="3"/><circle cx="505"  cy="193" r="14" fill="#000977"/></g>
+    <g class="gota"><circle cx="620"  cy="193" r="30" fill="#fff" stroke="#937E00" stroke-width="3"/><circle cx="612"  cy="199" r="13" fill="#000977"/><circle cx="632" cy="180" r="10" fill="#2E9AA6"/><circle cx="636" cy="204" r="10" fill="#2E9AA6"/></g>
+    <g class="gota"><circle cx="735"  cy="193" r="30" fill="#fff" stroke="#937E00" stroke-width="3"/></g>
+    <g class="gota"><circle cx="850"  cy="193" r="30" fill="#fff" stroke="#937E00" stroke-width="3"/><circle cx="850"  cy="193" r="14" fill="#000977"/></g>
+    <g class="gota"><circle cx="965"  cy="193" r="30" fill="#fff" stroke="#937E00" stroke-width="3"/><circle cx="958"  cy="193" r="14" fill="#000977"/><circle cx="979" cy="184" r="10" fill="#2E9AA6"/></g>
+    <g class="gota"><circle cx="1080" cy="193" r="30" fill="#fff" stroke="#937E00" stroke-width="3"/><circle cx="1080" cy="193" r="14" fill="#000977"/></g>
+    <g class="gota"><circle cx="1195" cy="193" r="30" fill="#fff" stroke="#937E00" stroke-width="3"/><circle cx="1187" cy="199" r="13" fill="#000977"/><circle cx="1207" cy="180" r="10" fill="#2E9AA6"/><circle cx="1211" cy="204" r="10" fill="#2E9AA6"/></g>
+  </g>
+
+  <!-- ══════ la moraleja ══════ -->
+  <text class="t nota" x="700" y="56">muchas gotas salen vacías</text>
+  <text class="t nota" x="700" y="88">y pocas llevan célula</text>
+  <text class="t nota" x="700" y="120">alguna lleva <tspan font-weight="700" fill="#141A4A">dos</tspan>: eso es un doblete</text>
+  <text class="t nota" x="590" y="422" text-anchor="middle">por eso un código de barras todavía no es una célula</text>
+</svg>

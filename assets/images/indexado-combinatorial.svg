@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Indexado combinatorial: dos rondas de reparto y etiquetado, y la combinación que identifica a cada célula">
+  <defs>
+    <marker id="fGris" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5A6373"/>
+    </marker>
+    <style>
+      .t   { font-family: "Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .paso{ font-size: 26px; font-weight: 700; }
+      .eti { font-size: 24px; font-weight: 700; }
+      .nota{ font-size: 24px; font-weight: 600; fill:#5A6373; }
+      .tubo{ fill:#E7E9F7; stroke:#2B3FA8; stroke-width:2; }
+    </style>
+  </defs>
+
+  <!-- ══════ RONDA 1 ══════ -->
+  <g transform="translate(30,0)">
+    <text class="t paso" x="0" y="30">1 · reparte y etiqueta</text>
+    <g>
+      <rect class="tubo" x="4"   y="52" width="66" height="96" rx="12"/>
+      <rect class="tubo" x="82"  y="52" width="66" height="96" rx="12"/>
+      <rect class="tubo" x="160" y="52" width="66" height="96" rx="12"/>
+      <rect class="tubo" x="238" y="52" width="66" height="96" rx="12"/>
+    </g>
+    <rect x="4"   y="152" width="66" height="14" rx="7" fill="#000977"/>
+    <rect x="82"  y="152" width="66" height="14" rx="7" fill="#2E9AA6"/>
+    <rect x="160" y="152" width="66" height="14" rx="7" fill="#937E00"/>
+    <rect x="238" y="152" width="66" height="14" rx="7" fill="#2B3FA8"/>
+
+    <!-- celulas seguidas -->
+    <circle cx="37"  cy="92"  r="13" fill="#141A4A"/>
+    <text class="t eti" x="37" y="99" text-anchor="middle" fill="#ffffff">A</text>
+    <circle cx="271" cy="92"  r="13" fill="#141A4A"/>
+    <text class="t eti" x="271" y="99" text-anchor="middle" fill="#ffffff">B</text>
+    <circle cx="115" cy="120" r="9" fill="#8A93A8"/>
+    <circle cx="193" cy="112" r="9" fill="#8A93A8"/>
+    <circle cx="55"  cy="124" r="9" fill="#8A93A8"/>
+  </g>
+
+  <!-- mezcla -->
+  <g transform="translate(352,0)">
+    <line x1="0" y1="104" x2="52" y2="104" stroke="#5A6373" stroke-width="3" marker-end="url(#fGris)"/>
+    <text class="t nota" x="26" y="90" text-anchor="middle">mezcla</text>
+  </g>
+
+  <!-- ══════ RONDA 2 ══════ -->
+  <g transform="translate(440,0)">
+    <text class="t paso" x="0" y="30">2 · vuelve a repartir y etiqueta</text>
+    <g>
+      <rect class="tubo" x="4"   y="52" width="66" height="96" rx="12"/>
+      <rect class="tubo" x="82"  y="52" width="66" height="96" rx="12"/>
+      <rect class="tubo" x="160" y="52" width="66" height="96" rx="12"/>
+      <rect class="tubo" x="238" y="52" width="66" height="96" rx="12"/>
+    </g>
+    <rect x="4"   y="152" width="66" height="14" rx="7" fill="#937E00"/>
+    <rect x="82"  y="152" width="66" height="14" rx="7" fill="#000977"/>
+    <rect x="160" y="152" width="66" height="14" rx="7" fill="#2B3FA8"/>
+    <rect x="238" y="152" width="66" height="14" rx="7" fill="#2E9AA6"/>
+
+    <circle cx="193" cy="92" r="13" fill="#141A4A"/>
+    <text class="t eti" x="193" y="99" text-anchor="middle" fill="#ffffff">A</text>
+    <circle cx="115" cy="92" r="13" fill="#141A4A"/>
+    <text class="t eti" x="115" y="99" text-anchor="middle" fill="#ffffff">B</text>
+    <circle cx="37"  cy="120" r="9" fill="#8A93A8"/>
+    <circle cx="271" cy="116" r="9" fill="#8A93A8"/>
+    <circle cx="211" cy="124" r="9" fill="#8A93A8"/>
+  </g>
+
+  <!-- ══════ RESULTADO ══════ -->
+  <g transform="translate(30,214)">
+    <text class="t paso" x="0" y="30">3 · la combinación de etiquetas identifica la célula</text>
+
+    <circle cx="26" cy="80" r="14" fill="#141A4A"/>
+    <text class="t eti" x="26" y="88" text-anchor="middle" fill="#ffffff">A</text>
+    <rect x="56"  y="66" width="80" height="28" rx="8" fill="#000977"/>
+    <text class="t nota" x="150" y="88" fill="#141A4A">+</text>
+    <rect x="176" y="66" width="80" height="28" rx="8" fill="#937E00"/>
+
+    <circle cx="26" cy="140" r="14" fill="#141A4A"/>
+    <text class="t eti" x="26" y="148" text-anchor="middle" fill="#ffffff">B</text>
+    <rect x="56"  y="126" width="80" height="28" rx="8" fill="#2B3FA8"/>
+    <text class="t nota" x="150" y="148" fill="#141A4A">+</text>
+    <rect x="176" y="126" width="80" height="28" rx="8" fill="#000977"/>
+
+    <text class="t eti" x="300" y="88"  fill="#141A4A">dos células que compartieron el primer tubo</text>
+    <text class="t eti" x="300" y="148" fill="#141A4A">se separan en el segundo</text>
+
+    <text class="t nota" x="0" y="196">nunca se aisló ninguna: la identidad es combinatoria, no un compartimento</text>
+  </g>
+  <!-- Leyenda: el punto oscuro y grande es una celula que SEGUIMOS por las dos
+       rondas; los puntos grises y pequenos son las demas celulas del mismo tubo.
+       Sin esto, el lector no sabe que significa la diferencia de color. -->
+  <g>
+    <circle cx="866" cy="246" r="13" fill="#141A4A"/>
+    <text class="t nota" x="892" y="254" fill="#141A4A">las que seguimos</text>
+    <circle cx="866" cy="286" r="9" fill="#8A93A8"/>
+    <text class="t nota" x="892" y="294">las demás del tubo</text>
+  </g>
+</svg>

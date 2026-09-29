@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 456" width="1180" height="456" role="img" aria-label="Dos rutas para los mismos datos. Arriba, para corregir el lote y visualizar: de las cuentas se pasa a normalizar y elegir genes variables, de ahí a los componentes principales, luego a corregir el lote con anclas de Seurat, Harmony o fastMNN, y al final a agrupar, anotar y ver el UMAP. Abajo, para comparar condiciones: las cuentas se suman por muestra, que es el pseudobulk, y pasan a un modelo que incluye el lote como una variable más, y de ahí a los genes con valores p que sí significan lo que dicen. Al pie: normalizar no quita el lote, quita la profundidad de cada célula, y son dos pasos distintos; la excepción es scVI, que entra con cuentas crudas porque modela la profundidad por dentro.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 22px; font-weight: 700; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .pie { font-size: 18px; }
+  ]]></style>
+<defs><marker id="punta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#141A4A"/></marker></defs>
+<text class="t tit" x="40" y="52" fill="#00053F" text-anchor="start">Para corregir el lote, agrupar y visualizar</text>
+<rect x="40" y="70" width="150" height="90" rx="10" fill="white" stroke="#141A4A" stroke-width="2"/>
+<text class="t lab" x="115" y="110" fill="#141A4A" text-anchor="middle">cuentas</text>
+<text class="t lab" x="115" y="132" fill="#141A4A" text-anchor="middle">(lo que se midió)</text>
+<rect x="228" y="70" width="220" height="90" rx="10" fill="white" stroke="#00053F" stroke-width="2"/>
+<text class="t lab" x="338" y="110" fill="#141A4A" text-anchor="middle">normalizar y elegir</text>
+<text class="t lab" x="338" y="132" fill="#141A4A" text-anchor="middle">genes variables</text>
+<rect x="486" y="70" width="190" height="90" rx="10" fill="white" stroke="#141A4A" stroke-width="2"/>
+<text class="t lab" x="581" y="110" fill="#141A4A" text-anchor="middle">componentes</text>
+<text class="t lab" x="581" y="132" fill="#141A4A" text-anchor="middle">principales</text>
+<rect x="714" y="70" width="220" height="90" rx="10" fill="white" stroke="#00053F" stroke-width="2"/>
+<text class="t lab" x="824" y="110" fill="#141A4A" text-anchor="middle">corregir el lote: anclas,</text>
+<text class="t lab" x="824" y="132" fill="#141A4A" text-anchor="middle">Harmony, fastMNN</text>
+<rect x="972" y="70" width="190" height="90" rx="10" fill="white" stroke="#141A4A" stroke-width="2"/>
+<text class="t lab" x="1067" y="110" fill="#141A4A" text-anchor="middle">agrupar, anotar</text>
+<text class="t lab" x="1067" y="132" fill="#141A4A" text-anchor="middle">y ver el UMAP</text>
+<line x1="192.0" y1="115.0" x2="224.0" y2="115.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<line x1="450.0" y1="115.0" x2="482.0" y2="115.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<line x1="678.0" y1="115.0" x2="710.0" y2="115.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<line x1="936.0" y1="115.0" x2="968.0" y2="115.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t tit" x="40" y="232" fill="#00053F" text-anchor="start">Para comparar condiciones y sacar genes</text>
+<rect x="40" y="250" width="150" height="90" rx="10" fill="white" stroke="#141A4A" stroke-width="2"/>
+<text class="t lab" x="115" y="279" fill="#141A4A" text-anchor="middle">cuentas</text>
+<text class="t lab" x="115" y="301" fill="#141A4A" text-anchor="middle">por muestra</text>
+<text class="t lab" x="115" y="323" fill="#141A4A" text-anchor="middle">(pseudobulk)</text>
+<rect x="228" y="250" width="420" height="90" rx="10" fill="white" stroke="#00053F" stroke-width="2"/>
+<text class="t lab" x="438" y="290" fill="#141A4A" text-anchor="middle">modelo que incluye el lote</text>
+<text class="t lab" x="438" y="312" fill="#141A4A" text-anchor="middle">como una variable más (covariable)</text>
+<rect x="690" y="250" width="280" height="90" rx="10" fill="white" stroke="#141A4A" stroke-width="2"/>
+<text class="t lab" x="830" y="290" fill="#141A4A" text-anchor="middle">genes, con valores p</text>
+<text class="t lab" x="830" y="312" fill="#141A4A" text-anchor="middle">que sí significan lo que dicen</text>
+<line x1="192.0" y1="295.0" x2="224.0" y2="295.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<line x1="650.0" y1="295.0" x2="686.0" y2="295.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t pie" x="590" y="416" fill="#00053F" text-anchor="middle">Normalizar no quita el lote: quita la profundidad de cada célula. Son dos pasos distintos.</text>
+<text class="t pie" x="590" y="442" fill="#00053F" text-anchor="middle">Excepción: scVI entra con cuentas crudas, porque modela la profundidad por dentro.</text>
+</svg>

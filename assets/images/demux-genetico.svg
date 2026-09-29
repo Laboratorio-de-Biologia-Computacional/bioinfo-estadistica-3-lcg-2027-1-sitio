@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Demultiplexado genético: no se añade nada, se usan los SNP propios de cada donante para separarlos después">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .seq { font-family:ui-monospace,"Cascadia Mono",Consolas,monospace; font-size:24px; font-weight:700; }
+    </style>
+  </defs>
+
+  <text class="t eti" x="40" y="44" fill="#000977">No se añade ninguna etiqueta.</text>
+  <text class="t cap" x="430" y="44">La diferencia ya venía en el genoma.</text>
+
+  <!-- donante 1 -->
+  <circle cx="90" cy="128" r="30" fill="#2E9AA6"/>
+  <text class="t eti" x="140" y="120" fill="#2E9AA6">donante 1</text>
+  <text class="t seq" x="140" y="152" fill="#141A4A">…GAT<tspan fill="#A01B2B" font-size="30">C</tspan>GCA…TT<tspan fill="#A01B2B" font-size="30">A</tspan>CG…</text>
+
+  <!-- donante 2 -->
+  <circle cx="90" cy="228" r="30" fill="#937E00"/>
+  <text class="t eti" x="140" y="220" fill="#6E5E00">donante 2</text>
+  <text class="t seq" x="140" y="252" fill="#141A4A">…GAT<tspan fill="#A01B2B" font-size="30">T</tspan>GCA…TT<tspan fill="#A01B2B" font-size="30">G</tspan>CG…</text>
+
+  <!-- donante 3 -->
+  <circle cx="90" cy="328" r="30" fill="#2B3FA8"/>
+  <text class="t eti" x="140" y="320" fill="#2B3FA8">donante 3</text>
+  <text class="t seq" x="140" y="352" fill="#141A4A">…GAT<tspan fill="#A01B2B" font-size="30">C</tspan>GCA…TT<tspan fill="#A01B2B" font-size="30">G</tspan>CG…</text>
+
+  <text class="t cap" x="140" y="396">en rojo, los SNP</text>
+
+  <!-- lo que hay que saber -->
+  <line x1="660" y1="80" x2="660" y2="380" stroke="#DDD8C6" stroke-width="2"/>
+  <text class="t eti" x="700" y="132" fill="#141A4A">Las propias lecturas del</text>
+  <text class="t eti" x="700" y="164" fill="#141A4A">experimento llevan los SNP.</text>
+
+  <text class="t cap" x="700" y="220">Se separan después, por programa.</text>
+  <text class="t cap" x="700" y="252">Cero reactivo, cero paso extra.</text>
+
+  <text class="t eti" x="700" y="312" fill="#A01B2B">Exige donantes distintos:</text>
+  <text class="t cap" x="700" y="344">dos muestras del mismo donante</text>
+  <text class="t cap" x="700" y="376">son genéticamente idénticas</text>
+</svg>

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Flujo de banco de Cell Hashing en seis pasos. Uno: un tubo por muestra, sin juntar todavía. Dos: bloquear los receptores Fc, diez minutos a cuatro grados. Tres: centrifugar el anticuerpo a catorce mil g para quitar agregados. Cuatro: teñir treinta minutos a cuatro grados. Cinco: lavar tres o cuatro veces, el paso crítico. Seis: contar, juntar las muestras y cargar un solo canal. Aviso: el anticuerpo mal lavado se amplifica igual y sale como fondo en todas las gotas.">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .det { font-size:24px; font-weight:600; fill:#5A6373; }
+      .num { font-size:24px; font-weight:700; fill:#ffffff; }
+      .avi { font-size:24px; font-weight:700; fill:#A01B2B; }
+      .ban { font-size:24px; font-weight:700; letter-spacing:1px; }
+    </style>
+  </defs>
+
+  <g transform="translate(104.2,152)"><path d="M-22,-46 h44 v52 a22,22 0 0 1 -44,0 z" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="4"/>
+  <rect x="-26" y="-52" width="52" height="10" rx="4" fill="#2B3FA8"/>
+  <circle cx="-8" cy="-4" r="7" fill="#2B3FA8"/><circle cx="9" cy="6" r="7" fill="#2B3FA8"/>
+  <circle cx="-2" cy="17" r="7" fill="#2B3FA8"/></g>
+  <circle cx="104.2" cy="44" r="18" fill="#000977"/>
+  <text class="t num" x="104.2" y="52" text-anchor="middle">1</text>
+  <text class="t eti" x="104.2" y="248" text-anchor="middle">Un tubo</text>
+  <text class="t eti" x="104.2" y="278" text-anchor="middle">por muestra</text>
+  <text class="t det" x="104.2" y="316" text-anchor="middle">sin juntar aún</text>
+  <path d="M194.3,144 l14,8 l-14,8" fill="none" stroke="#8A93A8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(298.5,152)"><path d="M-20,-40 h40 v46 a20,20 0 0 1 -40,0 z" fill="#ffffff" stroke="#937E00" stroke-width="4"/>
+  <path d="M-20,4 h40" stroke="#937E00" stroke-width="3" opacity="0.5"/>
+  <path d="M-44,-32 a30,30 0 1 0 16,-24" fill="none" stroke="#937E00" stroke-width="5"/>
+  <path d="M-30,-64 l6,15 l-15,-1 z" fill="#937E00"/>
+  <circle cx="32" cy="-22" r="5" fill="#937E00"/><circle cx="40" cy="-4" r="5" fill="#937E00"/></g>
+  <circle cx="298.5" cy="44" r="18" fill="#000977"/>
+  <text class="t num" x="298.5" y="52" text-anchor="middle">2</text>
+  <text class="t eti" x="298.5" y="248" text-anchor="middle">Bloquear Fc</text>
+  <text class="t det" x="298.5" y="286" text-anchor="middle">10 min, 4 °C</text>
+  <path d="M388.7,144 l14,8 l-14,8" fill="none" stroke="#8A93A8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(492.8,152)"><path d="M4,-42 h42 v54 a21,21 0 0 1 -42,0 z" fill="#ffffff" stroke="#2B3FA8" stroke-width="4"/>
+  <circle cx="12" cy="-24" r="5" fill="#937E00"/><circle cx="12" cy="-8" r="5" fill="#937E00"/>
+  <circle cx="12" cy="8" r="5" fill="#937E00"/><circle cx="12" cy="24" r="5" fill="#937E00"/>
+  <path d="M-48,-32 h24 v46 h-24 z" fill="#A01B2B"/>
+  <path d="M-48,14 h24 v16 h-24 z" fill="#8A93A8"/></g>
+  <circle cx="492.8" cy="44" r="18" fill="#000977"/>
+  <text class="t num" x="492.8" y="52" text-anchor="middle">3</text>
+  <text class="t eti" x="492.8" y="248" text-anchor="middle">Centrifugar</text>
+  <text class="t eti" x="492.8" y="278" text-anchor="middle">el anticuerpo</text>
+  <text class="t det" x="492.8" y="316" text-anchor="middle">14 000 g</text>
+  <path d="M583.0,144 l14,8 l-14,8" fill="none" stroke="#8A93A8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(687.2,152)"><path d="M0,34 L0,-2 M0,-2 L-26,-34 M0,-2 L26,-34" fill="none" stroke="#2B3FA8"
+        stroke-width="10" stroke-linecap="round"/>
+  <rect x="14" y="-54" width="46" height="20" rx="10" fill="#2E9AA6"/></g>
+  <circle cx="687.2" cy="44" r="18" fill="#000977"/>
+  <text class="t num" x="687.2" y="52" text-anchor="middle">4</text>
+  <text class="t eti" x="687.2" y="248" text-anchor="middle">Teñir</text>
+  <text class="t det" x="687.2" y="286" text-anchor="middle">30 min, 4 °C</text>
+  <path d="M777.3,144 l14,8 l-14,8" fill="none" stroke="#8A93A8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(881.5,152)"><path d="M-20,-40 h40 v46 a20,20 0 0 1 -40,0 z" fill="#ffffff" stroke="#2B3FA8" stroke-width="4"/>
+  <path d="M-20,4 h40" stroke="#2B3FA8" stroke-width="3" opacity="0.5"/>
+  <path d="M-44,-32 a30,30 0 1 0 16,-24" fill="none" stroke="#2B3FA8" stroke-width="5"/>
+  <path d="M-30,-64 l6,15 l-15,-1 z" fill="#2B3FA8"/>
+  <circle cx="32" cy="-22" r="5" fill="#2B3FA8"/><circle cx="40" cy="-4" r="5" fill="#2B3FA8"/></g>
+  <circle cx="881.5" cy="44" r="18" fill="#000977"/>
+  <text class="t num" x="881.5" y="52" text-anchor="middle">5</text>
+  <text class="t eti" x="881.5" y="248" text-anchor="middle">Lavar</text>
+  <text class="t eti" x="881.5" y="278" text-anchor="middle">3–4 veces</text>
+  <text class="t det" x="881.5" y="316" text-anchor="middle">paso crítico</text>
+  <path d="M971.7,144 l14,8 l-14,8" fill="none" stroke="#8A93A8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(1075.8,152)"><path d="M-46,-46 h20 v26 a10,10 0 0 1 -20,0 z" fill="#E7E9F7" stroke="#2E9AA6" stroke-width="3"/>
+  <path d="M-10,-46 h20 v26 a10,10 0 0 1 -20,0 z" fill="#F3EFDD" stroke="#937E00" stroke-width="3"/>
+  <path d="M26,-46 h20 v26 a10,10 0 0 1 -20,0 z" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="3"/>
+  <path d="M0,-10 v12" stroke="#2B3FA8" stroke-width="4"/>
+  <path d="M-7,0 l7,12 l7,-12 z" fill="#2B3FA8"/>
+  <path d="M-22,16 h44 v20 a22,22 0 0 1 -44,0 z" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="4"/>
+  <circle cx="-9" cy="32" r="6" fill="#2E9AA6"/><circle cx="4" cy="38" r="6" fill="#937E00"/>
+  <circle cx="13" cy="28" r="6" fill="#2B3FA8"/></g>
+  <circle cx="1075.8" cy="44" r="18" fill="#000977"/>
+  <text class="t num" x="1075.8" y="52" text-anchor="middle">6</text>
+  <text class="t eti" x="1075.8" y="248" text-anchor="middle">Contar, juntar</text>
+  <text class="t eti" x="1075.8" y="278" text-anchor="middle">y cargar</text>
+  <text class="t det" x="1075.8" y="316" text-anchor="middle">un solo canal</text>
+  <text class="t avi" x="12" y="412">El anticuerpo mal lavado se amplifica igual: sale como fondo en todas las gotas.</text>
+</svg>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="MULTI-seq: un oligo unido a un lípido se inserta solo en la bicapa, sin necesidad de anticuerpo">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .seq { font-family:ui-monospace,"Cascadia Mono",Consolas,monospace; font-size:24px; font-weight:700; fill:#ffffff; }
+      @keyframes entra { 0%{transform:translate(-120px,-80px);opacity:0} 30%{opacity:1} 70%,100%{transform:translate(0,0);opacity:1} }
+      .lmo { animation: entra 4s ease-in-out infinite; }
+      @media (prefers-reduced-motion: reduce){ .lmo{ animation:none } }
+    </style>
+    <g id="lipido">
+      <circle cx="0" cy="0" r="13" fill="#937E00"/>
+      <line x1="-5" y1="12" x2="-5" y2="52" stroke="#C9B458" stroke-width="5"/>
+      <line x1="5"  y1="12" x2="5"  y2="52" stroke="#C9B458" stroke-width="5"/>
+    </g>
+  </defs>
+
+  <!-- bicapa -->
+  <g>
+    <circle cx="60"  cy="238" r="13" fill="#2B3FA8"/><circle cx="112" cy="238" r="13" fill="#2B3FA8"/>
+    <circle cx="164" cy="238" r="13" fill="#2B3FA8"/><circle cx="216" cy="238" r="13" fill="#2B3FA8"/>
+    <circle cx="320" cy="238" r="13" fill="#2B3FA8"/><circle cx="372" cy="238" r="13" fill="#2B3FA8"/>
+    <circle cx="424" cy="238" r="13" fill="#2B3FA8"/><circle cx="476" cy="238" r="13" fill="#2B3FA8"/>
+    <circle cx="60"  cy="330" r="13" fill="#2B3FA8"/><circle cx="112" cy="330" r="13" fill="#2B3FA8"/>
+    <circle cx="164" cy="330" r="13" fill="#2B3FA8"/><circle cx="216" cy="330" r="13" fill="#2B3FA8"/>
+    <circle cx="268" cy="330" r="13" fill="#2B3FA8"/><circle cx="320" cy="330" r="13" fill="#2B3FA8"/>
+    <circle cx="372" cy="330" r="13" fill="#2B3FA8"/><circle cx="424" cy="330" r="13" fill="#2B3FA8"/>
+    <circle cx="476" cy="330" r="13" fill="#2B3FA8"/>
+  </g>
+  <g stroke="#8A93A8" stroke-width="4">
+    <line x1="60"  y1="250" x2="60"  y2="284"/><line x1="112" y1="250" x2="112" y2="284"/>
+    <line x1="164" y1="250" x2="164" y2="284"/><line x1="216" y1="250" x2="216" y2="284"/>
+    <line x1="320" y1="250" x2="320" y2="284"/><line x1="372" y1="250" x2="372" y2="284"/>
+    <line x1="424" y1="250" x2="424" y2="284"/><line x1="476" y1="250" x2="476" y2="284"/>
+    <line x1="60"  y1="318" x2="60"  y2="284"/><line x1="112" y1="318" x2="112" y2="284"/>
+    <line x1="164" y1="318" x2="164" y2="284"/><line x1="216" y1="318" x2="216" y2="284"/>
+    <line x1="268" y1="318" x2="268" y2="284"/><line x1="320" y1="318" x2="320" y2="284"/>
+    <line x1="372" y1="318" x2="372" y2="284"/><line x1="424" y1="318" x2="424" y2="284"/>
+    <line x1="476" y1="318" x2="476" y2="284"/>
+  </g>
+  <text class="t cap" x="40" y="396">bicapa de la membrana</text>
+
+  <!-- el LMO que se inserta -->
+  <g class="lmo">
+    <use href="#lipido" x="268" y="238"/>
+    <line x1="268" y1="226" x2="268" y2="176" stroke="#5A6373" stroke-width="4"/>
+    <rect x="192" y="146" width="152" height="30" rx="15" fill="#2E9AA6"/>
+    <text class="t seq" x="268" y="169" text-anchor="middle">BAR-1</text>
+  </g>
+  <text class="t eti" x="380" y="100" fill="#6E5E00">lípido + oligo</text>
+  <text class="t eti" x="380" y="132" fill="#6E5E00">con código</text>
+  <text class="t cap" x="380" y="184">se inserta solo,</text>
+  <text class="t cap" x="380" y="216">sin anticuerpo</text>
+
+  <!-- lo que hay que saber -->
+  <line x1="620" y1="120" x2="620" y2="380" stroke="#DDD8C6" stroke-width="2"/>
+  <text class="t eti" x="660" y="152" fill="#141A4A">El lípido se ancla en la bicapa</text>
+  <text class="t eti" x="660" y="184" fill="#141A4A">por afinidad, como un detergente.</text>
+
+  <text class="t cap" x="660" y="240">No necesita que exista un anticuerpo</text>
+  <text class="t cap" x="660" y="272">para ese tejido: vale cualquier membrana.</text>
+
+  <text class="t eti" x="660" y="330" fill="#1F7A3D">Y por eso sí funciona en núcleos:</text>
+  <text class="t cap" x="660" y="362">la envoltura nuclear también es bicapa</text>
+</svg>

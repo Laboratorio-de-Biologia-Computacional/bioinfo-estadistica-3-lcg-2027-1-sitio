@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="De una gota salen dos librerías, en cuatro pasos. Uno: la gota se cierra con la célula entera dentro y la etiqueta clavada por fuera, en su superficie, junto a la perla. Dos: la lisis rompe la membrana, que queda hecha fragmentos, y suelta en el mismo charco el ARN mensajero y la etiqueta; las dos moléculas terminan en la misma cola de poli-A, en oro, así que el poli-dT de la perla no las distingue y captura las dos. Tres: se amplifican en la misma reacción de PCR, en un solo tubo. Cuatro: una limpieza con perlas SPRI a cero coma seis equis parte la mezcla por tamaño. Lo que se pega a las perlas es el cDNA, largo, que da la librería de expresión; lo que se queda en el líquido es la etiqueta, corta, que nunca se fragmenta. Aviso: el sobrenadante no se tira, porque es toda la librería de multiplexado.">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .det { font-size:24px; font-weight:600; fill:#5A6373; }
+      .avi { font-size:24px; font-weight:700; fill:#A01B2B; }
+    </style>
+    <marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5A6373"/>
+    </marker>
+    <!-- Un trozo de membrana suelto: cabeza polar y dos colas. Es la pieza que
+         queda cuando el detergente desarma la bicapa. -->
+    <g id="micela">
+      <circle cx="0" cy="0" r="7" fill="#8A93A8"/>
+      <path d="M-3,6 v11 M3,6 v11" stroke="#C3C8D4" stroke-width="3"/>
+    </g>
+  </defs>
+
+  <!-- ══ 1 · la gota se cierra: la etiqueta va POR FUERA ══ -->
+  <circle cx="115" cy="145" r="72" fill="#ffffff" stroke="#937E00" stroke-width="5"/>
+  <circle cx="85" cy="110" r="20" fill="#000977"/>
+  <circle cx="120" cy="166" r="36" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="4"/>
+  <rect x="102" y="154" width="30" height="8" rx="4" fill="#8A93A8"/>
+  <rect x="108" y="172" width="24" height="8" rx="4" fill="#8A93A8"/>
+  <path d="M145,141 L159,127 M156,166 L174,166 M120,202 L120,214"
+        stroke="#2E9AA6" stroke-width="7" stroke-linecap="round"/>
+
+  <line x1="197" y1="145" x2="262" y2="145" stroke="#5A6373" stroke-width="4" marker-end="url(#fl)"/>
+
+  <!-- ══ 2 · la lisis las suelta a las dos ══ -->
+  <circle cx="350" cy="145" r="76" fill="#ffffff" stroke="#937E00" stroke-width="5"/>
+  <circle cx="350" cy="160" r="44" fill="none" stroke="#C3C8D4" stroke-width="3" stroke-dasharray="7 8"/>
+  <circle cx="312" cy="115" r="22" fill="#000977"/>
+  <path d="M334,105 h13 M334,115 h13 M334,125 h13" stroke="#937E00" stroke-width="4"/>
+  <!-- ARN mensajero y etiqueta: distinta longitud, MISMA cola de poli-A -->
+  <rect x="350" y="100" width="38" height="11" rx="5" fill="#8A93A8"/>
+  <rect x="388" y="100" width="18" height="11" rx="5" fill="#937E00"/>
+  <rect x="350" y="140" width="22" height="11" rx="5" fill="#2E9AA6"/>
+  <rect x="372" y="140" width="18" height="11" rx="5" fill="#937E00"/>
+  <use href="#micela" x="302" y="168"/>
+  <use href="#micela" x="334" y="192"/>
+  <use href="#micela" x="374" y="188"/>
+  <use href="#micela" x="400" y="164"/>
+
+  <line x1="436" y1="145" x2="505" y2="145" stroke="#5A6373" stroke-width="4" marker-end="url(#fl)"/>
+
+  <!-- ══ 3 · la misma PCR ══ -->
+  <rect x="529" y="78" width="68" height="14" rx="6" fill="#2B3FA8"/>
+  <path d="M535,92 h56 v70 a28,28 0 0 1 -56,0 z" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="5"/>
+  <rect x="543" y="116" width="40" height="10" rx="5" fill="#8A93A8"/>
+  <rect x="547" y="136" width="22" height="10" rx="5" fill="#2E9AA6"/>
+  <rect x="545" y="156" width="34" height="10" rx="5" fill="#8A93A8"/>
+
+  <line x1="605" y1="145" x2="652" y2="145" stroke="#5A6373" stroke-width="4" marker-end="url(#fl)"/>
+
+  <!-- ══ 4 · el corte por tamaño ══ -->
+  <path d="M662,96 h30 v54 h-30 z" fill="#A01B2B"/>
+  <path d="M662,150 h30 v20 h-30 z" fill="#8A93A8"/>
+  <path d="M700,92 h56 v70 a28,28 0 0 1 -56,0 z" fill="#ffffff" stroke="#2B3FA8" stroke-width="5"/>
+  <circle cx="708" cy="110" r="7" fill="#937E00"/><circle cx="708" cy="128" r="7" fill="#937E00"/>
+  <circle cx="708" cy="146" r="7" fill="#937E00"/><circle cx="708" cy="164" r="7" fill="#937E00"/>
+
+  <path d="M762,124 C800,124 800,92 850,92" fill="none" stroke="#5A6373" stroke-width="4" marker-end="url(#fl)"/>
+  <path d="M762,160 C800,160 800,276 850,276" fill="none" stroke="#5A6373" stroke-width="4" marker-end="url(#fl)"/>
+
+  <!-- ══ las dos ramas ══ -->
+  <rect x="866" y="34" width="298" height="120" rx="12" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="3"/>
+  <rect x="888" y="58" width="254" height="15" rx="7" fill="#2B3FA8"/>
+  <text class="t eti" x="888" y="108">En las perlas: cDNA</text>
+  <text class="t det" x="888" y="138">librería de expresión</text>
+
+  <rect x="866" y="216" width="298" height="120" rx="12" fill="#F3EFDD" stroke="#937E00" stroke-width="3"/>
+  <rect x="888" y="240" width="64" height="15" rx="7" fill="#2E9AA6"/>
+  <text class="t eti" x="888" y="290" fill="#6E5E00">En el líquido: etiqueta</text>
+  <text class="t det" x="888" y="320">nunca se fragmenta</text>
+
+  <!-- ══ rótulos ══ -->
+  <text class="t eti" x="115" y="252" text-anchor="middle">La gota se cierra</text>
+  <text class="t det" x="115" y="282" text-anchor="middle">etiqueta por fuera</text>
+
+  <text class="t eti" x="350" y="252" text-anchor="middle">La lisis las suelta</text>
+  <text class="t det" x="350" y="282" text-anchor="middle">las dos con poli-A</text>
+  <text class="t det" x="350" y="312" text-anchor="middle">la perla no distingue</text>
+
+  <text class="t eti" x="563" y="252" text-anchor="middle">Misma PCR</text>
+  <text class="t det" x="563" y="282" text-anchor="middle">un solo tubo</text>
+
+  <text class="t eti" x="728" y="252" text-anchor="middle">SPRI 0,6×</text>
+  <text class="t det" x="728" y="282" text-anchor="middle">se parte</text>
+
+  <text class="t avi" x="12" y="412">El sobrenadante no se tira: es toda la librería de multiplexado.</text>
+</svg>

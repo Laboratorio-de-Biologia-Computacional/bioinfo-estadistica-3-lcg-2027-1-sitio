@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Ensayo 3 prima frente a ensayo 5 prima: de qué lado del transcrito queda el código de barras">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .tit { font-size:26px; font-weight:700; }
+      .eti { font-size:24px; font-weight:700; }
+      .ext { font-size:24px; font-weight:700; fill:#5A6373; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+    </style>
+  </defs>
+
+  <!-- ══════════ ENSAYO 3' ══════════ -->
+  <g transform="translate(0,4)">
+    <text class="t tit" x="20" y="30" fill="#141A4A">Ensayo 3′</text>
+
+    <text class="t ext" x="292" y="76" text-anchor="end">5′</text>
+    <rect x="300" y="60" width="420" height="16" rx="8" fill="#141A4A"/>
+    <rect x="720" y="60" width="110" height="16" rx="8" fill="#937E00"/>
+    <text class="t ext" x="844" y="76">3′</text>
+
+    <!-- lo que acaba en la lectura -->
+    <rect x="596" y="48" width="240" height="40" rx="10" fill="none" stroke="#A01B2B" stroke-width="3" stroke-dasharray="8 6"/>
+    <text class="t eti" x="716" y="126" text-anchor="middle" fill="#A01B2B">se secuencia este extremo</text>
+
+    <!-- el oligo de la perla ceba en la poli-A -->
+    <rect x="720" y="150" width="110" height="16" rx="8" fill="#937E00"/>
+    <rect x="836" y="150" width="70"  height="16" rx="8" fill="#2E9AA6"/>
+    <rect x="912" y="150" width="130" height="16" rx="8" fill="#000977"/>
+    <text class="t cap" x="775"  y="192" text-anchor="middle">poli-dT</text>
+    <text class="t cap" x="871"  y="192" text-anchor="middle">UMI</text>
+    <text class="t cap" x="977"  y="192" text-anchor="middle">código</text>
+    <text class="t cap" x="20"   y="150">el código entra por la cola de poli-A</text>
+  </g>
+
+  <line x1="20" y1="214" x2="1160" y2="214" stroke="#DDD8C6" stroke-width="2"/>
+
+  <!-- ══════════ ENSAYO 5' ══════════ -->
+  <g transform="translate(0,232)">
+    <text class="t tit" x="20" y="30" fill="#141A4A">Ensayo 5′</text>
+
+    <text class="t ext" x="292" y="76" text-anchor="end">5′</text>
+    <rect x="300" y="60" width="420" height="16" rx="8" fill="#141A4A"/>
+    <rect x="720" y="60" width="110" height="16" rx="8" fill="#937E00"/>
+    <text class="t ext" x="844" y="76">3′</text>
+
+    <rect x="288" y="48" width="240" height="40" rx="10" fill="none" stroke="#A01B2B" stroke-width="3" stroke-dasharray="8 6"/>
+    <text class="t eti" x="408" y="126" text-anchor="middle" fill="#A01B2B">se secuencia este extremo</text>
+
+    <!-- el codigo entra por el TSO, del lado 5' -->
+    <rect x="150" y="150" width="96"  height="16" rx="8" fill="#6E5E00"/>
+    <rect x="252" y="150" width="70"  height="16" rx="8" fill="#2E9AA6"/>
+    <rect x="328" y="150" width="130" height="16" rx="8" fill="#000977"/>
+    <text class="t cap" x="198" y="192" text-anchor="middle">TSO</text>
+    <text class="t cap" x="287" y="192" text-anchor="middle">UMI</text>
+    <text class="t cap" x="393" y="192" text-anchor="middle">código</text>
+
+    <!-- ceba un oligo-dT sin codigo -->
+    <rect x="720" y="150" width="110" height="16" rx="8" fill="#8A93A8"/>
+    <text class="t cap" x="846" y="164">cebador sin código</text>
+
+    <text class="t cap" x="560" y="192">el código entra por el TSO</text>
+  </g>
+</svg>

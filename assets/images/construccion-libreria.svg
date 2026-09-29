@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Cuatro filas apiladas que muestran cómo cambia la misma molécula. Fila uno, lo que sale de la gota: sitio de lectura uno, código de barras, UMI, poli-dT y a continuación un cDNA largo que termina en el TSO. Fila dos, se fragmenta: el cDNA aparece cortado en tres trozos separados por marcas de corte, y un corchete señala que solo sigue adelante el trozo que conserva el código de barras. Fila tres, se repara y se liga: ese trozo, ahora más corto, lleva pegado en su extremo derecho el sitio de la lectura dos. Fila cuatro, la PCR de índice: la misma molécula gana P5 por la izquierda y el índice i7 más P7 por la derecha. Al pie, la clave de colores y el aviso de que el código de barras y el UMI entraron en la gota y llegan intactos hasta el final.">
+<defs><style>.t{font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif;fill:#141A4A;}.eti{font-size:24px;font-weight:700;}.nota{font-size:24px;font-weight:600;}.chico{font-size:24px;font-weight:600;fill:#5A6373;}.dentro{font-size:24px;font-weight:700;fill:#ffffff;}</style><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5A6373"/></marker></defs>
+<circle cx="34" cy="28" r="16" fill="#000977"/>
+<text class="t dentro" x="34" y="35" text-anchor="middle">1</text>
+<text class="t eti" x="60" y="35">Lo que sale de la gota</text>
+<rect x="20" y="46" width="120" height="28" rx="7" fill="#5A6373"/>
+<rect x="142" y="46" width="95" height="28" rx="7" fill="#000977"/>
+<rect x="239" y="46" width="75" height="28" rx="7" fill="#2E9AA6"/>
+<rect x="316" y="46" width="70" height="28" rx="7" fill="#937E00"/>
+<rect x="388" y="46" width="470" height="28" rx="7" fill="#2B3FA8"/>
+<rect x="860" y="46" width="110" height="28" rx="7" fill="#6E5E00"/>
+<circle cx="34" cy="120" r="16" fill="#000977"/>
+<text class="t dentro" x="34" y="127" text-anchor="middle">2</text>
+<text class="t eti" x="60" y="127">Se fragmenta</text>
+<rect x="20" y="138" width="120" height="28" rx="7" fill="#5A6373"/>
+<rect x="142" y="138" width="95" height="28" rx="7" fill="#000977"/>
+<rect x="239" y="138" width="75" height="28" rx="7" fill="#2E9AA6"/>
+<rect x="316" y="138" width="70" height="28" rx="7" fill="#937E00"/>
+<rect x="388" y="138" width="190" height="28" rx="7" fill="#2B3FA8"/>
+<rect x="594" y="138" width="150" height="28" rx="7" fill="#2B3FA8"/>
+<rect x="760" y="138" width="130" height="28" rx="7" fill="#2B3FA8"/>
+<line x1="578" y1="130" x2="578" y2="174" stroke="#6E5E00" stroke-width="3" stroke-dasharray="6 5"/>
+<line x1="744" y1="130" x2="744" y2="174" stroke="#6E5E00" stroke-width="3" stroke-dasharray="6 5"/>
+<text class="t chico" x="900" y="159">solo el primero sigue</text>
+<circle cx="34" cy="212" r="16" fill="#000977"/>
+<text class="t dentro" x="34" y="219" text-anchor="middle">3</text>
+<text class="t eti" x="60" y="219">Se repara y se liga el adaptador</text>
+<rect x="20" y="230" width="120" height="28" rx="7" fill="#5A6373"/>
+<rect x="142" y="230" width="95" height="28" rx="7" fill="#000977"/>
+<rect x="239" y="230" width="75" height="28" rx="7" fill="#2E9AA6"/>
+<rect x="316" y="230" width="70" height="28" rx="7" fill="#937E00"/>
+<rect x="388" y="230" width="190" height="28" rx="7" fill="#2B3FA8"/>
+<rect x="580" y="230" width="120" height="28" rx="7" fill="#5A6373"/>
+<text class="t chico" x="722" y="251">entra el sitio de lectura 2</text>
+<circle cx="34" cy="304" r="16" fill="#000977"/>
+<text class="t dentro" x="34" y="311" text-anchor="middle">4</text>
+<text class="t eti" x="60" y="311">PCR: entran P5, el índice y P7</text>
+<rect x="20" y="322" width="60" height="28" rx="7" fill="#6E5E00"/>
+<rect x="82" y="322" width="120" height="28" rx="7" fill="#5A6373"/>
+<rect x="204" y="322" width="95" height="28" rx="7" fill="#000977"/>
+<rect x="301" y="322" width="75" height="28" rx="7" fill="#2E9AA6"/>
+<rect x="378" y="322" width="70" height="28" rx="7" fill="#937E00"/>
+<rect x="450" y="322" width="190" height="28" rx="7" fill="#2B3FA8"/>
+<rect x="642" y="322" width="120" height="28" rx="7" fill="#5A6373"/>
+<rect x="764" y="322" width="70" height="28" rx="7" fill="#141A4A"/>
+<rect x="836" y="322" width="60" height="28" rx="7" fill="#6E5E00"/>
+<text class="t chico" x="918" y="343">ya es una librería</text>
+<rect x="20" y="374" width="22" height="22" rx="5" fill="#000977"/>
+<text class="t chico" x="50" y="392">código de barras</text>
+<rect x="276" y="374" width="22" height="22" rx="5" fill="#2E9AA6"/>
+<text class="t chico" x="306" y="392">UMI</text>
+<rect x="376" y="374" width="22" height="22" rx="5" fill="#5A6373"/>
+<text class="t chico" x="406" y="392">sitios de lectura</text>
+<rect x="644" y="374" width="22" height="22" rx="5" fill="#6E5E00"/>
+<text class="t chico" x="674" y="392">adaptadores</text>
+<text class="t nota" x="20" y="424" fill="#000977">El código de barras y el UMI entraron en la gota: llegan intactos hasta el final.</text>
+</svg>

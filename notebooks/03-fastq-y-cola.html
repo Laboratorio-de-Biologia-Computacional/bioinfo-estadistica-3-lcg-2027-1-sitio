@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>De FASTQ a matriz: inspeccionar las lecturas y enviar el trabajo</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="03-fastq-y-cola_files/libs/clipboard/clipboard.min.js"></script>
+<script src="03-fastq-y-cola_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="03-fastq-y-cola_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="03-fastq-y-cola_files/libs/quarto-html/popper.min.js"></script>
+<script src="03-fastq-y-cola_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="03-fastq-y-cola_files/libs/quarto-html/anchor.min.js"></script>
+<link href="03-fastq-y-cola_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="03-fastq-y-cola_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="03-fastq-y-cola_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="03-fastq-y-cola_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="03-fastq-y-cola_files/libs/bootstrap/bootstrap-138a6193a3bd40baf1e627da441a4734.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#objetivo" id="toc-objetivo" class="nav-link active" data-scroll-target="#objetivo">Objetivo</a></li>
+  <li><a href="#antes-de-empezar" id="toc-antes-de-empezar" class="nav-link" data-scroll-target="#antes-de-empezar">Antes de empezar</a></li>
+  <li><a href="#parte-1-inspeccionar-las-lecturas-12-min" id="toc-parte-1-inspeccionar-las-lecturas-12-min" class="nav-link" data-scroll-target="#parte-1-inspeccionar-las-lecturas-12-min">Parte 1 · Inspeccionar las lecturas (12 min)</a>
+  <ul class="collapse">
+  <li><a href="#las-primeras-lecturas" id="toc-las-primeras-lecturas" class="nav-link" data-scroll-target="#las-primeras-lecturas">1.1 Las primeras lecturas</a></li>
+  <li><a href="#cuánto-mide-cada-lectura" id="toc-cuánto-mide-cada-lectura" class="nav-link" data-scroll-target="#cuánto-mide-cada-lectura">1.2 Cuánto mide cada lectura</a></li>
+  <li><a href="#separar-el-código-de-barras-del-umi" id="toc-separar-el-código-de-barras-del-umi" class="nav-link" data-scroll-target="#separar-el-código-de-barras-del-umi">1.3 Separar el código de barras del UMI</a></li>
+  <li><a href="#la-profundidad" id="toc-la-profundidad" class="nav-link" data-scroll-target="#la-profundidad">1.4 La profundidad</a></li>
+  </ul></li>
+  <li><a href="#parte-2-enviar-el-trabajo-a-la-cola-13-min" id="toc-parte-2-enviar-el-trabajo-a-la-cola-13-min" class="nav-link" data-scroll-target="#parte-2-enviar-el-trabajo-a-la-cola-13-min">Parte 2 · Enviar el trabajo a la cola (13 min)</a>
+  <ul class="collapse">
+  <li><a href="#el-guion-de-envío" id="toc-el-guion-de-envío" class="nav-link" data-scroll-target="#el-guion-de-envío">2.1 El guion de envío</a></li>
+  <li><a href="#enviarlo" id="toc-enviarlo" class="nav-link" data-scroll-target="#enviarlo">2.2 Enviarlo</a></li>
+  <li><a href="#comprobar-que-entró" id="toc-comprobar-que-entró" class="nav-link" data-scroll-target="#comprobar-que-entró">2.3 Comprobar que entró</a></li>
+  <li><a href="#cuando-termine" id="toc-cuando-termine" class="nav-link" data-scroll-target="#cuando-termine">2.4 Cuando termine</a></li>
+  </ul></li>
+  <li><a href="#lo-que-te-llevas" id="toc-lo-que-te-llevas" class="nav-link" data-scroll-target="#lo-que-te-llevas">Lo que te llevas</a></li>
+  <li><a href="#para-pensar" id="toc-para-pensar" class="nav-link" data-scroll-target="#para-pensar">Para pensar</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">De FASTQ a matriz: inspeccionar las lecturas y enviar el trabajo</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+<p class="subtitle lead">Sesión 03 · 25 de agosto de 2026</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="objetivo" class="level2">
+<h2 class="anchored" data-anchor-id="objetivo">Objetivo</h2>
+<p>Leer un FASTQ real desde la línea de comandos, localizar el código de barras y el UMI, estimar la profundidad, y enviar un trabajo de cuantificación al gestor de colas.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Costo de esta práctica
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>25 min en clase · el trabajo enviado corre solo.</strong> La cuantificación tarda más que la sesión: se envía hoy y se recoge el jueves 27.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Importante</span>Este guion NO se ejecuta desde R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Todos los bloques son de <strong>línea de comandos</strong> y se corren en la terminal del clúster. Están en un <code>.qmd</code> para que quede el registro de lo que se hizo, pero el notebook no los ejecuta: cada bloque lleva <code>eval: false</code>.</p>
+<p>Copiar y pegar bloque por bloque, mirando la salida de cada uno antes de pasar al siguiente.</p>
+</div>
+</div>
+</section>
+<section id="antes-de-empezar" class="level2">
+<h2 class="anchored" data-anchor-id="antes-de-empezar">Antes de empezar</h2>
+<p>Todas las rutas se declaran aquí y en ningún otro lugar del guion.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carga el entorno del curso: pone cellranger y R en el PATH</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> /mnt/data/bioinfo3/compartido/setup-curso.sh</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># $REFERENCIA y $DATOS los define setup-curso.sh: NO se redefinen aquí.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   $REFERENCIA -&gt; la referencia GRCh38</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   $DATOS      -&gt; la carpeta del dataset de la clase. OJO: apunta YA a</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#                  .../datasets/manual_5k_pbmc_NGSC3_ch5_fastqs, no al</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#                  directorio que la contiene. Dentro están las dos</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#                  bibliotecas, gex_1 y gex_2, más CHECKSUMS.md5 y</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#                  PROCEDENCIA.md.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Para explorar los archivos usamos UNA biblioteca; para cuantificar, las dos.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="va">BIBLIOTECA</span><span class="op">=</span><span class="va">$DATOS</span>/manual_5k_pbmc_NGSC3_ch5_gex_1</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Tu directorio de trabajo, donde SÍ puedes escribir.</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># NO uses $HOME: su cuota es de 5 GB y la salida de cellranger no cabe.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="va">TRABAJO</span><span class="op">=</span>/mnt/data/bioinfo3/<span class="va">$USER</span>/sesion03</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$TRABAJO</span><span class="st">"</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">"</span><span class="va">$TRABAJO</span><span class="st">"</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Qué debe salir, y cómo leerlo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Seis archivos y unos 7.7 GB.</strong> Así:</p>
+<pre><code>349M  ..._gex_1_S1_L001_I1_001.fastq.gz
+1.1G  ..._gex_1_S1_L001_R1_001.fastq.gz
+2.5G  ..._gex_1_S1_L001_R2_001.fastq.gz
+348M  ..._gex_1_S1_L002_I1_001.fastq.gz
+1.1G  ..._gex_1_S1_L002_R1_001.fastq.gz
+2.5G  ..._gex_1_S1_L002_R2_001.fastq.gz</code></pre>
+<p>Tres cosas que ya se leen aquí, antes de abrir un solo archivo:</p>
+<ul>
+<li><strong><code>L001</code> y <code>L002</code> son dos carriles</strong> de la misma celda de flujo, no dos muestras. La misma biblioteca se repartió en dos, y el cuantificador los junta. Por eso cada trío aparece dos veces.</li>
+<li><strong>R2 pesa más del doble que R1</strong> porque es más del doble de largo: R1 lleva solo las etiquetas —código de barras y UMI—, R2 lleva el transcrito. Esa asimetría es la de la sesión 01, ahora en gigabytes.</li>
+<li><strong><code>I1</code> es el índice de muestra</strong>, y pesa poco: son unas pocas bases.</li>
+</ul>
+<p>Y esto es <strong>una</strong> biblioteca de las dos. La corrida completa usa <code>gex_1</code> y <code>gex_2</code>: del orden de 15 GB. Ahí se ve por qué el directorio de trabajo no puede ser <code>$HOME</code>, cuya cuota es de 5 GB.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>No descomprimir «para verlos»
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Los FASTQ están comprimidos y pesan decenas de gigabytes descomprimidos. Descomprimir uno llena el disco compartido del grupo. <strong>Todo lo que sigue lee los archivos comprimidos</strong>, sin tocarlos.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="parte-1-inspeccionar-las-lecturas-12-min" class="level2">
+<h2 class="anchored" data-anchor-id="parte-1-inspeccionar-las-lecturas-12-min">Parte 1 · Inspeccionar las lecturas (12 min)</h2>
+<section id="las-primeras-lecturas" class="level3">
+<h3 class="anchored" data-anchor-id="las-primeras-lecturas">1.1 Las primeras lecturas</h3>
+<p>Un archivo FASTQ tiene <strong>cuatro líneas por lectura</strong>: identificador, secuencia, un <code>+</code>, y las calidades. Ver las primeras dos lecturas de cada archivo:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_R1_001.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-8</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"-----"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_R2_001.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-8</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En macOS <code>zcat</code> puede quejarse; ahí se usa <code>gzcat</code> o <code>gunzip -c</code>. En el clúster, que es Linux, <code>zcat</code> funciona.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Cómo leer lo que acaba de salir
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ocho líneas son <strong>dos lecturas</strong>: cada una ocupa cuatro, siempre en este orden. Ésta es la primera del archivo:</p>
+<pre><code>@A00836:335:H2LJYDSXY:1:1101:6641:1031 1:N:0:CACGCCTT   1. identificador
+ANCTGTCAGTAAGACTTACTTGTGGTTA                            2. la secuencia
++                                                       3. separador
+:#FFFFFFFFFFFFFFFFFFFFFFFFFF                            4. las calidades</code></pre>
+<p><strong>El identificador no es un nombre: son ocho campos.</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Campo</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>A00836</code></td>
+<td>instrumento</td>
+<td>un NovaSeq</td>
+</tr>
+<tr class="even">
+<td><code>335</code></td>
+<td>corrida</td>
+<td>la número 335 de esa máquina</td>
+</tr>
+<tr class="odd">
+<td><code>H2LJYDSXY</code></td>
+<td>celda de flujo</td>
+<td>su identificador único</td>
+</tr>
+<tr class="even">
+<td><code>1</code></td>
+<td>carril</td>
+<td>de los dos que viste en el <code>ls</code></td>
+</tr>
+<tr class="odd">
+<td><code>1101</code></td>
+<td><strong>tile</strong></td>
+<td>el rectángulo de la celda donde estaba el grupo</td>
+</tr>
+<tr class="even">
+<td><code>6641</code> <code>1031</code></td>
+<td><strong>x, y</strong></td>
+<td>dónde exactamente, dentro de ese rectángulo</td>
+</tr>
+<tr class="odd">
+<td><code>1:N:0:</code></td>
+<td>lectura, filtro, control</td>
+<td>R1, <strong>no</strong> filtrada, sin banderas</td>
+</tr>
+<tr class="even">
+<td><code>CACGCCTT</code></td>
+<td>índice</td>
+<td>qué muestra es</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>Dos <code>N</code> distintas en el mismo registro
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La <code>N</code> de <code>1:N:0:</code> <strong>no es una base ambigua</strong>. Significa «esta lectura <strong>no</strong> fue filtrada por calidad», es decir, que pasó. Una <code>Y</code> ahí sería la mala noticia.</p>
+<p>La <code>N</code> de la secuencia sí es una base que el secuenciador no pudo determinar. Mismo carácter, significados opuestos, a treinta caracteres de distancia.</p>
+</div>
+</div>
+<p><strong>La secuencia y las calidades miden lo mismo: 28.</strong> Un carácter de calidad por base — 16 de código de barras más 12 de UMI. Si alguna vez no coinciden, el archivo está corrupto.</p>
+<p><strong>Y las dos líneas dicen lo mismo dos veces.</strong> La secuencia tiene una <code>N</code> en la posición 2; la calidad tiene <code>#</code> en la posición 2. Con la escala Phred+33, <code>#</code> vale <strong>2</strong>, que es el mínimo, y <code>F</code> vale <strong>37</strong>, que es el máximo práctico. El secuenciador no supo qué base era, y lo declara en los dos sitios.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Verás muy pocos caracteres distintos en la línea de calidades: casi todo <code>F</code>, algún <code>#</code>. No es que el archivo esté simplificado — los instrumentos recientes <strong>agrupan</strong> las calidades en unos pocos valores en vez de dar el rango continuo que daban los antiguos.</p>
+</div>
+</div>
+<p><strong>Ahora compara los identificadores de las dos lecturas.</strong> Cambia la <code>x</code> —6641 y 12210— pero el tile es <code>1101</code> en las dos, y la <code>y</code> es <code>1031</code> en las dos. Las primeras lecturas del archivo salieron <strong>del mismo punto físico</strong> de la celda de flujo. Guarda esa observación: en un momento explica algo que parece un problema y no lo es.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Importante</span>La pregunta antes de seguir
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Mira las dos secuencias. <strong>No se parecen en nada</strong>: una es corta y la otra larga. ¿Por qué el mismo experimento produce dos archivos tan distintos?</p>
+</div>
+</div>
+</section>
+<section id="cuánto-mide-cada-lectura" class="level3">
+<h3 class="anchored" data-anchor-id="cuánto-mide-cada-lectura">1.2 Cuánto mide cada lectura</h3>
+<p>Ésta es la medición que decide todo lo demás:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> R <span class="kw">in</span> R1 R2<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">printf</span> <span class="st">"%s: "</span> <span class="st">"</span><span class="va">$R</span><span class="st">"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_<span class="va">${R}</span>_001.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR%4==2 {print length($0); exit}'</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Lo que significa el número de R1:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>R1 mide</th>
+<th>Química</th>
+<th>Composición</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>26 nt</td>
+<td>10x v2</td>
+<td>16 de código de barras + 10 de UMI</td>
+</tr>
+<tr class="even">
+<td><strong>28 nt</strong></td>
+<td><strong>10x v3</strong></td>
+<td><strong>16 de código de barras + 12 de UMI</strong></td>
+</tr>
+<tr class="odd">
+<td>otra cosa</td>
+<td>no es 10x estándar</td>
+<td>hay que averiguarlo antes de cuantificar</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>R1 no contiene transcrito.</strong> Son solo las etiquetas: de qué célula viene la molécula y qué molécula es. La secuencia biológica está entera en R2. Confundir esto es el error que hace que un cuantificador devuelva una matriz vacía.</p>
+</div>
+</div>
+</section>
+<section id="separar-el-código-de-barras-del-umi" class="level3">
+<h3 class="anchored" data-anchor-id="separar-el-código-de-barras-del-umi">1.3 Separar el código de barras del UMI</h3>
+<p>Con la longitud ya medida, se pueden extraer los dos campos:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_R1_001.fastq.gz <span class="dt">\</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR%4==2 {print substr($0,1,16), substr($0,17,12)}'</span> <span class="dt">\</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">head</span> <span class="at">-5</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>La primera columna es el <strong>código de barras de célula</strong> y la segunda el <strong>identificador molecular único</strong>. Las dos son la razón de que esta técnica pueda contar moléculas y no solo lecturas.</p>
+<section id="una-trampa-que-está-en-tu-propia-pantalla" class="level4">
+<h4 class="anchored" data-anchor-id="una-trampa-que-está-en-tu-propia-pantalla">Una trampa que está en tu propia pantalla</h4>
+<p>Mira la <strong>segunda base</strong> de los cinco códigos de barras que acabas de imprimir. Es una <code>N</code> en los cinco.</p>
+<p>La conclusión inmediata sería que falló el ciclo 2 de la secuenciación. Es una hipótesis razonable, y es <strong>falsa</strong>. Compruébalo:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_L001_R1_001.fastq.gz <span class="dt">\</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR%4==2'</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-100000</span> <span class="dt">\</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{for(i=1;i&lt;=16;i++) if(substr($0,i,1)=="N") n[i]++}</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">         END{for(i=1;i&lt;=16;i++) printf "ciclo %2d: %6d N (%.2f%%)\n", i, n[i]+0, 100*n[i]/NR}'</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>En las primeras cien mil lecturas, el ciclo 2 tiene un <strong>0.02 %</strong> de <code>N</code>. Ningún ciclo está roto.</p>
+<p>Pero si la tasa es 0.02 %, que las <strong>cinco primeras</strong> lecturas tengan <code>N</code> justo ahí es un suceso de probabilidad 0.0002⁵, del orden de 10⁻¹⁹. No ocurrió por azar. Ocurrió porque <strong>están agrupadas</strong>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">Z</span><span class="op">=</span><span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_L001_R1_001.fastq.gz</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$Z</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR%4==2'</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-1000</span> <span class="dt">\</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{if(substr($0,2,1)=="N") c++} END{printf "primeras 1000  : %.1f%%\n", 100*(c+0)/NR}'</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$Z</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR%4==2'</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="at">-n</span> <span class="st">'200001,201000p'</span> <span class="dt">\</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{if(substr($0,2,1)=="N") c++} END{printf "lecturas 200k+ : %.1f%%\n", 100*(c+0)/NR}'</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>0.7 % al principio contra 0.0 % en medio.</strong></p>
+<p>Y ya sabías por qué, aunque quizá no lo notaste: los identificadores de las dos primeras lecturas decían <code>1101</code> y <code>1031</code> los dos. <strong>Mismo tile, misma coordenada <code>y</code>.</strong> El encabezado te estaba diciendo desde el principio que esas lecturas venían del mismo sitio.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Importante</span><code>head</code> sobre un FASTQ no es una muestra al azar
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un FASTQ sale ordenado por la posición física de cada grupo en la celda de flujo: primero el tile 1101 entero, luego el siguiente. Las primeras lecturas del archivo vienen todas del mismo punto — y si ese punto estaba sucio, las primeras lecturas lo estarán.</p>
+<p><code>head</code> sirve para ver la <strong>forma</strong> de los datos: cuántas líneas tiene un registro, dónde acaba el código de barras, qué longitud tiene R1. <strong>No sirve para juzgar su calidad.</strong> Para eso hay que muestrear a lo largo del archivo, que es lo que hace FastQC y lo que acabas de hacer a mano.</p>
+<p>La misma trampa aparece con otras herramientas: varias que dicen «muestrear» leen en realidad el principio del archivo. Si además ese archivo está ordenado —por coordenada, por posición en la celda—, lo que miden es una esquina del experimento y no el experimento.</p>
+<p>Y sobre las <code>N</code> en sí: no arruinan el dato. Cell Ranger corrige códigos de barras con <strong>una</strong> discrepancia contra su lista blanca, así que una sola <code>N</code> casi siempre se recupera. Es justamente para esto que existe ese paso.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="la-profundidad" class="level3">
+<h3 class="anchored" data-anchor-id="la-profundidad">1.4 La profundidad</h3>
+<p>Cuatro líneas por lectura, así que el total de líneas entre cuatro:</p>
+<p>La cuenta se <strong>guarda en una variable</strong>, no se imprime y ya: la vuelve a usar el bloque siguiente. Contar exige descomprimir el archivo entero —no hay atajo—, y son 2.2 GB comprimidos: repetirlo sería pagar dos veces lo mismo.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="va">LECTURAS_R1</span><span class="op">=</span><span class="va">$(</span><span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_R1_001.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END {print NR/4}'</span><span class="va">)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$LECTURAS_R1</span><span class="st"> lecturas"</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>Esto tarda, y estamos todas en la misma máquina
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Descomprimir los 2.2 GB de R1 lleva del orden de un minuto o dos. R2 es más del doble. Si diez personas lo lanzan a la vez en el nodo de acceso —4 núcleos compartidos—, cada una espera mucho más que eso y el nodo se atasca para el grupo.</p>
+<p><strong>Lánzalo una sola vez y espera a que termine antes de seguir.</strong> Si el aula va con prisa, se reparte por mitades: unas cuentan mientras otras leen.</p>
+</div>
+</div>
+<p>Y una comprobación que conviene hacer siempre, porque si falla nada de lo que sigue tiene sentido:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">LECTURAS_R2</span><span class="op">=</span><span class="va">$(</span><span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_R2_001.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END{print NR/4}'</span><span class="va">)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"R1=</span><span class="va">$LECTURAS_R1</span><span class="st">  R2=</span><span class="va">$LECTURAS_R2</span><span class="st">"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">"</span><span class="va">$LECTURAS_R1</span><span class="st">"</span> <span class="ot">=</span> <span class="st">"</span><span class="va">$LECTURAS_R2</span><span class="st">"</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"OK: emparejados"</span> <span class="kw">||</span> <span class="bu">echo</span> <span class="st">"PROBLEMA: no coinciden"</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Tienen que coincidir: cada lectura de R1 —código de barras y UMI— es la pareja de una de R2 —el inserto—. Si no coinciden, un archivo se truncó al copiarse, y el cuantificador trabajaría emparejando lecturas que no van juntas.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Qué debe salir, y qué significa
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>106485650 lecturas
+R1=106485650  R2=106485650
+OK: emparejados</code></pre>
+<p><strong>106.5 millones de lecturas</strong>, y las dos direcciones cuadran exactamente.</p>
+<p>Ahora conviértelo en algo interpretable, que es lo que se pide en la actividad:</p>
+<ul>
+<li>Ésta es <strong>una</strong> biblioteca. Con <code>gex_2</code>, la corrida completa ronda los <strong>213 millones</strong> de lecturas.</li>
+<li>El experimento apuntaba a unas <strong>5 000 células</strong>. Eso da del orden de <strong>40 000 lecturas por célula</strong>.</li>
+</ul>
+<p>Esa última cifra es la que de verdad se compara entre experimentos. Los números absolutos —106 M, 213 M— no dicen nada por sí solos: cien millones de lecturas son muchas para quinientas células y pocas para cincuenta mil. <strong>La profundidad se mide por célula, no por corrida.</strong></p>
+<p>Guárdala. En la sesión 04, cuando se decida qué gotas tienen célula, el número de lecturas por célula es lo que separa una célula pequeña de una gota con ruido.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>Un número que todavía no puedes dar por bueno
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>40 000 lecturas por célula sale de dividir entre <strong>5 000</strong>, que es lo que el experimento <em>pretendía</em> capturar, no lo que capturó. Cuántas células hay de verdad es justamente lo que decide Cell Ranger, y se discute en la sesión siguiente.</p>
+<p>Así que es una estimación del orden de magnitud, y está bien usarla como tal. Cuando la corrida termine, <code>metrics_summary.csv</code> trae la cifra medida: ahí se compara y se ve cuánto se acercaba.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Lo que se entrega de esta parte
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Los comandos usados y el número de lecturas. Anótalo: hace falta para la tabla de la actividad siguiente.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="parte-2-enviar-el-trabajo-a-la-cola-13-min" class="level2">
+<h2 class="anchored" data-anchor-id="parte-2-enviar-el-trabajo-a-la-cola-13-min">Parte 2 · Enviar el trabajo a la cola (13 min)</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Importante</span>Nunca en el nodo de acceso
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El nodo por el que entras es para escribir y enviar, <strong>no para calcular</strong>. Un trabajo pesado ahí deja el clúster inservible para todo el grupo. Todo lo que calcula va a la cola con <code>sbatch</code>.</p>
+</div>
+</div>
+<section id="el-guion-de-envío" class="level3">
+<h3 class="anchored" data-anchor-id="el-guion-de-envío">2.1 El guion de envío</h3>
+<p>Se escribe un archivo con las peticiones al gestor arriba y el comando abajo:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Las rutas se escriben DENTRO del guion, no se dejan como variables: el nodo</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># de cómputo no hereda tu entorno, así que un guion con $BIBLIOTECA dentro puede</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># llegar allá sin saber a qué apunta.</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Lo mismo vale para el PATH: el nodo tampoco hereda el `source` que hiciste</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># arriba, así que cellranger hay que ponerlo en el PATH otra vez, allá. Por eso</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># esa línea lleva \$PATH con barra: se expande EN EL NODO, no aquí.</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;</span> cuantificar.sh <span class="op">&lt;&lt;FIN</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="st">#!/bin/bash</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --job-name=cuant-pbmc</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --cpus-per-task=8</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --mem=32G</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --time=04:00:00</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --output=cuant-%j.out</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --error=cuant-%j.err</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="st">export PATH=/mnt/data/bioinfo3/compartido/10x/cellranger-10.1.0:</span><span class="dt">\$</span><span class="st">PATH</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="st">cellranger count --id=pbmc_5k --transcriptome=</span><span class="va">$REFERENCIA</span><span class="st"> --fastqs=</span><span class="va">$DATOS</span><span class="st">/manual_5k_pbmc_NGSC3_ch5_gex_1,</span><span class="va">$DATOS</span><span class="st">/manual_5k_pbmc_NGSC3_ch5_gex_2 --sample=manual_5k_pbmc_NGSC3_ch5_gex_1,manual_5k_pbmc_NGSC3_ch5_gex_2 --create-bam=false --localcores=8 --localmem=30</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="op">FIN</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x cuantificar.sh</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Leerlo ANTES de enviarlo: las rutas tienen que aparecer completas, no como</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co"># nombres de variable. Si ves "$REFERENCIA" en la salida, algo salió mal.</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> cuantificar.sh</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>%j</code> lo sustituye el gestor por el identificador del trabajo, así que cada envío deja su propio registro y las corridas no se pisan entre sí.</p>
+<p>El comando va en <strong>una sola línea</strong> a propósito. Dentro de un heredoc sin comillas, una barra de continuación al final de la línea es un escape que bash consume junto con el salto: el guion funcionaría igual, pero el archivo que lees dejaría de parecerse al que escribiste, y eso estorba justo cuando hay que depurarlo.</p>
+<p>Por qué esos números, que es lo que hay que poder justificar:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Recurso</th>
+<th>Pedido</th>
+<th>Si te quedas corto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Memoria</td>
+<td>32 G</td>
+<td>el trabajo <strong>muere sin explicación clara</strong>, horas después</td>
+</tr>
+<tr class="even">
+<td>Tiempo</td>
+<td>4 h</td>
+<td>se corta a la mitad y no deja resultado</td>
+</tr>
+<tr class="odd">
+<td>Núcleos</td>
+<td>8</td>
+<td>tarda más, pero <strong>termina</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Advertencia
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pedir margen en memoria y tiempo; en núcleos no hace falta exagerar. Un trabajo que pide más de lo que hay <strong>nunca entra en la cola</strong>: se queda esperando un nodo que no existe.</p>
+<p>Nota que <code>--localmem=30</code> es menor que <code>--mem=32G</code>. Es deliberado: si el proceso cree que tiene toda la memoria del trabajo, la agota y el gestor lo mata.</p>
+</div>
+</div>
+</section>
+<section id="enviarlo" class="level3">
+<h3 class="anchored" data-anchor-id="enviarlo">2.2 Enviarlo</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> cuantificar.sh</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>La respuesta es una línea con el <strong>identificador del trabajo</strong>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Importante</span>Anota ese número
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Es lo que se entrega de esta parte, y es cómo vas a encontrar tu trabajo el jueves. Sin él no sabes cuál de todos los de la cola es el tuyo.</p>
+</div>
+</div>
+</section>
+<section id="comprobar-que-entró" class="level3">
+<h3 class="anchored" data-anchor-id="comprobar-que-entró">2.3 Comprobar que entró</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="st">"</span><span class="va">$USER</span><span class="st">"</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Lo que dice la columna de estado:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Estado</th>
+<th>Significa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>PD</code></td>
+<td>en espera — pendiente de que haya nodo libre</td>
+</tr>
+<tr class="even">
+<td><code>R</code></td>
+<td>corriendo</td>
+</tr>
+<tr class="odd">
+<td><em>(no aparece)</em></td>
+<td>terminó, o nunca entró</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Que no aparezca <strong>no</strong> quiere decir que salió bien. Terminar y terminar correctamente son cosas distintas: eso se ve en el archivo de salida.</p>
+</div>
+</div>
+</section>
+<section id="cuando-termine" class="level3">
+<h3 class="anchored" data-anchor-id="cuando-termine">2.4 Cuando termine</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># El registro del gestor, con el identificador que anotaste</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-20</span> cuant-<span class="op">&lt;</span>IDENTIFICADOR<span class="op">&gt;</span>.out</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-20</span> cuant-<span class="op">&lt;</span>IDENTIFICADOR<span class="op">&gt;</span>.err</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Y lo que el gestor sabe del trabajo ya terminado</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sacct</span> <span class="at">-j</span> <span class="op">&lt;</span>IDENTIFICADOR<span class="op">&gt;</span> --format=JobID,State,Elapsed,MaxRSS,ReqMem</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>sacct</code> es la que contesta la pregunta que importa cuando algo falla: <strong><code>MaxRSS</code></strong> dice cuánta memoria usó de verdad. Si se acercó a lo pedido y el estado es <code>OUT_OF_MEMORY</code>, ya sabes qué cambiar en el siguiente envío.</p>
+<hr>
+</section>
+</section>
+<section id="lo-que-te-llevas" class="level2">
+<h2 class="anchored" data-anchor-id="lo-que-te-llevas">Lo que te llevas</h2>
+<ul>
+<li>Un FASTQ se lee <strong>comprimido</strong>. Descomprimir para mirar llena el disco del grupo.</li>
+<li>R1 no tiene transcrito: son 16 nt de código de barras más 12 de UMI en la química v3. La secuencia biológica está en R2.</li>
+<li>La longitud de R1 identifica la química, y la química determina cómo hay que llamar al cuantificador.</li>
+<li>El nodo de acceso no calcula. Todo lo pesado va a la cola.</li>
+<li>Del gestor de colas se piden memoria y tiempo <strong>con margen</strong>; los núcleos solo cambian cuánto tarda.</li>
+<li>El identificador del trabajo es lo que permite encontrarlo después. Sin él, el trabajo se pierde entre los del grupo.</li>
+</ul>
+</section>
+<section id="para-pensar" class="level2">
+<h2 class="anchored" data-anchor-id="para-pensar">Para pensar</h2>
+<p>Enviaste el trabajo con 32 G de memoria y cuatro horas. Supón que mañana te llega el conjunto completo en vez del subconjunto: <strong>diez veces más lecturas</strong>.</p>
+<p>¿Multiplicas los dos números por diez? ¿Solo uno? ¿Cuál, y por qué? Y una que no se responde corriendo nada: ¿qué mirarías del trabajo de hoy para estimarlo en vez de adivinar?</p>
+<!-- -->
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "De FASTQ a matriz: inspeccionar las lecturas y enviar el trabajo"</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Sesión 03 · 25 de agosto de 2026"</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co">  eval: false</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Quarto deduce el motor del PRIMER bloque de código. Este guion abre con un</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"># bloque de línea de comandos, así que sin esta línea se va a Jupyter —que el</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co"># entorno del módulo no instala— y el render falla con «Jupyter is not</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co"># available». Los demás notebooks de esta carpeta abren con un bloque de R y no</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co"># lo necesitan. Se declara de forma explícita para que el render no dependa del</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co"># orden de los bloques.</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="an">engine:</span><span class="co"> knitr</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> es</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Objetivo</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>Leer un FASTQ real desde la línea de comandos, localizar el código de barras y</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>el UMI, estimar la profundidad, y enviar un trabajo de cuantificación al gestor</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>de colas.</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## Costo de esta práctica</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>**25 min en clase · el trabajo enviado corre solo.** La cuantificación tarda</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>más que la sesión: se envía hoy y se recoge el jueves 27.</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Este guion NO se ejecuta desde R</span></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>Todos los bloques son de **línea de comandos** y se corren en la terminal del</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>clúster. Están en un <span class="in">`.qmd`</span> para que quede el registro de lo que se hizo, pero</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>el notebook no los ejecuta: cada bloque lleva <span class="in">`eval: false`</span>.</span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>Copiar y pegar bloque por bloque, mirando la salida de cada uno antes de pasar</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>al siguiente.</span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## Antes de empezar</span></span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>Todas las rutas se declaran aquí y en ningún otro lugar del guion.</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: rutas</span></span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Carga el entorno del curso: pone cellranger y R en el PATH</span></span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> /mnt/data/bioinfo3/compartido/setup-curso.sh</span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a><span class="co"># $REFERENCIA y $DATOS los define setup-curso.sh: NO se redefinen aquí.</span></span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a><span class="co">#   $REFERENCIA -&gt; la referencia GRCh38</span></span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a><span class="co">#   $DATOS      -&gt; la carpeta del dataset de la clase. OJO: apunta YA a</span></span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a><span class="co">#                  .../datasets/manual_5k_pbmc_NGSC3_ch5_fastqs, no al</span></span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a><span class="co">#                  directorio que la contiene. Dentro están las dos</span></span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a><span class="co">#                  bibliotecas, gex_1 y gex_2, más CHECKSUMS.md5 y</span></span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a><span class="co">#                  PROCEDENCIA.md.</span></span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a><span class="co"># Para explorar los archivos usamos UNA biblioteca; para cuantificar, las dos.</span></span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a><span class="va">BIBLIOTECA</span><span class="op">=</span><span class="va">$DATOS</span>/manual_5k_pbmc_NGSC3_ch5_gex_1</span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Tu directorio de trabajo, donde SÍ puedes escribir.</span></span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a><span class="co"># NO uses $HOME: su cuota es de 5 GB y la salida de cellranger no cabe.</span></span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a><span class="va">TRABAJO</span><span class="op">=</span>/mnt/data/bioinfo3/<span class="va">$USER</span>/sesion03</span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$TRABAJO</span><span class="st">"</span></span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">"</span><span class="va">$TRABAJO</span><span class="st">"</span></span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span></span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a><span class="fu">## Qué debe salir, y cómo leerlo</span></span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>**Seis archivos y unos 7.7 GB.** Así:</span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a><span class="in">349M  ..._gex_1_S1_L001_I1_001.fastq.gz</span></span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a><span class="in">1.1G  ..._gex_1_S1_L001_R1_001.fastq.gz</span></span>
+<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a><span class="in">2.5G  ..._gex_1_S1_L001_R2_001.fastq.gz</span></span>
+<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a><span class="in">348M  ..._gex_1_S1_L002_I1_001.fastq.gz</span></span>
+<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a><span class="in">1.1G  ..._gex_1_S1_L002_R1_001.fastq.gz</span></span>
+<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a><span class="in">2.5G  ..._gex_1_S1_L002_R2_001.fastq.gz</span></span>
+<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a>Tres cosas que ya se leen aquí, antes de abrir un solo archivo:</span>
+<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`L001` y `L002` son dos carriles** de la misma celda de flujo, no dos</span>
+<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a>  muestras. La misma biblioteca se repartió en dos, y el cuantificador los junta.</span>
+<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a>  Por eso cada trío aparece dos veces.</span>
+<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**R2 pesa más del doble que R1** porque es más del doble de largo: R1 lleva</span>
+<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a>  solo las etiquetas —código de barras y UMI—, R2 lleva el transcrito. Esa</span>
+<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a>  asimetría es la de la sesión 01, ahora en gigabytes.</span>
+<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`I1` es el índice de muestra**, y pesa poco: son unas pocas bases.</span>
+<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a>Y esto es **una** biblioteca de las dos. La corrida completa usa <span class="in">`gex_1`</span> y</span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a><span class="in">`gex_2`</span>: del orden de 15 GB. Ahí se ve por qué el directorio de trabajo no puede</span>
+<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a>ser <span class="in">`$HOME`</span>, cuya cuota es de 5 GB.</span>
+<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## No descomprimir «para verlos»</span></span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a>Los FASTQ están comprimidos y pesan decenas de gigabytes descomprimidos.</span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a>Descomprimir uno llena el disco compartido del grupo. **Todo lo que sigue lee</span>
+<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a>los archivos comprimidos**, sin tocarlos.</span>
+<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a><span class="fu">## Parte 1 · Inspeccionar las lecturas (12 min)</span></span>
+<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1.1 Las primeras lecturas</span></span>
+<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a>Un archivo FASTQ tiene **cuatro líneas por lectura**: identificador, secuencia,</span>
+<span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a>un <span class="in">`+`</span>, y las calidades. Ver las primeras dos lecturas de cada archivo:</span>
+<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
+<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: primeras</span></span>
+<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_R1_001.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-8</span></span>
+<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"-----"</span></span>
+<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_R2_001.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-8</span></span>
+<span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb16-130"><a href="#cb16-130" aria-hidden="true" tabindex="-1"></a>En macOS <span class="in">`zcat`</span> puede quejarse; ahí se usa <span class="in">`gzcat`</span> o <span class="in">`gunzip -c`</span>. En el clúster,</span>
+<span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a>que es Linux, <span class="in">`zcat`</span> funciona.</span>
+<span id="cb16-132"><a href="#cb16-132" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-133"><a href="#cb16-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-134"><a href="#cb16-134" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb16-135"><a href="#cb16-135" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cómo leer lo que acaba de salir</span></span>
+<span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-137"><a href="#cb16-137" aria-hidden="true" tabindex="-1"></a>Ocho líneas son **dos lecturas**: cada una ocupa cuatro, siempre en este orden.</span>
+<span id="cb16-138"><a href="#cb16-138" aria-hidden="true" tabindex="-1"></a>Ésta es la primera del archivo:</span>
+<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a><span class="in">@A00836:335:H2LJYDSXY:1:1101:6641:1031 1:N:0:CACGCCTT   1. identificador</span></span>
+<span id="cb16-142"><a href="#cb16-142" aria-hidden="true" tabindex="-1"></a><span class="in">ANCTGTCAGTAAGACTTACTTGTGGTTA                            2. la secuencia</span></span>
+<span id="cb16-143"><a href="#cb16-143" aria-hidden="true" tabindex="-1"></a><span class="in">+                                                       3. separador</span></span>
+<span id="cb16-144"><a href="#cb16-144" aria-hidden="true" tabindex="-1"></a><span class="in">:#FFFFFFFFFFFFFFFFFFFFFFFFFF                            4. las calidades</span></span>
+<span id="cb16-145"><a href="#cb16-145" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-146"><a href="#cb16-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-147"><a href="#cb16-147" aria-hidden="true" tabindex="-1"></a>**El identificador no es un nombre: son ocho campos.**</span>
+<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-149"><a href="#cb16-149" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="pp">|</span> Campo <span class="pp">|</span> Qué es <span class="pp">|</span></span>
+<span id="cb16-150"><a href="#cb16-150" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb16-151"><a href="#cb16-151" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`A00836`</span> <span class="pp">|</span> instrumento <span class="pp">|</span> un NovaSeq <span class="pp">|</span></span>
+<span id="cb16-152"><a href="#cb16-152" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`335`</span> <span class="pp">|</span> corrida <span class="pp">|</span> la número 335 de esa máquina <span class="pp">|</span></span>
+<span id="cb16-153"><a href="#cb16-153" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`H2LJYDSXY`</span> <span class="pp">|</span> celda de flujo <span class="pp">|</span> su identificador único <span class="pp">|</span></span>
+<span id="cb16-154"><a href="#cb16-154" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`1`</span> <span class="pp">|</span> carril <span class="pp">|</span> de los dos que viste en el <span class="in">`ls`</span> <span class="pp">|</span></span>
+<span id="cb16-155"><a href="#cb16-155" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`1101`</span> <span class="pp">|</span> **tile** <span class="pp">|</span> el rectángulo de la celda donde estaba el grupo <span class="pp">|</span></span>
+<span id="cb16-156"><a href="#cb16-156" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`6641`</span> <span class="in">`1031`</span> <span class="pp">|</span> **x, y** <span class="pp">|</span> dónde exactamente, dentro de ese rectángulo <span class="pp">|</span></span>
+<span id="cb16-157"><a href="#cb16-157" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`1:N:0:`</span> <span class="pp">|</span> lectura, filtro, control <span class="pp">|</span> R1, **no** filtrada, sin banderas <span class="pp">|</span></span>
+<span id="cb16-158"><a href="#cb16-158" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`CACGCCTT`</span> <span class="pp">|</span> índice <span class="pp">|</span> qué muestra es <span class="pp">|</span></span>
+<span id="cb16-159"><a href="#cb16-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-160"><a href="#cb16-160" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb16-161"><a href="#cb16-161" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dos `N` distintas en el mismo registro</span></span>
+<span id="cb16-162"><a href="#cb16-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-163"><a href="#cb16-163" aria-hidden="true" tabindex="-1"></a>La <span class="in">`N`</span> de <span class="in">`1:N:0:`</span> **no es una base ambigua**. Significa «esta lectura **no** fue</span>
+<span id="cb16-164"><a href="#cb16-164" aria-hidden="true" tabindex="-1"></a>filtrada por calidad», es decir, que pasó. Una <span class="in">`Y`</span> ahí sería la mala noticia.</span>
+<span id="cb16-165"><a href="#cb16-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-166"><a href="#cb16-166" aria-hidden="true" tabindex="-1"></a>La <span class="in">`N`</span> de la secuencia sí es una base que el secuenciador no pudo determinar.</span>
+<span id="cb16-167"><a href="#cb16-167" aria-hidden="true" tabindex="-1"></a>Mismo carácter, significados opuestos, a treinta caracteres de distancia.</span>
+<span id="cb16-168"><a href="#cb16-168" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-169"><a href="#cb16-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-170"><a href="#cb16-170" aria-hidden="true" tabindex="-1"></a>**La secuencia y las calidades miden lo mismo: 28.** Un carácter de calidad por</span>
+<span id="cb16-171"><a href="#cb16-171" aria-hidden="true" tabindex="-1"></a>base — 16 de código de barras más 12 de UMI. Si alguna vez no coinciden, el</span>
+<span id="cb16-172"><a href="#cb16-172" aria-hidden="true" tabindex="-1"></a>archivo está corrupto.</span>
+<span id="cb16-173"><a href="#cb16-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-174"><a href="#cb16-174" aria-hidden="true" tabindex="-1"></a>**Y las dos líneas dicen lo mismo dos veces.** La secuencia tiene una <span class="in">`N`</span> en la</span>
+<span id="cb16-175"><a href="#cb16-175" aria-hidden="true" tabindex="-1"></a>posición 2; la calidad tiene <span class="in">`#`</span> en la posición 2. Con la escala Phred+33, <span class="in">`#`</span></span>
+<span id="cb16-176"><a href="#cb16-176" aria-hidden="true" tabindex="-1"></a>vale **2**, que es el mínimo, y `F` vale **37**, que es el máximo práctico. El</span>
+<span id="cb16-177"><a href="#cb16-177" aria-hidden="true" tabindex="-1"></a>secuenciador no supo qué base era, y lo declara en los dos sitios.</span>
+<span id="cb16-178"><a href="#cb16-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-179"><a href="#cb16-179" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb16-180"><a href="#cb16-180" aria-hidden="true" tabindex="-1"></a>Verás muy pocos caracteres distintos en la línea de calidades: casi todo <span class="in">`F`</span>,</span>
+<span id="cb16-181"><a href="#cb16-181" aria-hidden="true" tabindex="-1"></a>algún <span class="in">`#`</span>. No es que el archivo esté simplificado — los instrumentos recientes</span>
+<span id="cb16-182"><a href="#cb16-182" aria-hidden="true" tabindex="-1"></a>**agrupan** las calidades en unos pocos valores en vez de dar el rango continuo</span>
+<span id="cb16-183"><a href="#cb16-183" aria-hidden="true" tabindex="-1"></a>que daban los antiguos.</span>
+<span id="cb16-184"><a href="#cb16-184" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-185"><a href="#cb16-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-186"><a href="#cb16-186" aria-hidden="true" tabindex="-1"></a>**Ahora compara los identificadores de las dos lecturas.** Cambia la <span class="in">`x`</span> —6641 y</span>
+<span id="cb16-187"><a href="#cb16-187" aria-hidden="true" tabindex="-1"></a>12210— pero el tile es <span class="in">`1101`</span> en las dos, y la <span class="in">`y`</span> es <span class="in">`1031`</span> en las dos. Las</span>
+<span id="cb16-188"><a href="#cb16-188" aria-hidden="true" tabindex="-1"></a>primeras lecturas del archivo salieron **del mismo punto físico** de la celda de</span>
+<span id="cb16-189"><a href="#cb16-189" aria-hidden="true" tabindex="-1"></a>flujo. Guarda esa observación: en un momento explica algo que parece un problema</span>
+<span id="cb16-190"><a href="#cb16-190" aria-hidden="true" tabindex="-1"></a>y no lo es.</span>
+<span id="cb16-191"><a href="#cb16-191" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-192"><a href="#cb16-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-193"><a href="#cb16-193" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb16-194"><a href="#cb16-194" aria-hidden="true" tabindex="-1"></a><span class="fu">## La pregunta antes de seguir</span></span>
+<span id="cb16-195"><a href="#cb16-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-196"><a href="#cb16-196" aria-hidden="true" tabindex="-1"></a>Mira las dos secuencias. **No se parecen en nada**: una es corta y la otra</span>
+<span id="cb16-197"><a href="#cb16-197" aria-hidden="true" tabindex="-1"></a>larga. ¿Por qué el mismo experimento produce dos archivos tan distintos?</span>
+<span id="cb16-198"><a href="#cb16-198" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-199"><a href="#cb16-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-200"><a href="#cb16-200" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1.2 Cuánto mide cada lectura</span></span>
+<span id="cb16-201"><a href="#cb16-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-202"><a href="#cb16-202" aria-hidden="true" tabindex="-1"></a>Ésta es la medición que decide todo lo demás:</span>
+<span id="cb16-203"><a href="#cb16-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-206"><a href="#cb16-206" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
+<span id="cb16-207"><a href="#cb16-207" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: longitudes</span></span>
+<span id="cb16-208"><a href="#cb16-208" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> R <span class="kw">in</span> R1 R2<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb16-209"><a href="#cb16-209" aria-hidden="true" tabindex="-1"></a>  <span class="bu">printf</span> <span class="st">"%s: "</span> <span class="st">"</span><span class="va">$R</span><span class="st">"</span></span>
+<span id="cb16-210"><a href="#cb16-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_<span class="va">${R}</span>_001.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR%4==2 {print length($0); exit}'</span></span>
+<span id="cb16-211"><a href="#cb16-211" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb16-212"><a href="#cb16-212" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-213"><a href="#cb16-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-214"><a href="#cb16-214" aria-hidden="true" tabindex="-1"></a>Lo que significa el número de R1:</span>
+<span id="cb16-215"><a href="#cb16-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-216"><a href="#cb16-216" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> R1 mide <span class="pp">|</span> Química <span class="pp">|</span> Composición <span class="pp">|</span></span>
+<span id="cb16-217"><a href="#cb16-217" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb16-218"><a href="#cb16-218" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 26 nt <span class="pp">|</span> 10x v2 <span class="pp">|</span> 16 de código de barras + 10 de UMI <span class="pp">|</span></span>
+<span id="cb16-219"><a href="#cb16-219" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **28 nt** | **10x v3** | **16 de código de barras + 12 de UMI** <span class="pp">|</span></span>
+<span id="cb16-220"><a href="#cb16-220" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> otra cosa <span class="pp">|</span> no es 10x estándar <span class="pp">|</span> hay que averiguarlo antes de cuantificar <span class="pp">|</span></span>
+<span id="cb16-221"><a href="#cb16-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-222"><a href="#cb16-222" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb16-223"><a href="#cb16-223" aria-hidden="true" tabindex="-1"></a>**R1 no contiene transcrito.** Son solo las etiquetas: de qué célula viene la</span>
+<span id="cb16-224"><a href="#cb16-224" aria-hidden="true" tabindex="-1"></a>molécula y qué molécula es. La secuencia biológica está entera en R2. Confundir</span>
+<span id="cb16-225"><a href="#cb16-225" aria-hidden="true" tabindex="-1"></a>esto es el error que hace que un cuantificador devuelva una matriz vacía.</span>
+<span id="cb16-226"><a href="#cb16-226" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-227"><a href="#cb16-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-228"><a href="#cb16-228" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1.3 Separar el código de barras del UMI</span></span>
+<span id="cb16-229"><a href="#cb16-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-230"><a href="#cb16-230" aria-hidden="true" tabindex="-1"></a>Con la longitud ya medida, se pueden extraer los dos campos:</span>
+<span id="cb16-231"><a href="#cb16-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-234"><a href="#cb16-234" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
+<span id="cb16-235"><a href="#cb16-235" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: cb-umi</span></span>
+<span id="cb16-236"><a href="#cb16-236" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_R1_001.fastq.gz <span class="dt">\</span></span>
+<span id="cb16-237"><a href="#cb16-237" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR%4==2 {print substr($0,1,16), substr($0,17,12)}'</span> <span class="dt">\</span></span>
+<span id="cb16-238"><a href="#cb16-238" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">head</span> <span class="at">-5</span></span>
+<span id="cb16-239"><a href="#cb16-239" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-240"><a href="#cb16-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-241"><a href="#cb16-241" aria-hidden="true" tabindex="-1"></a>La primera columna es el **código de barras de célula** y la segunda el</span>
+<span id="cb16-242"><a href="#cb16-242" aria-hidden="true" tabindex="-1"></a>**identificador molecular único**. Las dos son la razón de que esta técnica</span>
+<span id="cb16-243"><a href="#cb16-243" aria-hidden="true" tabindex="-1"></a>pueda contar moléculas y no solo lecturas.</span>
+<span id="cb16-244"><a href="#cb16-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Una trampa que está en tu propia pantalla</span></span>
+<span id="cb16-246"><a href="#cb16-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-247"><a href="#cb16-247" aria-hidden="true" tabindex="-1"></a>Mira la **segunda base** de los cinco códigos de barras que acabas de imprimir.</span>
+<span id="cb16-248"><a href="#cb16-248" aria-hidden="true" tabindex="-1"></a>Es una <span class="in">`N`</span> en los cinco.</span>
+<span id="cb16-249"><a href="#cb16-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-250"><a href="#cb16-250" aria-hidden="true" tabindex="-1"></a>La conclusión inmediata sería que falló el ciclo 2 de la secuenciación. Es una</span>
+<span id="cb16-251"><a href="#cb16-251" aria-hidden="true" tabindex="-1"></a>hipótesis razonable, y es **falsa**. Compruébalo:</span>
+<span id="cb16-252"><a href="#cb16-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-255"><a href="#cb16-255" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
+<span id="cb16-256"><a href="#cb16-256" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: n-por-ciclo</span></span>
+<span id="cb16-257"><a href="#cb16-257" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_L001_R1_001.fastq.gz <span class="dt">\</span></span>
+<span id="cb16-258"><a href="#cb16-258" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR%4==2'</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-100000</span> <span class="dt">\</span></span>
+<span id="cb16-259"><a href="#cb16-259" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{for(i=1;i&lt;=16;i++) if(substr($0,i,1)=="N") n[i]++}</span></span>
+<span id="cb16-260"><a href="#cb16-260" aria-hidden="true" tabindex="-1"></a><span class="st">         END{for(i=1;i&lt;=16;i++) printf "ciclo %2d: %6d N (%.2f%%)\n", i, n[i]+0, 100*n[i]/NR}'</span></span>
+<span id="cb16-261"><a href="#cb16-261" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-262"><a href="#cb16-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-263"><a href="#cb16-263" aria-hidden="true" tabindex="-1"></a>En las primeras cien mil lecturas, el ciclo 2 tiene un **0.02 %** de <span class="in">`N`</span>. Ningún</span>
+<span id="cb16-264"><a href="#cb16-264" aria-hidden="true" tabindex="-1"></a>ciclo está roto.</span>
+<span id="cb16-265"><a href="#cb16-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-266"><a href="#cb16-266" aria-hidden="true" tabindex="-1"></a>Pero si la tasa es 0.02 %, que las **cinco primeras** lecturas tengan <span class="in">`N`</span> justo</span>
+<span id="cb16-267"><a href="#cb16-267" aria-hidden="true" tabindex="-1"></a>ahí es un suceso de probabilidad 0.0002⁵, del orden de 10⁻¹⁹. No ocurrió por</span>
+<span id="cb16-268"><a href="#cb16-268" aria-hidden="true" tabindex="-1"></a>azar. Ocurrió porque **están agrupadas**:</span>
+<span id="cb16-269"><a href="#cb16-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-272"><a href="#cb16-272" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
+<span id="cb16-273"><a href="#cb16-273" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: n-agrupadas</span></span>
+<span id="cb16-274"><a href="#cb16-274" aria-hidden="true" tabindex="-1"></a><span class="va">Z</span><span class="op">=</span><span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_L001_R1_001.fastq.gz</span>
+<span id="cb16-275"><a href="#cb16-275" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$Z</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR%4==2'</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-1000</span> <span class="dt">\</span></span>
+<span id="cb16-276"><a href="#cb16-276" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{if(substr($0,2,1)=="N") c++} END{printf "primeras 1000  : %.1f%%\n", 100*(c+0)/NR}'</span></span>
+<span id="cb16-277"><a href="#cb16-277" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="va">$Z</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'NR%4==2'</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="at">-n</span> <span class="st">'200001,201000p'</span> <span class="dt">\</span></span>
+<span id="cb16-278"><a href="#cb16-278" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{if(substr($0,2,1)=="N") c++} END{printf "lecturas 200k+ : %.1f%%\n", 100*(c+0)/NR}'</span></span>
+<span id="cb16-279"><a href="#cb16-279" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-280"><a href="#cb16-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-281"><a href="#cb16-281" aria-hidden="true" tabindex="-1"></a>**0.7 % al principio contra 0.0 % en medio.**</span>
+<span id="cb16-282"><a href="#cb16-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-283"><a href="#cb16-283" aria-hidden="true" tabindex="-1"></a>Y ya sabías por qué, aunque quizá no lo notaste: los identificadores de las dos</span>
+<span id="cb16-284"><a href="#cb16-284" aria-hidden="true" tabindex="-1"></a>primeras lecturas decían <span class="in">`1101`</span> y <span class="in">`1031`</span> los dos. **Mismo tile, misma</span>
+<span id="cb16-285"><a href="#cb16-285" aria-hidden="true" tabindex="-1"></a>coordenada <span class="in">`y`</span>.** El encabezado te estaba diciendo desde el principio que esas</span>
+<span id="cb16-286"><a href="#cb16-286" aria-hidden="true" tabindex="-1"></a>lecturas venían del mismo sitio.</span>
+<span id="cb16-287"><a href="#cb16-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-288"><a href="#cb16-288" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb16-289"><a href="#cb16-289" aria-hidden="true" tabindex="-1"></a><span class="fu">## `head` sobre un FASTQ no es una muestra al azar</span></span>
+<span id="cb16-290"><a href="#cb16-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-291"><a href="#cb16-291" aria-hidden="true" tabindex="-1"></a>Un FASTQ sale ordenado por la posición física de cada grupo en la celda de</span>
+<span id="cb16-292"><a href="#cb16-292" aria-hidden="true" tabindex="-1"></a>flujo: primero el tile 1101 entero, luego el siguiente. Las primeras lecturas</span>
+<span id="cb16-293"><a href="#cb16-293" aria-hidden="true" tabindex="-1"></a>del archivo vienen todas del mismo punto — y si ese punto estaba sucio, las</span>
+<span id="cb16-294"><a href="#cb16-294" aria-hidden="true" tabindex="-1"></a>primeras lecturas lo estarán.</span>
+<span id="cb16-295"><a href="#cb16-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-296"><a href="#cb16-296" aria-hidden="true" tabindex="-1"></a><span class="in">`head`</span> sirve para ver la **forma** de los datos: cuántas líneas tiene un</span>
+<span id="cb16-297"><a href="#cb16-297" aria-hidden="true" tabindex="-1"></a>registro, dónde acaba el código de barras, qué longitud tiene R1. **No sirve para</span>
+<span id="cb16-298"><a href="#cb16-298" aria-hidden="true" tabindex="-1"></a>juzgar su calidad.** Para eso hay que muestrear a lo largo del archivo, que es lo</span>
+<span id="cb16-299"><a href="#cb16-299" aria-hidden="true" tabindex="-1"></a>que hace FastQC y lo que acabas de hacer a mano.</span>
+<span id="cb16-300"><a href="#cb16-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-301"><a href="#cb16-301" aria-hidden="true" tabindex="-1"></a>La misma trampa aparece con otras herramientas: varias que dicen «muestrear»</span>
+<span id="cb16-302"><a href="#cb16-302" aria-hidden="true" tabindex="-1"></a>leen en realidad el principio del archivo. Si además ese archivo está ordenado</span>
+<span id="cb16-303"><a href="#cb16-303" aria-hidden="true" tabindex="-1"></a>—por coordenada, por posición en la celda—, lo que miden es una esquina del</span>
+<span id="cb16-304"><a href="#cb16-304" aria-hidden="true" tabindex="-1"></a>experimento y no el experimento.</span>
+<span id="cb16-305"><a href="#cb16-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-306"><a href="#cb16-306" aria-hidden="true" tabindex="-1"></a>Y sobre las <span class="in">`N`</span> en sí: no arruinan el dato. Cell Ranger corrige códigos de barras</span>
+<span id="cb16-307"><a href="#cb16-307" aria-hidden="true" tabindex="-1"></a>con **una** discrepancia contra su lista blanca, así que una sola <span class="in">`N`</span> casi siempre</span>
+<span id="cb16-308"><a href="#cb16-308" aria-hidden="true" tabindex="-1"></a>se recupera. Es justamente para esto que existe ese paso.</span>
+<span id="cb16-309"><a href="#cb16-309" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-310"><a href="#cb16-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-311"><a href="#cb16-311" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1.4 La profundidad</span></span>
+<span id="cb16-312"><a href="#cb16-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-313"><a href="#cb16-313" aria-hidden="true" tabindex="-1"></a>Cuatro líneas por lectura, así que el total de líneas entre cuatro:</span>
+<span id="cb16-314"><a href="#cb16-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-315"><a href="#cb16-315" aria-hidden="true" tabindex="-1"></a>La cuenta se **guarda en una variable**, no se imprime y ya: la vuelve a usar el</span>
+<span id="cb16-316"><a href="#cb16-316" aria-hidden="true" tabindex="-1"></a>bloque siguiente. Contar exige descomprimir el archivo entero —no hay atajo—, y</span>
+<span id="cb16-317"><a href="#cb16-317" aria-hidden="true" tabindex="-1"></a>son 2.2 GB comprimidos: repetirlo sería pagar dos veces lo mismo.</span>
+<span id="cb16-318"><a href="#cb16-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-321"><a href="#cb16-321" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
+<span id="cb16-322"><a href="#cb16-322" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: profundidad</span></span>
+<span id="cb16-323"><a href="#cb16-323" aria-hidden="true" tabindex="-1"></a><span class="va">LECTURAS_R1</span><span class="op">=</span><span class="va">$(</span><span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_R1_001.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END {print NR/4}'</span><span class="va">)</span></span>
+<span id="cb16-324"><a href="#cb16-324" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$LECTURAS_R1</span><span class="st"> lecturas"</span></span>
+<span id="cb16-325"><a href="#cb16-325" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-326"><a href="#cb16-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-327"><a href="#cb16-327" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb16-328"><a href="#cb16-328" aria-hidden="true" tabindex="-1"></a><span class="fu">## Esto tarda, y estamos todas en la misma máquina</span></span>
+<span id="cb16-329"><a href="#cb16-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-330"><a href="#cb16-330" aria-hidden="true" tabindex="-1"></a>Descomprimir los 2.2 GB de R1 lleva del orden de un minuto o dos. R2 es más del</span>
+<span id="cb16-331"><a href="#cb16-331" aria-hidden="true" tabindex="-1"></a>doble. Si diez personas lo lanzan a la vez en el nodo de acceso —4 núcleos</span>
+<span id="cb16-332"><a href="#cb16-332" aria-hidden="true" tabindex="-1"></a>compartidos—, cada una espera mucho más que eso y el nodo se atasca para el</span>
+<span id="cb16-333"><a href="#cb16-333" aria-hidden="true" tabindex="-1"></a>grupo.</span>
+<span id="cb16-334"><a href="#cb16-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-335"><a href="#cb16-335" aria-hidden="true" tabindex="-1"></a>**Lánzalo una sola vez y espera a que termine antes de seguir.** Si el aula va</span>
+<span id="cb16-336"><a href="#cb16-336" aria-hidden="true" tabindex="-1"></a>con prisa, se reparte por mitades: unas cuentan mientras otras leen.</span>
+<span id="cb16-337"><a href="#cb16-337" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb16-338"><a href="#cb16-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-339"><a href="#cb16-339" aria-hidden="true" tabindex="-1"></a>Y una comprobación que conviene hacer siempre, porque si falla nada de lo que</span>
+<span id="cb16-340"><a href="#cb16-340" aria-hidden="true" tabindex="-1"></a>sigue tiene sentido:</span>
+<span id="cb16-341"><a href="#cb16-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-344"><a href="#cb16-344" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
+<span id="cb16-345"><a href="#cb16-345" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: emparejados</span></span>
+<span id="cb16-346"><a href="#cb16-346" aria-hidden="true" tabindex="-1"></a><span class="va">LECTURAS_R2</span><span class="op">=</span><span class="va">$(</span><span class="fu">zcat</span> <span class="st">"</span><span class="va">$BIBLIOTECA</span><span class="st">"</span>/<span class="pp">*</span>_R2_001.fastq.gz <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'END{print NR/4}'</span><span class="va">)</span></span>
+<span id="cb16-347"><a href="#cb16-347" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"R1=</span><span class="va">$LECTURAS_R1</span><span class="st">  R2=</span><span class="va">$LECTURAS_R2</span><span class="st">"</span></span>
+<span id="cb16-348"><a href="#cb16-348" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span> <span class="st">"</span><span class="va">$LECTURAS_R1</span><span class="st">"</span> <span class="ot">=</span> <span class="st">"</span><span class="va">$LECTURAS_R2</span><span class="st">"</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"OK: emparejados"</span> <span class="kw">||</span> <span class="bu">echo</span> <span class="st">"PROBLEMA: no coinciden"</span></span>
+<span id="cb16-349"><a href="#cb16-349" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb16-350"><a href="#cb16-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-351"><a href="#cb16-351" aria-hidden="true" tabindex="-1"></a><span class="ex">Tienen</span> que coincidir: cada lectura de R1 —código de barras y UMI— es la pareja</span>
+<span id="cb16-352"><a href="#cb16-352" aria-hidden="true" tabindex="-1"></a><span class="ex">de</span> una de R2 —el inserto—. Si no coinciden, un archivo se truncó al copiarse, y</span>
+<span id="cb16-353"><a href="#cb16-353" aria-hidden="true" tabindex="-1"></a><span class="ex">el</span> cuantificador trabajaría emparejando lecturas que no van juntas.</span>
+<span id="cb16-354"><a href="#cb16-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-355"><a href="#cb16-355" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {.callout-note}</span>
+<span id="cb16-356"><a href="#cb16-356" aria-hidden="true" tabindex="-1"></a><span class="co">## Qué debe salir, y qué significa</span></span>
+<span id="cb16-357"><a href="#cb16-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-358"><a href="#cb16-358" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb16-359"><a href="#cb16-359" aria-hidden="true" tabindex="-1"></a><span class="ex">106485650</span> lecturas</span>
+<span id="cb16-360"><a href="#cb16-360" aria-hidden="true" tabindex="-1"></a><span class="va">R1</span><span class="op">=</span>106485650  <span class="va">R2</span><span class="op">=</span>106485650</span>
+<span id="cb16-361"><a href="#cb16-361" aria-hidden="true" tabindex="-1"></a><span class="ex">OK:</span> emparejados</span>
+<span id="cb16-362"><a href="#cb16-362" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb16-363"><a href="#cb16-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-364"><a href="#cb16-364" aria-hidden="true" tabindex="-1"></a><span class="ex">**106.5</span> millones de lecturas<span class="pp">**</span>, y las dos direcciones cuadran exactamente.</span>
+<span id="cb16-365"><a href="#cb16-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-366"><a href="#cb16-366" aria-hidden="true" tabindex="-1"></a><span class="ex">Ahora</span> conviértelo en algo interpretable, que es lo que se pide en la actividad:</span>
+<span id="cb16-367"><a href="#cb16-367" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-368"><a href="#cb16-368" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> Ésta es <span class="pp">**</span>una<span class="pp">**</span> biblioteca. Con <span class="kw">`</span>gex_2<span class="kw">`</span><span class="ex">,</span> la corrida completa ronda los <span class="pp">**</span>213</span>
+<span id="cb16-369"><a href="#cb16-369" aria-hidden="true" tabindex="-1"></a>  <span class="ex">millones**</span> de lecturas.</span>
+<span id="cb16-370"><a href="#cb16-370" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> El experimento apuntaba a unas <span class="pp">**</span>5 000 células<span class="pp">**</span>. Eso da del orden de <span class="pp">**</span>40 000</span>
+<span id="cb16-371"><a href="#cb16-371" aria-hidden="true" tabindex="-1"></a>  <span class="ex">lecturas</span> por célula<span class="pp">**</span>.</span>
+<span id="cb16-372"><a href="#cb16-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-373"><a href="#cb16-373" aria-hidden="true" tabindex="-1"></a><span class="ex">Esa</span> última cifra es la que de verdad se compara entre experimentos. Los números</span>
+<span id="cb16-374"><a href="#cb16-374" aria-hidden="true" tabindex="-1"></a><span class="ex">absolutos</span> —106 M, 213 M— no dicen nada por sí solos: cien millones de lecturas</span>
+<span id="cb16-375"><a href="#cb16-375" aria-hidden="true" tabindex="-1"></a><span class="ex">son</span> muchas para quinientas células y pocas para cincuenta mil. <span class="pp">**</span>La profundidad</span>
+<span id="cb16-376"><a href="#cb16-376" aria-hidden="true" tabindex="-1"></a><span class="ex">se</span> mide por célula, no por corrida.<span class="pp">**</span></span>
+<span id="cb16-377"><a href="#cb16-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-378"><a href="#cb16-378" aria-hidden="true" tabindex="-1"></a><span class="ex">Guárdala.</span> En la sesión 04, cuando se decida qué gotas tienen célula, el número de</span>
+<span id="cb16-379"><a href="#cb16-379" aria-hidden="true" tabindex="-1"></a><span class="ex">lecturas</span> por célula es lo que separa una célula pequeña de una gota con ruido.</span>
+<span id="cb16-380"><a href="#cb16-380" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span></span>
+<span id="cb16-381"><a href="#cb16-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-382"><a href="#cb16-382" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {.callout-warning}</span>
+<span id="cb16-383"><a href="#cb16-383" aria-hidden="true" tabindex="-1"></a><span class="co">## Un número que todavía no puedes dar por bueno</span></span>
+<span id="cb16-384"><a href="#cb16-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-385"><a href="#cb16-385" aria-hidden="true" tabindex="-1"></a><span class="ex">40</span> 000 lecturas por célula sale de dividir entre <span class="pp">**</span>5 000<span class="pp">**</span>, que es lo que el</span>
+<span id="cb16-386"><a href="#cb16-386" aria-hidden="true" tabindex="-1"></a><span class="ex">experimento</span> <span class="pp">*</span>pretendía<span class="pp">*</span> capturar, no lo que capturó. Cuántas células hay de</span>
+<span id="cb16-387"><a href="#cb16-387" aria-hidden="true" tabindex="-1"></a><span class="ex">verdad</span> es justamente lo que decide Cell Ranger, y se discute en la sesión</span>
+<span id="cb16-388"><a href="#cb16-388" aria-hidden="true" tabindex="-1"></a><span class="ex">siguiente.</span></span>
+<span id="cb16-389"><a href="#cb16-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-390"><a href="#cb16-390" aria-hidden="true" tabindex="-1"></a><span class="ex">Así</span> que es una estimación del orden de magnitud, y está bien usarla como tal.</span>
+<span id="cb16-391"><a href="#cb16-391" aria-hidden="true" tabindex="-1"></a><span class="ex">Cuando</span> la corrida termine, <span class="kw">`</span>metrics_summary.csv<span class="kw">`</span> <span class="ex">trae</span> la cifra medida: ahí se</span>
+<span id="cb16-392"><a href="#cb16-392" aria-hidden="true" tabindex="-1"></a><span class="ex">compara</span> y se ve cuánto se acercaba.</span>
+<span id="cb16-393"><a href="#cb16-393" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span></span>
+<span id="cb16-394"><a href="#cb16-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-395"><a href="#cb16-395" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {.callout-note}</span>
+<span id="cb16-396"><a href="#cb16-396" aria-hidden="true" tabindex="-1"></a><span class="co">## Lo que se entrega de esta parte</span></span>
+<span id="cb16-397"><a href="#cb16-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-398"><a href="#cb16-398" aria-hidden="true" tabindex="-1"></a><span class="ex">Los</span> comandos usados y el número de lecturas. Anótalo: hace falta para la tabla</span>
+<span id="cb16-399"><a href="#cb16-399" aria-hidden="true" tabindex="-1"></a><span class="ex">de</span> la actividad siguiente.</span>
+<span id="cb16-400"><a href="#cb16-400" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span></span>
+<span id="cb16-401"><a href="#cb16-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-402"><a href="#cb16-402" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb16-403"><a href="#cb16-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-404"><a href="#cb16-404" aria-hidden="true" tabindex="-1"></a><span class="co">## Parte 2 · Enviar el trabajo a la cola (13 min)</span></span>
+<span id="cb16-405"><a href="#cb16-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-406"><a href="#cb16-406" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {.callout-important}</span>
+<span id="cb16-407"><a href="#cb16-407" aria-hidden="true" tabindex="-1"></a><span class="co">## Nunca en el nodo de acceso</span></span>
+<span id="cb16-408"><a href="#cb16-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-409"><a href="#cb16-409" aria-hidden="true" tabindex="-1"></a><span class="ex">El</span> nodo por el que entras es para escribir y enviar, <span class="pp">**</span>no para calcular<span class="pp">**</span>. Un</span>
+<span id="cb16-410"><a href="#cb16-410" aria-hidden="true" tabindex="-1"></a><span class="ex">trabajo</span> pesado ahí deja el clúster inservible para todo el grupo. Todo lo que</span>
+<span id="cb16-411"><a href="#cb16-411" aria-hidden="true" tabindex="-1"></a><span class="ex">calcula</span> va a la cola con <span class="kw">`</span>sbatch<span class="kw">`</span><span class="bu">.</span></span>
+<span id="cb16-412"><a href="#cb16-412" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span></span>
+<span id="cb16-413"><a href="#cb16-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-414"><a href="#cb16-414" aria-hidden="true" tabindex="-1"></a><span class="co">### 2.1 El guion de envío</span></span>
+<span id="cb16-415"><a href="#cb16-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-416"><a href="#cb16-416" aria-hidden="true" tabindex="-1"></a><span class="ex">Se</span> escribe un archivo con las peticiones al gestor arriba y el comando abajo:</span>
+<span id="cb16-417"><a href="#cb16-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-420"><a href="#cb16-420" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
+<span id="cb16-421"><a href="#cb16-421" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: escribir-guion</span></span>
+<span id="cb16-422"><a href="#cb16-422" aria-hidden="true" tabindex="-1"></a><span class="co"># Las rutas se escriben DENTRO del guion, no se dejan como variables: el nodo</span></span>
+<span id="cb16-423"><a href="#cb16-423" aria-hidden="true" tabindex="-1"></a><span class="co"># de cómputo no hereda tu entorno, así que un guion con $BIBLIOTECA dentro puede</span></span>
+<span id="cb16-424"><a href="#cb16-424" aria-hidden="true" tabindex="-1"></a><span class="co"># llegar allá sin saber a qué apunta.</span></span>
+<span id="cb16-425"><a href="#cb16-425" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb16-426"><a href="#cb16-426" aria-hidden="true" tabindex="-1"></a><span class="co"># Lo mismo vale para el PATH: el nodo tampoco hereda el `source` que hiciste</span></span>
+<span id="cb16-427"><a href="#cb16-427" aria-hidden="true" tabindex="-1"></a><span class="co"># arriba, así que cellranger hay que ponerlo en el PATH otra vez, allá. Por eso</span></span>
+<span id="cb16-428"><a href="#cb16-428" aria-hidden="true" tabindex="-1"></a><span class="co"># esa línea lleva \$PATH con barra: se expande EN EL NODO, no aquí.</span></span>
+<span id="cb16-429"><a href="#cb16-429" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;</span> cuantificar.sh <span class="op">&lt;&lt;FIN</span></span>
+<span id="cb16-430"><a href="#cb16-430" aria-hidden="true" tabindex="-1"></a><span class="st">#!/bin/bash</span></span>
+<span id="cb16-431"><a href="#cb16-431" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --job-name=cuant-pbmc</span></span>
+<span id="cb16-432"><a href="#cb16-432" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --cpus-per-task=8</span></span>
+<span id="cb16-433"><a href="#cb16-433" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --mem=32G</span></span>
+<span id="cb16-434"><a href="#cb16-434" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --time=04:00:00</span></span>
+<span id="cb16-435"><a href="#cb16-435" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --output=cuant-%j.out</span></span>
+<span id="cb16-436"><a href="#cb16-436" aria-hidden="true" tabindex="-1"></a><span class="st">#SBATCH --error=cuant-%j.err</span></span>
+<span id="cb16-437"><a href="#cb16-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-438"><a href="#cb16-438" aria-hidden="true" tabindex="-1"></a><span class="st">export PATH=/mnt/data/bioinfo3/compartido/10x/cellranger-10.1.0:</span><span class="dt">\$</span><span class="st">PATH</span></span>
+<span id="cb16-439"><a href="#cb16-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-440"><a href="#cb16-440" aria-hidden="true" tabindex="-1"></a><span class="st">cellranger count --id=pbmc_5k --transcriptome=</span><span class="va">$REFERENCIA</span><span class="st"> --fastqs=</span><span class="va">$DATOS</span><span class="st">/manual_5k_pbmc_NGSC3_ch5_gex_1,</span><span class="va">$DATOS</span><span class="st">/manual_5k_pbmc_NGSC3_ch5_gex_2 --sample=manual_5k_pbmc_NGSC3_ch5_gex_1,manual_5k_pbmc_NGSC3_ch5_gex_2 --create-bam=false --localcores=8 --localmem=30</span></span>
+<span id="cb16-441"><a href="#cb16-441" aria-hidden="true" tabindex="-1"></a><span class="op">FIN</span></span>
+<span id="cb16-442"><a href="#cb16-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-443"><a href="#cb16-443" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x cuantificar.sh</span>
+<span id="cb16-444"><a href="#cb16-444" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-445"><a href="#cb16-445" aria-hidden="true" tabindex="-1"></a><span class="co"># Leerlo ANTES de enviarlo: las rutas tienen que aparecer completas, no como</span></span>
+<span id="cb16-446"><a href="#cb16-446" aria-hidden="true" tabindex="-1"></a><span class="co"># nombres de variable. Si ves "$REFERENCIA" en la salida, algo salió mal.</span></span>
+<span id="cb16-447"><a href="#cb16-447" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> cuantificar.sh</span>
+<span id="cb16-448"><a href="#cb16-448" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb16-449"><a href="#cb16-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-450"><a href="#cb16-450" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span>%j<span class="kw">`</span> <span class="ex">lo</span> sustituye el gestor por el identificador del trabajo, así que cada</span>
+<span id="cb16-451"><a href="#cb16-451" aria-hidden="true" tabindex="-1"></a><span class="ex">envío</span> deja su propio registro y las corridas no se pisan entre sí.</span>
+<span id="cb16-452"><a href="#cb16-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-453"><a href="#cb16-453" aria-hidden="true" tabindex="-1"></a><span class="ex">El</span> comando va en <span class="pp">**</span>una sola línea<span class="pp">**</span> a propósito. Dentro de un heredoc sin</span>
+<span id="cb16-454"><a href="#cb16-454" aria-hidden="true" tabindex="-1"></a><span class="ex">comillas,</span> una barra de continuación al final de la línea es un escape que bash</span>
+<span id="cb16-455"><a href="#cb16-455" aria-hidden="true" tabindex="-1"></a><span class="ex">consume</span> junto con el salto: el guion funcionaría igual, pero el archivo que</span>
+<span id="cb16-456"><a href="#cb16-456" aria-hidden="true" tabindex="-1"></a><span class="ex">lees</span> dejaría de parecerse al que escribiste, y eso estorba justo cuando hay que</span>
+<span id="cb16-457"><a href="#cb16-457" aria-hidden="true" tabindex="-1"></a><span class="ex">depurarlo.</span></span>
+<span id="cb16-458"><a href="#cb16-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-459"><a href="#cb16-459" aria-hidden="true" tabindex="-1"></a><span class="ex">Por</span> qué esos números, que es lo que hay que poder justificar:</span>
+<span id="cb16-460"><a href="#cb16-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-461"><a href="#cb16-461" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span> <span class="ex">Recurso</span> <span class="kw">|</span> <span class="ex">Pedido</span> <span class="kw">|</span> <span class="ex">Si</span> te quedas corto <span class="kw">|</span></span>
+<span id="cb16-462"><a href="#cb16-462" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span><span class="ex">---</span><span class="kw">|</span><span class="ex">---</span><span class="kw">|</span><span class="ex">---</span><span class="kw">|</span></span>
+<span id="cb16-463"><a href="#cb16-463" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span> <span class="ex">Memoria</span> <span class="kw">|</span> <span class="ex">32</span> G <span class="kw">|</span> <span class="ex">el</span> trabajo <span class="pp">**</span>muere sin explicación clara<span class="pp">**</span>, horas después <span class="kw">|</span></span>
+<span id="cb16-464"><a href="#cb16-464" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span> <span class="ex">Tiempo</span> <span class="kw">|</span> <span class="ex">4</span> h <span class="kw">|</span> <span class="ex">se</span> corta a la mitad y no deja resultado <span class="kw">|</span></span>
+<span id="cb16-465"><a href="#cb16-465" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span> <span class="ex">Núcleos</span> <span class="kw">|</span> <span class="ex">8</span> <span class="kw">|</span> <span class="ex">tarda</span> más, pero <span class="pp">**</span>termina<span class="pp">**</span> <span class="kw">|</span></span>
+<span id="cb16-466"><a href="#cb16-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-467"><a href="#cb16-467" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {.callout-warning}</span>
+<span id="cb16-468"><a href="#cb16-468" aria-hidden="true" tabindex="-1"></a><span class="ex">Pedir</span> margen en memoria y tiempo<span class="kw">;</span> <span class="ex">en</span> núcleos no hace falta exagerar. Un trabajo</span>
+<span id="cb16-469"><a href="#cb16-469" aria-hidden="true" tabindex="-1"></a><span class="ex">que</span> pide más de lo que hay <span class="pp">**</span>nunca entra en la cola<span class="pp">**</span>: se queda esperando un</span>
+<span id="cb16-470"><a href="#cb16-470" aria-hidden="true" tabindex="-1"></a><span class="ex">nodo</span> que no existe.</span>
+<span id="cb16-471"><a href="#cb16-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-472"><a href="#cb16-472" aria-hidden="true" tabindex="-1"></a><span class="ex">Nota</span> que <span class="kw">`</span><span class="at">--localmem</span><span class="op">=</span>30<span class="kw">`</span> <span class="ex">es</span> menor que <span class="kw">`</span><span class="at">--mem</span><span class="op">=</span>32G<span class="kw">`</span><span class="bu">.</span> Es deliberado: si el proceso</span>
+<span id="cb16-473"><a href="#cb16-473" aria-hidden="true" tabindex="-1"></a><span class="ex">cree</span> que tiene toda la memoria del trabajo, la agota y el gestor lo mata.</span>
+<span id="cb16-474"><a href="#cb16-474" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span></span>
+<span id="cb16-475"><a href="#cb16-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-476"><a href="#cb16-476" aria-hidden="true" tabindex="-1"></a><span class="co">### 2.2 Enviarlo</span></span>
+<span id="cb16-477"><a href="#cb16-477" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-480"><a href="#cb16-480" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
+<span id="cb16-481"><a href="#cb16-481" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: enviar</span></span>
+<span id="cb16-482"><a href="#cb16-482" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> cuantificar.sh</span>
+<span id="cb16-483"><a href="#cb16-483" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb16-484"><a href="#cb16-484" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-485"><a href="#cb16-485" aria-hidden="true" tabindex="-1"></a><span class="ex">La</span> respuesta es una línea con el <span class="pp">**</span>identificador del trabajo<span class="pp">**</span>.</span>
+<span id="cb16-486"><a href="#cb16-486" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-487"><a href="#cb16-487" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {.callout-important}</span>
+<span id="cb16-488"><a href="#cb16-488" aria-hidden="true" tabindex="-1"></a><span class="co">## Anota ese número</span></span>
+<span id="cb16-489"><a href="#cb16-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-490"><a href="#cb16-490" aria-hidden="true" tabindex="-1"></a><span class="ex">Es</span> lo que se entrega de esta parte, y es cómo vas a encontrar tu trabajo el</span>
+<span id="cb16-491"><a href="#cb16-491" aria-hidden="true" tabindex="-1"></a><span class="ex">jueves.</span> Sin él no sabes cuál de todos los de la cola es el tuyo.</span>
+<span id="cb16-492"><a href="#cb16-492" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span></span>
+<span id="cb16-493"><a href="#cb16-493" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-494"><a href="#cb16-494" aria-hidden="true" tabindex="-1"></a><span class="co">### 2.3 Comprobar que entró</span></span>
+<span id="cb16-495"><a href="#cb16-495" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-498"><a href="#cb16-498" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
+<span id="cb16-499"><a href="#cb16-499" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: cola</span></span>
+<span id="cb16-500"><a href="#cb16-500" aria-hidden="true" tabindex="-1"></a><span class="ex">squeue</span> <span class="at">-u</span> <span class="st">"</span><span class="va">$USER</span><span class="st">"</span></span>
+<span id="cb16-501"><a href="#cb16-501" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb16-502"><a href="#cb16-502" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-503"><a href="#cb16-503" aria-hidden="true" tabindex="-1"></a><span class="ex">Lo</span> que dice la columna de estado:</span>
+<span id="cb16-504"><a href="#cb16-504" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-505"><a href="#cb16-505" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span> <span class="ex">Estado</span> <span class="kw">|</span> <span class="ex">Significa</span> <span class="kw">|</span></span>
+<span id="cb16-506"><a href="#cb16-506" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span><span class="ex">---</span><span class="kw">|</span><span class="ex">---</span><span class="kw">|</span></span>
+<span id="cb16-507"><a href="#cb16-507" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span> <span class="kw">`</span>PD<span class="kw">`</span> <span class="kw">|</span> <span class="ex">en</span> espera — pendiente de que haya nodo libre <span class="kw">|</span></span>
+<span id="cb16-508"><a href="#cb16-508" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span> <span class="kw">`</span>R<span class="kw">`</span> <span class="kw">|</span> <span class="ex">corriendo</span> <span class="kw">|</span></span>
+<span id="cb16-509"><a href="#cb16-509" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span> <span class="ex">*</span><span class="er">(</span><span class="ex">no</span> aparece<span class="kw">)</span><span class="ex">*</span> <span class="kw">|</span> <span class="ex">terminó,</span> o nunca entró <span class="kw">|</span></span>
+<span id="cb16-510"><a href="#cb16-510" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-511"><a href="#cb16-511" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span> {.callout-note}</span>
+<span id="cb16-512"><a href="#cb16-512" aria-hidden="true" tabindex="-1"></a><span class="ex">Que</span> no aparezca <span class="pp">**</span>no<span class="pp">**</span> quiere decir que salió bien. Terminar y terminar</span>
+<span id="cb16-513"><a href="#cb16-513" aria-hidden="true" tabindex="-1"></a><span class="ex">correctamente</span> son cosas distintas: eso se ve en el archivo de salida.</span>
+<span id="cb16-514"><a href="#cb16-514" aria-hidden="true" tabindex="-1"></a><span class="ex">:::</span></span>
+<span id="cb16-515"><a href="#cb16-515" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-516"><a href="#cb16-516" aria-hidden="true" tabindex="-1"></a><span class="co">### 2.4 Cuando termine</span></span>
+<span id="cb16-517"><a href="#cb16-517" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-520"><a href="#cb16-520" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
+<span id="cb16-521"><a href="#cb16-521" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: revisar</span></span>
+<span id="cb16-522"><a href="#cb16-522" aria-hidden="true" tabindex="-1"></a><span class="co"># El registro del gestor, con el identificador que anotaste</span></span>
+<span id="cb16-523"><a href="#cb16-523" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-20</span> cuant-<span class="op">&lt;</span>IDENTIFICADOR<span class="op">&gt;</span>.out</span>
+<span id="cb16-524"><a href="#cb16-524" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-20</span> cuant-<span class="op">&lt;</span>IDENTIFICADOR<span class="op">&gt;</span>.err</span>
+<span id="cb16-525"><a href="#cb16-525" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-526"><a href="#cb16-526" aria-hidden="true" tabindex="-1"></a><span class="co"># Y lo que el gestor sabe del trabajo ya terminado</span></span>
+<span id="cb16-527"><a href="#cb16-527" aria-hidden="true" tabindex="-1"></a><span class="ex">sacct</span> <span class="at">-j</span> <span class="op">&lt;</span>IDENTIFICADOR<span class="op">&gt;</span> --format=JobID,State,Elapsed,MaxRSS,ReqMem</span>
+<span id="cb16-528"><a href="#cb16-528" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb16-529"><a href="#cb16-529" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-530"><a href="#cb16-530" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span>sacct<span class="kw">`</span> <span class="ex">es</span> la que contesta la pregunta que importa cuando algo falla:</span>
+<span id="cb16-531"><a href="#cb16-531" aria-hidden="true" tabindex="-1"></a><span class="ex">**</span><span class="kw">`</span>MaxRSS<span class="kw">`</span><span class="ex">**</span> dice cuánta memoria usó de verdad. Si se acercó a lo pedido y el</span>
+<span id="cb16-532"><a href="#cb16-532" aria-hidden="true" tabindex="-1"></a><span class="ex">estado</span> es <span class="kw">`</span>OUT_OF_MEMORY<span class="kw">`</span><span class="ex">,</span> ya sabes qué cambiar en el siguiente envío.</span>
+<span id="cb16-533"><a href="#cb16-533" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-534"><a href="#cb16-534" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb16-535"><a href="#cb16-535" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-536"><a href="#cb16-536" aria-hidden="true" tabindex="-1"></a><span class="co">## Lo que te llevas</span></span>
+<span id="cb16-537"><a href="#cb16-537" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-538"><a href="#cb16-538" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> Un FASTQ se lee <span class="pp">**</span>comprimido<span class="pp">**</span>. Descomprimir para mirar llena el disco del</span>
+<span id="cb16-539"><a href="#cb16-539" aria-hidden="true" tabindex="-1"></a>  <span class="ex">grupo.</span></span>
+<span id="cb16-540"><a href="#cb16-540" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> R1 no tiene transcrito: son 16 nt de código de barras más 12 de UMI en la</span>
+<span id="cb16-541"><a href="#cb16-541" aria-hidden="true" tabindex="-1"></a>  <span class="ex">química</span> v3. La secuencia biológica está en R2.</span>
+<span id="cb16-542"><a href="#cb16-542" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> La longitud de R1 identifica la química, y la química determina cómo hay que</span>
+<span id="cb16-543"><a href="#cb16-543" aria-hidden="true" tabindex="-1"></a>  <span class="ex">llamar</span> al cuantificador.</span>
+<span id="cb16-544"><a href="#cb16-544" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> El nodo de acceso no calcula. Todo lo pesado va a la cola.</span>
+<span id="cb16-545"><a href="#cb16-545" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> Del gestor de colas se piden memoria y tiempo <span class="pp">**</span>con margen<span class="pp">**</span><span class="kw">;</span> <span class="ex">los</span> núcleos solo</span>
+<span id="cb16-546"><a href="#cb16-546" aria-hidden="true" tabindex="-1"></a>  <span class="ex">cambian</span> cuánto tarda.</span>
+<span id="cb16-547"><a href="#cb16-547" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> El identificador del trabajo es lo que permite encontrarlo después. Sin él, el</span>
+<span id="cb16-548"><a href="#cb16-548" aria-hidden="true" tabindex="-1"></a>  <span class="ex">trabajo</span> se pierde entre los del grupo.</span>
+<span id="cb16-549"><a href="#cb16-549" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-550"><a href="#cb16-550" aria-hidden="true" tabindex="-1"></a><span class="co">## Para pensar</span></span>
+<span id="cb16-551"><a href="#cb16-551" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-552"><a href="#cb16-552" aria-hidden="true" tabindex="-1"></a><span class="ex">Enviaste</span> el trabajo con 32 G de memoria y cuatro horas. Supón que mañana te</span>
+<span id="cb16-553"><a href="#cb16-553" aria-hidden="true" tabindex="-1"></a><span class="ex">llega</span> el conjunto completo en vez del subconjunto: <span class="pp">**</span>diez veces más lecturas<span class="pp">**</span>.</span>
+<span id="cb16-554"><a href="#cb16-554" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-555"><a href="#cb16-555" aria-hidden="true" tabindex="-1"></a><span class="ex">¿Multiplicas</span> los dos números por diez<span class="pp">?</span> ¿Solo uno<span class="pp">?</span> ¿Cuál, y por qué<span class="pp">?</span> Y una que no</span>
+<span id="cb16-556"><a href="#cb16-556" aria-hidden="true" tabindex="-1"></a><span class="ex">se</span> responde corriendo nada: ¿qué mirarías del trabajo de hoy para estimarlo en</span>
+<span id="cb16-557"><a href="#cb16-557" aria-hidden="true" tabindex="-1"></a><span class="ex">vez</span> de adivinar<span class="pp">?</span></span>
+</code></pre></div><button title="Copiar al portapapeles" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

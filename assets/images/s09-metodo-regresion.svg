@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 456" width="1180" height="456" role="img" aria-label="Regresión del lote en tres paneles, con la expresión de un gen en dos tipos celulares. Antes: el lote 2, en oro, está más alto que el lote 1, en azul, y más en el tipo B que en el A. Luego se resta el promedio de cada lote: el lote 2 baja la misma cantidad en todas sus células. Después: en el tipo A el lote 2 quedó por debajo y en el tipo B por encima. Al pie: funciona si el lote suma lo mismo en todas las células; aquí no era así y queda un resto.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 22px; font-weight: 700; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .pie { font-size: 18px; }
+  ]]></style>
+<defs><marker id="punta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#141A4A"/></marker></defs>
+<rect x="40" y="84" width="353" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="216" y="70" fill="#00053F" text-anchor="middle">1. Antes</text>
+<line x1="80" y1="114" x2="80" y2="334" stroke="#5A6373" stroke-width="1.4"/>
+<line x1="80" y1="334" x2="370" y2="334" stroke="#5A6373" stroke-width="1.4"/>
+<text class="t lab" x="170" y="360" fill="#5A6373" text-anchor="middle">tipo A</text>
+<text class="t lab" x="300" y="360" fill="#5A6373" text-anchor="middle">tipo B</text>
+<circle cx="156.4" cy="299.8" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="150.3" cy="290.9" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="144.5" cy="294.1" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="144.9" cy="288.3" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="151.0" cy="294.5" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="192.7" cy="250.3" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="190.0" cy="253.7" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="182.5" cy="256.2" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="191.6" cy="263.6" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="191.0" cy="253.4" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="286.2,223.8 296.2,241.8 276.2,241.8" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="284.5,221.5 294.5,239.5 274.5,239.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="281.1,227.1 291.1,245.1 271.1,245.1" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="283.5,223.5 293.5,241.5 273.5,241.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="274.6,224.8 284.6,242.8 264.6,242.8" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="320.4,145.9 330.4,163.9 310.4,163.9" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="321.1,147.4 331.1,165.4 311.1,165.4" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="319.7,143.8 329.7,161.8 309.7,161.8" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="323.3,138.7 333.3,156.7 313.3,156.7" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="318.0,141.0 328.0,159.0 308.0,159.0" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<text class="t lab" x="90" y="106" fill="#5A6373" text-anchor="start">expresión de un gen</text>
+<rect x="413" y="84" width="353" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="590" y="70" fill="#00053F" text-anchor="middle">2. Se resta el promedio del lote</text>
+<line x1="453" y1="114" x2="453" y2="334" stroke="#5A6373" stroke-width="1.4"/>
+<line x1="453" y1="334" x2="743" y2="334" stroke="#5A6373" stroke-width="1.4"/>
+<text class="t lab" x="543" y="360" fill="#5A6373" text-anchor="middle">tipo A</text>
+<text class="t lab" x="673" y="360" fill="#5A6373" text-anchor="middle">tipo B</text>
+<circle cx="532.9" cy="293.6" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="526.3" cy="296.5" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="521.6" cy="287.8" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="527.8" cy="292.4" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="526.6" cy="288.8" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="560.8" cy="259.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="570.2" cy="248.8" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="556.3" cy="253.8" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="566.6" cy="254.6" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="564.5" cy="250.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<line x1="579.0" y1="254.0" x2="579.0" y2="310.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<polygon points="655.9,227.5 665.9,245.5 645.9,245.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="650.8,217.3 660.8,235.3 640.8,235.3" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="649.2,226.0 659.2,244.0 639.2,244.0" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="644.3,222.6 654.3,240.6 634.3,240.6" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="648.0,222.5 658.0,240.5 638.0,240.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="691.8,143.1 701.8,161.1 681.8,161.1" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="700.5,144.7 710.5,162.7 690.5,162.7" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="699.7,142.4 709.7,160.4 689.7,160.4" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="690.6,144.5 700.6,162.5 680.6,162.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="678.8,142.8 688.8,160.8 668.8,160.8" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<line x1="709.0" y1="154.0" x2="709.0" y2="210.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t lab" x="463" y="106" fill="#5A6373" text-anchor="start">el lote 2 baja lo mismo en todo</text>
+<rect x="786" y="84" width="353" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="962" y="70" fill="#00053F" text-anchor="middle">3. Después</text>
+<line x1="826" y1="114" x2="826" y2="334" stroke="#5A6373" stroke-width="1.4"/>
+<line x1="826" y1="334" x2="1116" y2="334" stroke="#5A6373" stroke-width="1.4"/>
+<text class="t lab" x="916" y="360" fill="#5A6373" text-anchor="middle">tipo A</text>
+<text class="t lab" x="1046" y="360" fill="#5A6373" text-anchor="middle">tipo B</text>
+<circle cx="896.8" cy="289.1" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="898.3" cy="291.8" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="883.7" cy="293.1" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="891.1" cy="291.9" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="895.2" cy="299.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="936.5" cy="313.9" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="937.9" cy="306.8" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="942.2" cy="309.7" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="938.2" cy="309.5" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="931.1" cy="312.4" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="1035.5,225.8 1045.5,243.8 1025.5,243.8" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="1023.0,221.9 1033.0,239.9 1013.0,239.9" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="1020.2,222.9 1030.2,240.9 1010.2,240.9" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="1023.1,225.9 1033.1,243.9 1013.1,243.9" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="1019.2,221.7 1029.2,239.7 1009.2,239.7" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="1061.8,200.1 1071.8,218.1 1051.8,218.1" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="1069.6,203.5 1079.6,221.5 1059.6,221.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="1068.9,207.8 1078.9,225.8 1058.9,225.8" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="1071.7,197.5 1081.7,215.5 1061.7,215.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="1068.7,196.0 1078.7,214.0 1058.7,214.0" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<text class="t lab" x="836" y="106" fill="#B3261E" text-anchor="start">en A quedó abajo; en B, arriba</text>
+<text class="t pie" x="590" y="416" fill="#00053F" text-anchor="middle">Funciona si el lote suma lo mismo en todas las células.</text>
+<text class="t pie" x="590" y="442" fill="#00053F" text-anchor="middle">Aquí el lote 2 subía más al tipo B que al tipo A, y queda un resto.</text>
+<circle cx="60.0" cy="18.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<text class="t lab" x="74" y="24" fill="#5A6373" text-anchor="start">lote 1</text>
+<circle cx="150.0" cy="18.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<text class="t lab" x="164" y="24" fill="#5A6373" text-anchor="start">lote 2</text>
+<circle cx="250.0" cy="18.0" r="8.5" fill="#5A6373" stroke="white" stroke-width="1.5"/>
+<text class="t lab" x="264" y="24" fill="#5A6373" text-anchor="start">tipo A</text>
+<polygon points="350.0,7.0 360.0,25.0 340.0,25.0" fill="#5A6373" stroke="white" stroke-width="1.5"/>
+<text class="t lab" x="364" y="24" fill="#5A6373" text-anchor="start">tipo B</text>
+</svg>

@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 456" width="1180" height="456" role="img" aria-label="Corregir sin diagnosticar, en tres paneles. Primero, dos tipos celulares bien separados y, dentro de cada uno, los dos lotes ya mezclados: no había efecto de lote. Luego se corrige de todos modos y el método mueve las células. Al final, los dos tipos celulares quedaron más cerca, y se perdió separación biológica, marcado en rojo. Al pie: para darse cuenta, la entropía de mezcla ya era alta antes de corregir; qué hacer, medir primero y no corregir si los lotes ya están mezclados.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 22px; font-weight: 700; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .pie { font-size: 18px; }
+  ]]></style>
+<defs><marker id="punta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#141A4A"/></marker></defs>
+<circle cx="60.0" cy="18.0" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<text class="t lab" x="74" y="24" fill="#5A6373" text-anchor="start">lote 1</text>
+<circle cx="150.0" cy="18.0" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<text class="t lab" x="164" y="24" fill="#5A6373" text-anchor="start">lote 2</text>
+<circle cx="250.0" cy="18.0" r="8.5" fill="#5A6373" stroke="white" stroke-width="1.5"/>
+<text class="t lab" x="264" y="24" fill="#5A6373" text-anchor="start">tipo A</text>
+<polygon points="350.0,7.0 360.0,25.0 340.0,25.0" fill="#5A6373" stroke="white" stroke-width="1.5"/>
+<text class="t lab" x="364" y="24" fill="#5A6373" text-anchor="start">tipo B</text>
+<rect x="40" y="84" width="353" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="216" y="70" fill="#00053F" text-anchor="middle">1. Los lotes ya estaban mezclados</text>
+<rect x="413" y="84" width="353" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="590" y="70" fill="#00053F" text-anchor="middle">2. Se corrige de todos modos</text>
+<rect x="786" y="84" width="353" height="300" rx="10" fill="#F7F8FC" stroke="#C9D2E8" stroke-width="1.6"/>
+<text class="t tit" x="962" y="70" fill="#00053F" text-anchor="middle">3. Dos tipos se acercaron</text>
+<circle cx="221.0" cy="214.5" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="232.5" cy="191.8" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="225.4" cy="180.2" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="226.0" cy="173.9" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="203.9" cy="160.2" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="197.1" cy="179.4" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="225.7" cy="202.2" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="224.9" cy="180.2" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="227.5" cy="175.6" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="186.2" cy="192.9" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="209.3" cy="179.4" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="212.4" cy="223.4" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="235.5,281.6 245.5,299.6 225.5,299.6" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="198.1,289.4 208.1,307.4 188.1,307.4" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="202.1,293.8 212.1,311.8 192.1,311.8" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="191.8,273.4 201.8,291.4 181.8,291.4" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="232.2,260.7 242.2,278.7 222.2,278.7" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="218.7,277.5 228.7,295.5 208.7,295.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="232.5,266.8 242.5,284.8 222.5,284.8" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="228.4,309.3 238.4,327.3 218.4,327.3" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="192.3,260.7 202.3,278.7 182.3,278.7" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="224.6,264.1 234.6,282.1 214.6,282.1" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="194.6,298.7 204.6,316.7 184.6,316.7" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="233.0,293.4 243.0,311.4 223.0,311.4" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="594.0" cy="214.5" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="605.5" cy="191.8" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="598.4" cy="180.2" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="599.0" cy="173.9" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="576.9" cy="160.2" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="570.1" cy="179.4" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="598.7" cy="202.2" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="597.9" cy="180.2" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="600.5" cy="175.6" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="559.2" cy="192.9" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="582.3" cy="179.4" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="585.4" cy="223.4" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="608.5,281.6 618.5,299.6 598.5,299.6" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="571.1,289.4 581.1,307.4 561.1,307.4" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="575.1,293.8 585.1,311.8 565.1,311.8" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="564.8,273.4 574.8,291.4 554.8,291.4" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="605.2,260.7 615.2,278.7 595.2,278.7" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="591.7,277.5 601.7,295.5 581.7,295.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="605.5,266.8 615.5,284.8 595.5,284.8" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="601.4,309.3 611.4,327.3 591.4,327.3" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="565.3,260.7 575.3,278.7 555.3,278.7" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="597.6,264.1 607.6,282.1 587.6,282.1" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="567.6,298.7 577.6,316.7 557.6,316.7" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="606.0,293.4 616.0,311.4 596.0,311.4" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<line x1="703.0" y1="179.0" x2="703.0" y2="209.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<line x1="703.0" y1="279.0" x2="703.0" y2="249.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<circle cx="967.0" cy="240.5" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="978.5" cy="217.8" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="971.4" cy="206.2" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="972.0" cy="199.9" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="949.9" cy="186.2" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="943.1" cy="205.4" r="8.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<circle cx="971.7" cy="228.2" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="970.9" cy="206.2" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="973.5" cy="201.6" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="932.2" cy="218.9" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="955.3" cy="205.4" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<circle cx="958.4" cy="249.4" r="8.5" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="981.5,255.6 991.5,273.6 971.5,273.6" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="944.1,263.4 954.1,281.4 934.1,281.4" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="948.1,267.8 958.1,285.8 938.1,285.8" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="937.8,247.4 947.8,265.4 927.8,265.4" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="978.2,234.7 988.2,252.7 968.2,252.7" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="964.7,251.5 974.7,269.5 954.7,269.5" fill="#1F5FBF" stroke="white" stroke-width="1.5"/>
+<polygon points="978.5,240.8 988.5,258.8 968.5,258.8" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="974.4,283.3 984.4,301.3 964.4,301.3" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="938.3,234.7 948.3,252.7 928.3,252.7" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="970.6,238.1 980.6,256.1 960.6,256.1" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="940.6,272.7 950.6,290.7 930.6,290.7" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<polygon points="979.0,267.4 989.0,285.4 969.0,285.4" fill="#E8820C" stroke="white" stroke-width="1.5"/>
+<text class="t lab" x="216" y="369" fill="#5A6373" text-anchor="middle">no había efecto de lote</text>
+<text class="t lab" x="590" y="369" fill="#5A6373" text-anchor="middle">el método mueve células igual</text>
+<text class="t lab" x="962" y="369" fill="#B3261E" text-anchor="middle">se perdió separación biológica</text>
+<text class="t pie" x="590" y="416" fill="#00053F" text-anchor="middle">Cómo darse cuenta: antes de corregir, la entropía de mezcla ya era alta.</text>
+<text class="t pie" x="590" y="442" fill="#00053F" text-anchor="middle">Qué hacer: medir primero. Si los lotes ya están mezclados, no se corrige.</text>
+</svg>

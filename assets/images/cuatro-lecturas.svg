@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Cuatro lecturas del gen A, tres de la célula A y una de la célula B, para decidir cuántas cuentas quedan en la célula A. Abajo a la derecha, el código QR de la votación">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .cap { font-size:24px; font-weight:600; fill:#5A6373; }
+      .seq { font-family:ui-monospace,"Cascadia Mono",Consolas,monospace; font-size:24px; font-weight:700; fill:#ffffff; }
+      .num { font-size:24px; font-weight:700; fill:#5A6373; }
+    </style>
+  </defs>
+
+  <text class="t cap" x="290" y="40" fill="#000977">código de barras</text>
+  <text class="t cap" x="612" y="40" fill="#2E9AA6">UMI</text>
+  <text class="t cap" x="792" y="40" fill="#5A6373">gen</text>
+
+  <!-- llave de la célula A -->
+  <path d="M154,58 h-16 v148 h16" fill="none" stroke="#000977" stroke-width="3"/>
+  <text class="t eti" x="128" y="124" text-anchor="end" fill="#000977">célula A</text>
+
+  <!-- llave de la célula B -->
+  <path d="M154,250 h-16 v40 h16" fill="none" stroke="#000977" stroke-width="3"/>
+  <text class="t eti" x="128" y="278" text-anchor="end" fill="#000977">célula B</text>
+
+  <!-- lectura 1 -->
+  <text class="t num" x="176" y="86">1</text>
+  <rect x="290" y="60" width="272" height="36" rx="8" fill="#000977"/><text class="seq" x="426" y="86" text-anchor="middle">AAACCTGA</text>
+  <rect x="582" y="60" width="160" height="36" rx="8" fill="#2E9AA6"/><text class="seq" x="662" y="86" text-anchor="middle">TTGCA</text>
+  <rect x="762" y="60" width="120" height="36" rx="8" fill="#8A93A8"/><text class="seq" x="822" y="86" text-anchor="middle">gen A</text>
+
+  <!-- lectura 2 -->
+  <text class="t num" x="176" y="150">2</text>
+  <rect x="290" y="124" width="272" height="36" rx="8" fill="#000977"/><text class="seq" x="426" y="150" text-anchor="middle">AAACCTGA</text>
+  <rect x="582" y="124" width="160" height="36" rx="8" fill="#2E9AA6"/><text class="seq" x="662" y="150" text-anchor="middle">GATCC</text>
+  <rect x="762" y="124" width="120" height="36" rx="8" fill="#8A93A8"/><text class="seq" x="822" y="150" text-anchor="middle">gen A</text>
+
+  <!-- lectura 3 -->
+  <text class="t num" x="176" y="214">3</text>
+  <rect x="290" y="188" width="272" height="36" rx="8" fill="#000977"/><text class="seq" x="426" y="214" text-anchor="middle">AAACCTGA</text>
+  <rect x="582" y="188" width="160" height="36" rx="8" fill="#2E9AA6"/><text class="seq" x="662" y="214" text-anchor="middle">GATCC</text>
+  <rect x="762" y="188" width="120" height="36" rx="8" fill="#8A93A8"/><text class="seq" x="822" y="214" text-anchor="middle">gen A</text>
+
+  <!-- lectura 4 -->
+  <text class="t num" x="176" y="278">4</text>
+  <rect x="290" y="252" width="272" height="36" rx="8" fill="#000977"/><text class="seq" x="426" y="278" text-anchor="middle">GGTCAACG</text>
+  <rect x="582" y="252" width="160" height="36" rx="8" fill="#2E9AA6"/><text class="seq" x="662" y="278" text-anchor="middle">TTGCA</text>
+  <rect x="762" y="252" width="120" height="36" rx="8" fill="#8A93A8"/><text class="seq" x="822" y="278" text-anchor="middle">gen A</text>
+
+  <line x1="40" y1="326" x2="1140" y2="326" stroke="#DDD8C6" stroke-width="2"/>
+  <text class="t eti" x="40" y="368" fill="#141A4A">Cuatro lecturas, todas del gen A.</text>
+  <text class="t eti" x="40" y="404" fill="#000977">¿Cuántas cuentas quedan en la célula A?</text>
+
+  <!-- QR de la votacion, inlineado desde qr-menti.svg (lienzo 370, escalado a 110) -->
+  <g transform="translate(1010,300) scale(0.297)">
+<g transform="scale(10)"><path fill="#fff" d="M0 0h37v37h-37z"/><path class="qrline" stroke="#000977" d="M4 4.5h7m2 0h3m2 0h1m3 0h2m2 0h7m-29 1h1m5 0h1m1 0h3m2 0h1m3 0h1m1 0h2m1 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m5 0h1m3 0h1m2 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m3 0h2m1 0h1m4 0h1m3 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h3m1 0h2m2 0h5m1 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m2 0h1m1 0h1m2 0h2m1 0h4m1 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-20 1h3m3 0h1m1 0h1m1 0h2m-21 1h1m1 0h1m1 0h1m1 0h1m3 0h2m4 0h2m1 0h2m3 0h1m2 0h1m-28 1h1m1 0h1m1 0h2m2 0h1m1 0h1m1 0h2m1 0h1m1 0h2m1 0h3m2 0h1m2 0h1m-29 1h4m2 0h1m3 0h2m2 0h1m1 0h1m1 0h1m2 0h1m4 0h3m-29 1h1m1 0h1m1 0h1m5 0h2m1 0h2m2 0h2m1 0h1m3 0h1m2 0h1m-27 1h1m2 0h4m3 0h2m1 0h1m2 0h1m1 0h4m2 0h1m1 0h2m-29 1h4m4 0h2m4 0h1m1 0h2m2 0h4m1 0h1m2 0h1m-29 1h1m1 0h1m1 0h1m1 0h2m3 0h1m1 0h1m2 0h1m4 0h3m1 0h1m1 0h2m-28 1h2m6 0h2m1 0h1m2 0h3m7 0h1m1 0h1m-28 1h1m3 0h1m1 0h1m1 0h1m1 0h2m5 0h1m2 0h4m1 0h1m1 0h2m-27 1h3m4 0h1m3 0h1m3 0h2m1 0h3m2 0h2m1 0h1m-29 1h1m2 0h4m1 0h2m2 0h1m1 0h1m2 0h1m2 0h2m1 0h1m3 0h2m-28 1h1m1 0h1m4 0h1m1 0h2m1 0h6m1 0h3m2 0h1m1 0h1m-28 1h1m1 0h1m3 0h5m1 0h1m1 0h1m2 0h1m1 0h6m-17 1h3m1 0h1m1 0h1m4 0h2m3 0h1m1 0h3m-29 1h7m3 0h1m1 0h2m2 0h1m1 0h3m1 0h1m1 0h2m1 0h2m-29 1h1m5 0h1m2 0h1m1 0h1m4 0h5m3 0h2m1 0h2m-29 1h1m1 0h3m1 0h1m1 0h2m2 0h1m3 0h2m2 0h5m3 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m1 0h2m3 0h3m5 0h1m1 0h3m-29 1h1m1 0h3m1 0h1m1 0h1m2 0h2m3 0h1m4 0h1m1 0h3m2 0h1m-29 1h1m5 0h1m2 0h1m1 0h1m2 0h1m2 0h4m3 0h1m2 0h1m-28 1h7m1 0h1m1 0h1m2 0h5m1 0h2m1 0h4m1 0h2"/></g>
+  </g>
+  <text class="t cap" x="1065" y="424" text-anchor="middle" fill="#5A6373">vota aquí</text>
+</svg>

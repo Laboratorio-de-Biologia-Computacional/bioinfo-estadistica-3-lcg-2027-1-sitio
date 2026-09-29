@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 660" width="1180" height="660" role="img" aria-label="Diagrama de flujo para decidir si corregir el efecto de lote, con un dibujo pequeño a la izquierda de cada paso. Paso 1: con la tabla de lote contra condición, si cada lote tiene una sola condición, no se corrige, se reporta la limitación y en el siguiente experimento se reparten las condiciones. Paso 2: si no hay efecto de lote, porque la mezcla ya es alta y la silueta por lote cercana a cero, no se corrige. Paso 3: si hay tipos celulares en un solo lote, se vigila esa población. Paso 4: se corrige con dos o tres métodos y se revisa que la mezcla suba, la silueta por tipo no baje y los marcadores sigan intactos; si ninguno sirve, se prueban parámetros o no se corrige y se reporta. Paso 5: lo corregido se usa para agrupar y visualizar; la expresión diferencial se hace con cuentas y el lote en el modelo. Recuadro de lo menos obvio: la mezcla no llega a uno si los lotes no tienen los mismos tipos, y el UMAP no decide. Al pie: los pasos 1 a 3 se contestan antes de corregir; si un grupo del control desaparece, puede ser sobrecorrección o un artefacto del lote.">
+  <style><![CDATA[
+    .t   { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .tit { font-size: 22px; font-weight: 700; }
+    .lab { font-size: 17px; }
+    .neg { font-size: 17px; font-weight: 700; }
+    .pie { font-size: 18px; }
+  ]]></style>
+<defs><marker id="punta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#141A4A"/></marker></defs>
+<rect x="20" y="20" width="90" height="78" rx="10" fill="white" stroke="#C9D2E8" stroke-width="1.4"/>
+<text class="t lab" x="30" y="54" fill="#5A6373" text-anchor="start">L1</text>
+<rect x="58" y="42" width="18" height="18" fill="#B3261E" stroke="#C9D2E8" stroke-width="1"/>
+<rect x="80" y="42" width="18" height="18" fill="white" stroke="#C9D2E8" stroke-width="1"/>
+<text class="t lab" x="30" y="80" fill="#5A6373" text-anchor="start">L2</text>
+<rect x="58" y="68" width="18" height="18" fill="white" stroke="#C9D2E8" stroke-width="1"/>
+<rect x="80" y="68" width="18" height="18" fill="#5A6373" stroke="#C9D2E8" stroke-width="1"/>
+<rect x="20" y="132" width="90" height="78" rx="10" fill="white" stroke="#C9D2E8" stroke-width="1.4"/>
+<circle cx="45.6" cy="178.5" r="4.5" fill="#1F5FBF"/>
+<circle cx="39.4" cy="177.0" r="4.5" fill="#1F5FBF"/>
+<circle cx="43.4" cy="169.4" r="4.5" fill="#1F5FBF"/>
+<circle cx="56.4" cy="171.9" r="4.5" fill="#1F5FBF"/>
+<circle cx="44.7" cy="175.4" r="4.5" fill="#1F5FBF"/>
+<circle cx="51.8" cy="170.8" r="4.5" fill="#1F5FBF"/>
+<circle cx="48.5" cy="165.2" r="4.5" fill="#1F5FBF"/>
+<circle cx="82.8" cy="168.4" r="4.5" fill="#E8820C"/>
+<circle cx="77.0" cy="161.9" r="4.5" fill="#E8820C"/>
+<circle cx="75.2" cy="169.6" r="4.5" fill="#E8820C"/>
+<circle cx="84.0" cy="169.1" r="4.5" fill="#E8820C"/>
+<circle cx="85.4" cy="163.0" r="4.5" fill="#E8820C"/>
+<circle cx="84.5" cy="172.4" r="4.5" fill="#E8820C"/>
+<circle cx="89.5" cy="165.9" r="4.5" fill="#E8820C"/>
+<rect x="20" y="244" width="90" height="78" rx="10" fill="white" stroke="#C9D2E8" stroke-width="1.4"/>
+<circle cx="44.8" cy="266.9" r="4.5" fill="#1F5FBF"/>
+<circle cx="44.0" cy="265.4" r="4.5" fill="#E8820C"/>
+<circle cx="36.6" cy="291.8" r="4.5" fill="#1F5FBF"/>
+<circle cx="30.4" cy="289.4" r="4.5" fill="#E8820C"/>
+<circle cx="50.6" cy="280.5" r="4.5" fill="#1F5FBF"/>
+<circle cx="51.7" cy="287.2" r="4.5" fill="#E8820C"/>
+<circle cx="56.4" cy="281.2" r="4.5" fill="#1F5FBF"/>
+<circle cx="43.3" cy="278.2" r="4.5" fill="#E8820C"/>
+<polygon points="80,265 85,274 75,274" fill="#1F5FBF"/>
+<polygon points="92,269 97,278 87,278" fill="#1F5FBF"/>
+<polygon points="86,279 91,288 81,288" fill="#1F5FBF"/>
+<polygon points="96,283 101,292 91,292" fill="#1F5FBF"/>
+<circle cx="88" cy="280" r="17" fill="none" stroke="#B3261E" stroke-width="1.6" stroke-dasharray="3 3"/>
+<rect x="20" y="356" width="90" height="78" rx="10" fill="white" stroke="#C9D2E8" stroke-width="1.4"/>
+<rect x="32" y="408" width="12" height="12" fill="#5A6373"/>
+<rect x="48" y="376" width="12" height="44" fill="#1F5FBF"/>
+<rect x="70" y="380" width="12" height="40" fill="#5A6373"/>
+<rect x="86" y="380" width="12" height="40" fill="#1F5FBF"/>
+<line x1="28" y1="420" x2="102" y2="420" stroke="#141A4A" stroke-width="1.2"/>
+<rect x="20" y="468" width="90" height="78" rx="10" fill="white" stroke="#C9D2E8" stroke-width="1.4"/>
+<circle cx="39.1" cy="506.7" r="4.5" fill="#1F5FBF"/>
+<circle cx="40.3" cy="513.4" r="4.5" fill="#E8820C"/>
+<circle cx="33.8" cy="500.4" r="4.5" fill="#1F5FBF"/>
+<circle cx="39.3" cy="494.4" r="4.5" fill="#E8820C"/>
+<circle cx="56.4" cy="492.5" r="4.5" fill="#1F5FBF"/>
+<circle cx="43.3" cy="503.8" r="4.5" fill="#E8820C"/>
+<circle cx="54.9" cy="495.1" r="4.5" fill="#1F5FBF"/>
+<circle cx="51.4" cy="502.6" r="4.5" fill="#E8820C"/>
+<circle cx="84.1" cy="503.0" r="4.5" fill="#1F5FBF"/>
+<circle cx="88.8" cy="500.2" r="4.5" fill="#E8820C"/>
+<circle cx="84.5" cy="509.1" r="4.5" fill="#1F5FBF"/>
+<circle cx="96.0" cy="492.6" r="4.5" fill="#E8820C"/>
+<circle cx="94.2" cy="512.7" r="4.5" fill="#1F5FBF"/>
+<circle cx="82.1" cy="508.8" r="4.5" fill="#E8820C"/>
+<circle cx="82.2" cy="516.9" r="4.5" fill="#1F5FBF"/>
+<circle cx="86.3" cy="505.7" r="4.5" fill="#E8820C"/>
+<rect x="125" y="20" width="505" height="78" rx="12" fill="#F7F8FC" stroke="#00053F" stroke-width="2.2"/>
+<text class="t neg" x="145" y="52" fill="#00053F" text-anchor="start">1. ¿Cada lote tiene una sola condición?</text>
+<text class="t lab" x="145" y="78" fill="#5A6373" text-anchor="start">tabla de lote contra condición</text>
+<rect x="720" y="20" width="440" height="78" rx="12" fill="white" stroke="#B3261E" stroke-width="2.2"/>
+<text class="t neg" x="738" y="52" fill="#B3261E" text-anchor="start">No corregir</text>
+<text class="t lab" x="738" y="78" fill="#141A4A" text-anchor="start">reportar la limitación y repartir en el siguiente</text>
+<line x1="634.0" y1="59.0" x2="714.0" y2="59.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t neg" x="675" y="49" fill="#141A4A" text-anchor="middle">sí</text>
+<line x1="225.0" y1="100.0" x2="225.0" y2="128.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t neg" x="237" y="122" fill="#141A4A" text-anchor="start">no</text>
+<rect x="125" y="132" width="505" height="78" rx="12" fill="#F7F8FC" stroke="#00053F" stroke-width="2.2"/>
+<text class="t neg" x="145" y="164" fill="#00053F" text-anchor="start">2. ¿Hay efecto de lote?</text>
+<text class="t lab" x="145" y="190" fill="#5A6373" text-anchor="start">mezcla baja y silueta por lote mayor que 0</text>
+<rect x="720" y="132" width="440" height="78" rx="12" fill="white" stroke="#00053F" stroke-width="2.2"/>
+<text class="t neg" x="738" y="164" fill="#00053F" text-anchor="start">No corregir</text>
+<text class="t lab" x="738" y="190" fill="#141A4A" text-anchor="start">el método solo movería células</text>
+<line x1="634.0" y1="171.0" x2="714.0" y2="171.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t neg" x="675" y="161" fill="#141A4A" text-anchor="middle">no</text>
+<line x1="225.0" y1="212.0" x2="225.0" y2="240.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t neg" x="237" y="234" fill="#141A4A" text-anchor="start">sí</text>
+<rect x="125" y="244" width="505" height="78" rx="12" fill="#F7F8FC" stroke="#00053F" stroke-width="2.2"/>
+<text class="t neg" x="145" y="276" fill="#00053F" text-anchor="start">3. ¿Hay tipos celulares en un solo lote?</text>
+<text class="t lab" x="145" y="302" fill="#5A6373" text-anchor="start">tabla de lote contra tipo celular</text>
+<rect x="720" y="244" width="440" height="78" rx="12" fill="white" stroke="#141A4A" stroke-width="2.2"/>
+<text class="t neg" x="738" y="276" fill="#141A4A" text-anchor="start">Vigilar esa población</text>
+<text class="t lab" x="738" y="302" fill="#141A4A" text-anchor="start">revisar después que siga en su grupo</text>
+<line x1="634.0" y1="283.0" x2="714.0" y2="283.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t neg" x="675" y="273" fill="#141A4A" text-anchor="middle">sí</text>
+<line x1="225.0" y1="324.0" x2="225.0" y2="352.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t neg" x="237" y="346" fill="#141A4A" text-anchor="start">en ambos casos</text>
+<rect x="125" y="356" width="505" height="78" rx="12" fill="#F7F8FC" stroke="#00053F" stroke-width="2.2"/>
+<text class="t neg" x="145" y="388" fill="#00053F" text-anchor="start">4. Corregir con 2 o 3 métodos: ¿alguno sirve?</text>
+<text class="t lab" x="145" y="414" fill="#5A6373" text-anchor="start">mezcla sube, silueta por tipo no baja, marcadores intactos</text>
+<rect x="720" y="356" width="440" height="78" rx="12" fill="white" stroke="#B3261E" stroke-width="2.2"/>
+<text class="t neg" x="738" y="388" fill="#B3261E" text-anchor="start">Ninguno sirve</text>
+<text class="t lab" x="738" y="414" fill="#141A4A" text-anchor="start">probar parámetros, o no corregir y reportarlo</text>
+<line x1="634.0" y1="395.0" x2="714.0" y2="395.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t neg" x="675" y="385" fill="#141A4A" text-anchor="middle">no</text>
+<line x1="225.0" y1="436.0" x2="225.0" y2="464.0" stroke="#141A4A" stroke-width="2.4" marker-end="url(#punta)"/>
+<text class="t neg" x="237" y="458" fill="#141A4A" text-anchor="start">sí</text>
+<rect x="125" y="468" width="505" height="78" rx="12" fill="#00053F"/>
+<text class="t neg" x="145" y="500" style="fill:white" text-anchor="start">5. Usar lo corregido para agrupar y visualizar</text>
+<text class="t lab" x="145" y="526" style="fill:white" text-anchor="start">expresión diferencial: cuentas, con el lote en el modelo</text>
+<rect x="720" y="438" width="440" height="108" rx="12" fill="#F7F8FC" stroke="#5A6373" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text class="t neg" x="738" y="464" fill="#5A6373" text-anchor="start">Lo menos obvio</text>
+<text class="t lab" x="738" y="490" fill="#141A4A" text-anchor="start">· la mezcla no llega a 1 si los lotes no tienen</text>
+<text class="t lab" x="748" y="512" fill="#141A4A" text-anchor="start">los mismos tipos: no es un fallo</text>
+<text class="t lab" x="738" y="536" fill="#141A4A" text-anchor="start">· el UMAP no decide: deciden las métricas</text>
+<text class="t pie" x="590" y="622" fill="#00053F" text-anchor="middle">Los pasos 1 a 3 se contestan ANTES de corregir; el 4, comparando contra el control.</text>
+<text class="t pie" x="590" y="648" fill="#00053F" text-anchor="middle">Si un grupo del control desaparece, puede ser sobrecorrección o un artefacto del lote: hay que investigarlo.</text>
+</svg>

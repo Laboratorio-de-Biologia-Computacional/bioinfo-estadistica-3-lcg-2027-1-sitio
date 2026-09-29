@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 440" width="1180" height="440" role="img" aria-label="Linea del tiempo de la secuenciacion de RNA de celula unica, de 2009 a 2026, en cuatro etapas.">
+  <style><![CDATA[
+    .t    { font-family: Calibri, Inter, sans-serif; fill: #141A4A; }
+    .anio { font-family: "Roboto Mono", Consolas, monospace; font-size: 19px; font-weight: 700; }
+    .hito { font-size: 17px; font-weight: 700; }
+    .det  { font-size: 15px; fill: #5A6373; }
+    .eta  { font-size: 14px; font-weight: 700; letter-spacing: .06em; }
+  ]]></style>
+
+  <!-- ══ bandas de etapa ══ -->
+  <rect x="30"  y="196" width="252" height="46" rx="8" fill="#E7E9F7"/>
+  <rect x="290" y="196" width="330" height="46" rx="8" fill="#DFF0F2"/>
+  <rect x="628" y="196" width="238" height="46" rx="8" fill="#F3EFDD"/>
+  <rect x="874" y="196" width="276" height="46" rx="8" fill="#EDE7F6"/>
+  <text class="t eta" x="156" y="224" text-anchor="middle" fill="#00053F">PRUEBA DE CONCEPTO</text>
+  <text class="t eta" x="455" y="224" text-anchor="middle" fill="#1d6d76">ESCALA POR GOTAS</text>
+  <text class="t eta" x="747" y="224" text-anchor="middle" fill="#6E5E00">CONSOLIDACIÓN</text>
+  <text class="t eta" x="1012" y="224" text-anchor="middle" fill="#4A3C7A">HOY</text>
+
+  <!-- ══ eje ══ -->
+  <line x1="30" y1="272" x2="1150" y2="272" stroke="#5A6373" stroke-width="2.5"/>
+  <path d="M 1150 272 l -11 -6 v 12 z" fill="#5A6373"/>
+
+  <!-- ══════ 2009 · arriba ══════ -->
+  <circle cx="96" cy="272" r="8" fill="#000977"/>
+  <line x1="96" y1="264" x2="96" y2="176" stroke="#000977" stroke-width="1.8"/>
+  <text class="t anio" x="96" y="60"  text-anchor="middle" fill="#000977">2009</text>
+  <text class="t hito" x="96" y="84"  text-anchor="middle">Tang y cols.</text>
+  <text class="t det"  x="96" y="106" text-anchor="middle">La primera célula,</text>
+  <text class="t det"  x="96" y="126" text-anchor="middle">un transcriptoma</text>
+  <text class="t det"  x="96" y="146" text-anchor="middle">completo</text>
+
+  <!-- ══════ 2013 · abajo ══════ -->
+  <circle cx="232" cy="272" r="8" fill="#000977"/>
+  <line x1="232" y1="280" x2="232" y2="316" stroke="#000977" stroke-width="1.8"/>
+  <text class="t anio" x="232" y="342" text-anchor="middle" fill="#000977">2013</text>
+  <text class="t hito" x="232" y="366" text-anchor="middle">Smart-seq2</text>
+  <text class="t det"  x="232" y="388" text-anchor="middle">Longitud completa,</text>
+  <text class="t det"  x="232" y="408" text-anchor="middle">pocas células</text>
+
+  <!-- ══════ 2015 · arriba ══════ -->
+  <circle cx="392" cy="272" r="9" fill="#2E9AA6"/>
+  <line x1="392" y1="263" x2="392" y2="176" stroke="#2E9AA6" stroke-width="1.8"/>
+  <text class="t anio" x="392" y="60"  text-anchor="middle" fill="#1d6d76">2015</text>
+  <text class="t hito" x="392" y="84"  text-anchor="middle">Drop-seq · inDrop</text>
+  <text class="t det"  x="392" y="106" text-anchor="middle">Una gota por célula:</text>
+  <text class="t det"  x="392" y="126" text-anchor="middle">de decenas a miles.</text>
+  <text class="t det"  x="392" y="146" text-anchor="middle">Mismo número de Cell</text>
+
+  <!-- ══════ 2016 · abajo ══════ -->
+  <circle cx="524" cy="272" r="8" fill="#2E9AA6"/>
+  <line x1="524" y1="280" x2="524" y2="316" stroke="#2E9AA6" stroke-width="1.8"/>
+  <text class="t anio" x="524" y="342" text-anchor="middle" fill="#1d6d76">2016</text>
+  <text class="t hito" x="524" y="366" text-anchor="middle">Chromium de 10x</text>
+  <text class="t det"  x="524" y="388" text-anchor="middle">La gota se vuelve</text>
+  <text class="t det"  x="524" y="408" text-anchor="middle">un producto</text>
+
+  <!-- ══════ 2017 · arriba ══════ -->
+  <circle cx="664" cy="272" r="8" fill="#937E00"/>
+  <line x1="664" y1="264" x2="664" y2="176" stroke="#937E00" stroke-width="1.8"/>
+  <text class="t anio" x="664" y="60"  text-anchor="middle" fill="#6E5E00">2017</text>
+  <text class="t hito" x="664" y="84"  text-anchor="middle">sci-RNA-seq</text>
+  <text class="t det"  x="664" y="106" text-anchor="middle">Escala sin encerrar</text>
+  <text class="t det"  x="664" y="126" text-anchor="middle">nada: indexado</text>
+  <text class="t det"  x="664" y="146" text-anchor="middle">combinatorial</text>
+
+  <!-- ══════ 2018 · abajo ══════ -->
+  <circle cx="792" cy="272" r="8" fill="#937E00"/>
+  <line x1="792" y1="280" x2="792" y2="316" stroke="#937E00" stroke-width="1.8"/>
+  <text class="t anio" x="792" y="342" text-anchor="middle" fill="#6E5E00">2018</text>
+  <text class="t hito" x="792" y="366" text-anchor="middle">Hedlund y Deng</text>
+  <text class="t det"  x="792" y="388" text-anchor="middle">La revisión que van</text>
+  <text class="t det"  x="792" y="408" text-anchor="middle">a leer para el 25</text>
+
+  <!-- ══════ 2020 · arriba ══════ -->
+  <circle cx="920" cy="272" r="8" fill="#7B5EA7"/>
+  <line x1="920" y1="264" x2="920" y2="176" stroke="#7B5EA7" stroke-width="1.8"/>
+  <text class="t anio" x="920" y="60"  text-anchor="middle" fill="#4A3C7A">2020</text>
+  <text class="t hito" x="920" y="84"  text-anchor="middle">Smart-seq3</text>
+  <text class="t det"  x="920" y="106" text-anchor="middle">Longitud completa</text>
+  <text class="t det"  x="920" y="126" text-anchor="middle">Y UMI: por fin</text>
+  <text class="t det"  x="920" y="146" text-anchor="middle">se cuentan moléculas</text>
+
+  <!-- ══════ 2026 · abajo ══════ -->
+  <circle cx="1080" cy="272" r="9" fill="#7B5EA7"/>
+  <line x1="1080" y1="281" x2="1080" y2="316" stroke="#7B5EA7" stroke-width="1.8"/>
+  <text class="t anio" x="1080" y="342" text-anchor="middle" fill="#4A3C7A">2026</text>
+  <text class="t hito" x="1080" y="366" text-anchor="middle">Lectura larga</text>
+  <text class="t det"  x="1080" y="388" text-anchor="middle">Isoformas y alelos.</text>
+  <text class="t det"  x="1080" y="408" text-anchor="middle">Nueve plataformas</text>
+</svg>

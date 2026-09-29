@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Flujo del demultiplexado genético, partido en dos mitades. En la mesa, tres pasos: elegir donantes genéticamente distintos, que es una decisión de diseño y no una acción de laboratorio; juntar los tubos, que es todo el multiplexado; y cargar el chip, que produce una sola librería. En la computadora, tres pasos más: partir del BAM y los códigos de barras que da Cell Ranger; contar alelos, que tarda de tres a cinco horas y puede pedir hasta noventa y un gigabytes; y decidir según haya genotipos de referencia o no, con demuxlet o con vireo. Aviso: sin reactivo, sin lavados y sin segunda librería, el trabajo se mudó al cómputo.">
+  <defs>
+    <style>
+      .t   { font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size:24px; font-weight:700; }
+      .det { font-size:24px; font-weight:600; fill:#5A6373; }
+      .num { font-size:24px; font-weight:700; fill:#ffffff; }
+      .avi { font-size:24px; font-weight:700; fill:#A01B2B; }
+      .ban { font-size:24px; font-weight:700; letter-spacing:1px; }
+    </style>
+  </defs>
+
+  <path d="M12.0,42 v-8 h573.0 v8" fill="none" stroke="#2B3FA8" stroke-width="3"/>
+  <text class="t ban" x="298.5" y="26" text-anchor="middle" fill="#2B3FA8">EN LA MESA</text>
+  <path d="M595.0,42 v-8 h573.0 v8" fill="none" stroke="#2E9AA6" stroke-width="3"/>
+  <text class="t ban" x="881.5" y="26" text-anchor="middle" fill="#2E9AA6">EN LA COMPUTADORA</text>
+  <g transform="translate(104.2,168) scale(0.85)"><path d="M-30,-42 q22,22 0,44 q-22,22 0,44" fill="none" stroke="#2B3FA8" stroke-width="5"/>
+  <path d="M2,-42 q-22,22 0,44 q22,22 0,44" fill="none" stroke="#2E9AA6" stroke-width="5"/>
+  <path d="M-24,-24 h22 M-26,0 h24 M-24,24 h22" stroke="#8A93A8" stroke-width="4"/>
+  <circle cx="-14" cy="0" r="10" fill="#A01B2B"/></g>
+  <circle cx="104.2" cy="74" r="18" fill="#000977"/>
+  <text class="t num" x="104.2" y="82" text-anchor="middle">1</text>
+  <text class="t eti" x="104.2" y="250" text-anchor="middle">Donantes</text>
+  <text class="t eti" x="104.2" y="280" text-anchor="middle">distintos</text>
+  <text class="t det" x="104.2" y="318" text-anchor="middle">no es de mesa</text>
+  <path d="M194.3,160 l14,8 l-14,8" fill="none" stroke="#8A93A8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(298.5,168) scale(0.85)"><path d="M-46,-46 h20 v26 a10,10 0 0 1 -20,0 z" fill="#E7E9F7" stroke="#2E9AA6" stroke-width="3"/>
+  <path d="M-10,-46 h20 v26 a10,10 0 0 1 -20,0 z" fill="#F3EFDD" stroke="#937E00" stroke-width="3"/>
+  <path d="M26,-46 h20 v26 a10,10 0 0 1 -20,0 z" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="3"/>
+  <path d="M0,-10 v12" stroke="#2B3FA8" stroke-width="4"/>
+  <path d="M-7,0 l7,12 l7,-12 z" fill="#2B3FA8"/>
+  <path d="M-22,16 h44 v20 a22,22 0 0 1 -44,0 z" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="4"/>
+  <circle cx="-9" cy="32" r="6" fill="#2E9AA6"/><circle cx="4" cy="38" r="6" fill="#937E00"/>
+  <circle cx="13" cy="28" r="6" fill="#2B3FA8"/></g>
+  <circle cx="298.5" cy="74" r="18" fill="#000977"/>
+  <text class="t num" x="298.5" y="82" text-anchor="middle">2</text>
+  <text class="t eti" x="298.5" y="250" text-anchor="middle">Juntar</text>
+  <text class="t eti" x="298.5" y="280" text-anchor="middle">los tubos</text>
+  <text class="t det" x="298.5" y="318" text-anchor="middle">eso es todo</text>
+  <path d="M388.7,160 l14,8 l-14,8" fill="none" stroke="#8A93A8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(492.8,168) scale(0.85)"><rect x="-52" y="-38" width="104" height="58" rx="8" fill="#E7E9F7" stroke="#2B3FA8" stroke-width="4"/>
+  <circle cx="-30" cy="-18" r="8" fill="#2B3FA8"/><circle cx="0" cy="-18" r="8" fill="#2B3FA8"/>
+  <circle cx="30" cy="-18" r="8" fill="#2B3FA8"/>
+  <path d="M-34,2 h68" stroke="#2B3FA8" stroke-width="3"/>
+  <circle cx="-16" cy="40" r="12" fill="none" stroke="#937E00" stroke-width="4"/>
+  <circle cx="16" cy="40" r="12" fill="none" stroke="#937E00" stroke-width="4"/></g>
+  <circle cx="492.8" cy="74" r="18" fill="#000977"/>
+  <text class="t num" x="492.8" y="82" text-anchor="middle">3</text>
+  <text class="t eti" x="492.8" y="250" text-anchor="middle">Cargar</text>
+  <text class="t eti" x="492.8" y="280" text-anchor="middle">el chip</text>
+  <text class="t det" x="492.8" y="318" text-anchor="middle">una librería</text>
+  <path d="M583.0,160 l14,8 l-14,8" fill="none" stroke="#8A93A8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(687.2,168) scale(0.85)"><rect x="-50" y="-42" width="100" height="64" rx="6" fill="#E7E9F7" stroke="#2E9AA6" stroke-width="4"/>
+  <path d="M-36,-24 h44 M-36,-8 h58 M-36,8 h32" stroke="#2E9AA6" stroke-width="4"/>
+  <path d="M-32,30 h64 l11,14 h-86 z" fill="#2E9AA6"/></g>
+  <circle cx="687.2" cy="74" r="18" fill="#000977"/>
+  <text class="t num" x="687.2" y="82" text-anchor="middle">4</text>
+  <text class="t eti" x="687.2" y="250" text-anchor="middle">BAM y códigos</text>
+  <text class="t det" x="687.2" y="288" text-anchor="middle">de Cell Ranger</text>
+  <path d="M777.3,160 l14,8 l-14,8" fill="none" stroke="#8A93A8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(881.5,168) scale(0.85)"><rect x="-50" y="-42" width="100" height="64" rx="6" fill="#E7E9F7" stroke="#2E9AA6" stroke-width="4"/>
+  <path d="M-36,-24 h44 M-36,-8 h58 M-36,8 h32" stroke="#2E9AA6" stroke-width="4"/>
+  <path d="M-32,30 h64 l11,14 h-86 z" fill="#2E9AA6"/></g>
+  <circle cx="881.5" cy="74" r="18" fill="#000977"/>
+  <text class="t num" x="881.5" y="82" text-anchor="middle">5</text>
+  <text class="t eti" x="881.5" y="250" text-anchor="middle">Contar alelos</text>
+  <text class="t det" x="881.5" y="288" text-anchor="middle">3–5 h y 91 GB</text>
+  <path d="M971.7,160 l14,8 l-14,8" fill="none" stroke="#8A93A8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(1075.8,168) scale(0.85)"><path d="M-30,-42 q22,22 0,44 q-22,22 0,44" fill="none" stroke="#2E9AA6" stroke-width="5"/>
+  <path d="M2,-42 q-22,22 0,44 q22,22 0,44" fill="none" stroke="#2E9AA6" stroke-width="5"/>
+  <path d="M-24,-24 h22 M-26,0 h24 M-24,24 h22" stroke="#8A93A8" stroke-width="4"/>
+  <circle cx="-14" cy="0" r="10" fill="#A01B2B"/></g>
+  <circle cx="1075.8" cy="74" r="18" fill="#000977"/>
+  <text class="t num" x="1075.8" y="82" text-anchor="middle">6</text>
+  <text class="t eti" x="1075.8" y="250" text-anchor="middle">¿Hay</text>
+  <text class="t eti" x="1075.8" y="280" text-anchor="middle">genotipos?</text>
+  <text class="t det" x="1075.8" y="318" text-anchor="middle">demuxlet/vireo</text>
+  <text class="t avi" x="12" y="400">Sin reactivo, sin lavados y sin segunda librería: el trabajo se mudó al cómputo.</text>
+</svg>

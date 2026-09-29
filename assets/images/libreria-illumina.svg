@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="La librería terminada, dibujada como una barra de nueve tramos de izquierda a derecha: P5, sitio de la lectura uno, código de barras, UMI, poli-dT, inserto de cDNA, sitio de la lectura dos, índice i7 y P7. Debajo, tres corchetes marcan lo único que se secuencia: la lectura uno sobre el código de barras y el UMI, veintiocho nucleótidos; la lectura dos sobre el inserto, unos noventa; y el índice, diez. Al pie se aclara que P5, P7 y los dos sitios de lectura son anclajes que no se secuencian, y que el índice de muestra no lo trae la perla sino que entra en la PCR final.">
+<defs><style>.t{font-family:"Source Sans Pro","Segoe UI",system-ui,sans-serif;fill:#141A4A;}.eti{font-size:24px;font-weight:700;}.nota{font-size:24px;font-weight:600;}.chico{font-size:24px;font-weight:600;fill:#5A6373;}.dentro{font-size:24px;font-weight:700;fill:#ffffff;}</style><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5A6373"/></marker></defs>
+<rect x="20" y="148" width="70" height="42" rx="8" fill="#6E5E00"/>
+<text class="t eti" x="55" y="130" text-anchor="middle" fill="#6E5E00">P5</text>
+<rect x="92" y="148" width="130" height="42" rx="8" fill="#5A6373"/>
+<text class="t eti" x="157" y="222" text-anchor="middle" fill="#5A6373">sitio lectura 1</text>
+<rect x="224" y="148" width="120" height="42" rx="8" fill="#000977"/>
+<text class="t eti" x="284" y="130" text-anchor="middle" fill="#000977">código de barras</text>
+<rect x="346" y="148" width="95" height="42" rx="8" fill="#2E9AA6"/>
+<text class="t eti" x="393" y="222" text-anchor="middle" fill="#2E9AA6">UMI</text>
+<rect x="443" y="148" width="90" height="42" rx="8" fill="#937E00"/>
+<text class="t eti" x="488" y="130" text-anchor="middle" fill="#937E00">poli-dT</text>
+<rect x="535" y="148" width="300" height="42" rx="8" fill="#2B3FA8"/>
+<text class="t eti" x="685" y="222" text-anchor="middle" fill="#2B3FA8">inserto de cDNA</text>
+<rect x="837" y="148" width="130" height="42" rx="8" fill="#5A6373"/>
+<text class="t eti" x="902" y="130" text-anchor="middle" fill="#5A6373">sitio lectura 2</text>
+<rect x="969" y="148" width="90" height="42" rx="8" fill="#141A4A"/>
+<text class="t eti" x="1014" y="222" text-anchor="middle" fill="#141A4A">índice i7</text>
+<rect x="1061" y="148" width="70" height="42" rx="8" fill="#6E5E00"/>
+<text class="t eti" x="1096" y="130" text-anchor="middle" fill="#6E5E00">P7</text>
+<text class="t chico" x="20" y="96">5′</text>
+<text class="t chico" x="1160" y="96" text-anchor="end">3′</text>
+<path d="M224,264 v14 h217 v-14" fill="none" stroke="#000977" stroke-width="3"/><text class="t nota" x="332" y="310" text-anchor="middle" fill="#000977">lectura 1 · 28 nt</text>
+<path d="M535,264 v14 h300 v-14" fill="none" stroke="#2B3FA8" stroke-width="3"/><text class="t nota" x="685" y="310" text-anchor="middle" fill="#2B3FA8">lectura 2 · ~90 nt</text>
+<path d="M969,264 v14 h90 v-14" fill="none" stroke="#141A4A" stroke-width="3"/><text class="t nota" x="1014" y="310" text-anchor="middle" fill="#141A4A">índice · 10 nt</text>
+<text class="t nota" x="20" y="368" fill="#5A6373">Solo se secuencia lo que lleva corchete. P5, P7 y los dos sitios de lectura son anclajes.</text>
+<text class="t nota" x="20" y="406" fill="#6E5E00">El índice de muestra no lo trae la perla: entra en la PCR del paso 4.</text>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="1180" height="430" role="img" aria-label="Métodos en placa: una célula por pozo con su reacción completa">
+  <defs>
+    <marker id="fAzul" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2B3FA8"/>
+    </marker>
+    <style>
+      .t   { font-family: "Source Sans Pro","Segoe UI",system-ui,sans-serif; fill:#141A4A; }
+      .eti { font-size: 24px; font-weight: 700; }
+      .nota{ font-size: 24px; font-weight: 600; fill:#5A6373; }
+      .pozo{ fill:#E7E9F7; stroke:#2B3FA8; stroke-width:2; }
+    </style>
+  </defs>
+
+  <!-- ── la placa ── -->
+  <rect x="52" y="82" width="452" height="228" rx="14" fill="#ffffff" stroke="#141A4A" stroke-width="3"/>
+  <g>
+    <circle class="pozo" cx="100" cy="126" r="19"/><circle class="pozo" cx="156" cy="126" r="19"/>
+    <circle class="pozo" cx="212" cy="126" r="19"/><circle class="pozo" cx="268" cy="126" r="19"/>
+    <circle class="pozo" cx="324" cy="126" r="19"/><circle class="pozo" cx="380" cy="126" r="19"/>
+    <circle class="pozo" cx="436" cy="126" r="19"/>
+    <circle class="pozo" cx="100" cy="182" r="19"/><circle class="pozo" cx="156" cy="182" r="19"/>
+    <circle cx="212" cy="182" r="19" fill="#E7E9F7" stroke="#937E00" stroke-width="4"/>
+    <circle class="pozo" cx="268" cy="182" r="19"/><circle class="pozo" cx="324" cy="182" r="19"/>
+    <circle class="pozo" cx="380" cy="182" r="19"/><circle class="pozo" cx="436" cy="182" r="19"/>
+    <circle class="pozo" cx="100" cy="238" r="19"/><circle class="pozo" cx="156" cy="238" r="19"/>
+    <circle class="pozo" cx="212" cy="238" r="19"/><circle class="pozo" cx="268" cy="238" r="19"/>
+    <circle class="pozo" cx="324" cy="238" r="19"/><circle class="pozo" cx="380" cy="238" r="19"/>
+    <circle class="pozo" cx="436" cy="238" r="19"/>
+  </g>
+  <g>
+    <circle cx="100" cy="126" r="8" fill="#2E9AA6"/><circle cx="156" cy="126" r="8" fill="#2E9AA6"/>
+    <circle cx="268" cy="126" r="8" fill="#2E9AA6"/><circle cx="380" cy="126" r="8" fill="#2E9AA6"/>
+    <circle cx="212" cy="182" r="8" fill="#2E9AA6"/><circle cx="324" cy="182" r="8" fill="#2E9AA6"/>
+    <circle cx="156" cy="238" r="8" fill="#2E9AA6"/><circle cx="380" cy="238" r="8" fill="#2E9AA6"/>
+  </g>
+  <text class="t eti" x="278" y="62" text-anchor="middle" fill="#141A4A">una célula por pozo</text>
+  <!-- Anclado a la izquierda, no centrado: la frase mide unos 690 px y centrada en
+       x=278 se salia del lienzo por la izquierda (empezaba en x negativo). -->
+  <text class="t nota" x="52" y="348">el pozo es la identidad: no hace falta código de barras</text>
+
+  <!-- ── flecha de ampliacion ── -->
+  <line x1="524" y1="182" x2="606" y2="182" stroke="#2B3FA8" stroke-width="4" marker-end="url(#fAzul)"/>
+
+  <!-- ── el pozo ampliado ── -->
+  <circle cx="748" cy="182" r="112" fill="#E7E9F7" stroke="#937E00" stroke-width="5"/>
+  <circle cx="748" cy="182" r="26" fill="#2E9AA6"/>
+  <g fill="#937E00">
+    <circle cx="686" cy="132" r="7"/><circle cx="806" cy="140" r="7"/><circle cx="676" cy="222" r="7"/>
+    <circle cx="812" cy="228" r="7"/><circle cx="748" cy="278" r="7"/><circle cx="700" cy="262" r="7"/>
+    <circle cx="800" cy="98"  r="7"/><circle cx="700" cy="98"  r="7"/>
+  </g>
+
+  <!-- ── lo que se gana y lo que cuesta ── -->
+  <text class="t eti" x="896" y="112" fill="#141A4A">una reacción completa</text>
+  <text class="t eti" x="896" y="144" fill="#141A4A">para ella sola</text>
+  <text class="t eti" x="896" y="204" fill="#2B3FA8">se recupera el transcrito</text>
+  <text class="t eti" x="896" y="236" fill="#2B3FA8">de punta a punta</text>
+  <text class="t eti" x="896" y="296" fill="#6E5E00">cientos de células,</text>
+  <text class="t eti" x="896" y="328" fill="#6E5E00">no decenas de miles</text>
+</svg>
